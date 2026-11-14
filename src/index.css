@@ -66,3 +66,29 @@
         transition: none !important;
     }
 }
+
+.aquarium-feed {
+    display: flex;
+    flex-direction: column;
+    animation: aquariumFeed 36s linear infinite;
+    will-change: transform;
+}
+
+.aquarium-feed:hover {
+    animation-play-state: paused;
+}
+
+@keyframes aquariumFeed {
+    from {
+        transform: translate3d(0, 0, 0);
+    }
+    to {
+        transform: translate3d(0, -50%, 0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .aquarium-feed {
+        animation: none;
+    }
+}
