@@ -1,7 +1,11 @@
 import Box from '@mui/joy/Box'
 import Typography from '@mui/joy/Typography'
+import { useTheme } from '@mui/joy/styles'
 
 export default function Quote() {
+    const theme = useTheme()
+    const palette = theme.vars.palette.quote
+
     return (
         <Box
             component="section"
@@ -9,8 +13,8 @@ export default function Quote() {
             sx={{
                 position: 'relative',
                 zIndex: 1,
-                bgcolor: '#fff',
-                color: '#000',
+                bgcolor: palette.background,
+                color: palette.text,
                 px: { xs: '20px', md: 'clamp(24px, 3.2vw, 48px)' },
                 py: { xs: '64px', md: '110px' },
             }}
@@ -28,7 +32,7 @@ export default function Quote() {
                         m: 0,
                         maxWidth: '34ch',
                         ml: 'auto',
-                        color: '#000',
+                        color: palette.text,
                         fontFamily: 'var(--joy-fontFamily-display)',
                         fontSize: 'clamp(1.6rem, 2.8vw, 2.75rem)',
                         fontWeight: 400,
@@ -45,7 +49,7 @@ export default function Quote() {
                 <Typography
                     sx={{
                         mt: '24px',
-                        color: 'rgba(0,0,0,.55)',
+                        color: palette.mutedText,
                         fontFamily: 'var(--joy-fontFamily-body)',
                         fontSize: '10px',
                         fontWeight: 500,

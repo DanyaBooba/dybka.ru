@@ -1,5 +1,5 @@
 import Box from '@mui/joy/Box'
-import { useColorScheme } from '@mui/joy/styles'
+import { useTheme } from '@mui/joy/styles'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import {
     ArrowUpRight,
@@ -89,7 +89,7 @@ const posts = [
     },
 ]
 
-function Post({ post, postBackground, postColor, mutedColor }) {
+function Post({ post, palette }) {
     return (
         <Box
             sx={{
@@ -97,8 +97,8 @@ function Post({ post, postBackground, postColor, mutedColor }) {
                 maxWidth: '548px',
                 p: '20px',
                 borderRadius: '24px',
-                bgcolor: postBackground,
-                color: postColor,
+                bgcolor: palette.postBackground,
+                color: palette.text,
             }}
         >
             <Box sx={{ display: 'flex', alignItems: 'start', gap: '8px' }}>
@@ -136,7 +136,7 @@ function Post({ post, postBackground, postColor, mutedColor }) {
                                 width: '15px',
                                 height: '15px',
                                 '& svg': {
-                                    fill: "#1d807d",
+                                    fill: palette.verifiedColor,
                                     width: '15px',
                                     height: '15px'
                                 }
@@ -148,7 +148,7 @@ function Post({ post, postBackground, postColor, mutedColor }) {
                     <Box
                         component="div"
                         sx={{
-                            color: mutedColor,
+                            color: palette.postMutedText,
                             fontFamily: 'var(--joy-fontFamily-body)',
                             fontSize: '12px',
                             lineHeight: 1.3,
@@ -162,7 +162,7 @@ function Post({ post, postBackground, postColor, mutedColor }) {
                     sx={{
                         display: 'inline-flex',
                         ml: 'auto',
-                        color: mutedColor,
+                        color: palette.postMutedText,
                         flexShrink: 0,
                     }}
                 >
@@ -216,7 +216,7 @@ function Post({ post, postBackground, postColor, mutedColor }) {
                     alignItems: 'center',
                     gap: '18px',
                     mt: '16px',
-                    color: mutedColor,
+                    color: palette.postMutedText,
                 }}
             >
                 <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
@@ -239,7 +239,7 @@ function Post({ post, postBackground, postColor, mutedColor }) {
     )
 }
 
-function FeedGroup({ posts: groupPosts, hidden, postBackground, postColor, mutedColor }) {
+function FeedGroup({ posts: groupPosts, hidden, palette }) {
     return (
         <Box
             aria-hidden={hidden ? 'true' : undefined}
@@ -254,16 +254,14 @@ function FeedGroup({ posts: groupPosts, hidden, postBackground, postColor, muted
                 <Post
                     key={post.name + post.time}
                     post={post}
-                    postBackground={postBackground}
-                    postColor={postColor}
-                    mutedColor={mutedColor}
+                    palette={palette}
                 />
             ))}
         </Box>
     )
 }
 
-function FeedColumn({ groupPosts, className, height, postBackground, postColor, mutedColor }) {
+function FeedColumn({ groupPosts, className, height, palette }) {
     return (
         <Box
             aria-hidden="true"
@@ -276,16 +274,12 @@ function FeedColumn({ groupPosts, className, height, postBackground, postColor, 
             <Box className={`aquarium-feed ${className}`}>
                 <FeedGroup
                     posts={groupPosts}
-                    postBackground={postBackground}
-                    postColor={postColor}
-                    mutedColor={mutedColor}
+                    palette={palette}
                 />
                 <FeedGroup
                     posts={groupPosts}
                     hidden
-                    postBackground={postBackground}
-                    postColor={postColor}
-                    mutedColor={mutedColor}
+                    palette={palette}
                 />
             </Box>
         </Box>
@@ -293,17 +287,9 @@ function FeedColumn({ groupPosts, className, height, postBackground, postColor, 
 }
 
 export default function Aquarium() {
-    const { mode, systemMode } = useColorScheme()
+    const theme = useTheme()
+    const palette = theme.vars.palette.aquarium
     const twoColumns = useMediaQuery('(min-width: 1280px)')
-    const dark = mode === 'dark' || (mode === 'system' && systemMode === 'dark')
-
-    const sectionBackground = dark ? '#121212' : '#f8fafc'
-    const textColor = '#000'
-    const mutedText = 'rgba(0,0,0,.62)'
-    const faintText = 'rgba(0,0,0,.45)'
-    const postBackground = dark ? '#1a1a1a' : '#fff'
-    const postColor = dark ? '#fff' : '#000'
-    const postMuted = dark ? 'rgba(255,255,255,.42)' : 'rgba(0,0,0,.45)'
 
     const leftPosts = posts.filter((_, index) => index % 2 === 0)
     const rightPosts = posts.filter((_, index) => index % 2 === 1)
@@ -317,8 +303,8 @@ export default function Aquarium() {
             sx={{
                 position: 'relative',
                 zIndex: 1,
-                bgcolor: sectionBackground,
-                color: textColor,
+                bgcolor: palette.background,
+                color: palette.text,
                 px: { xs: '20px', md: 'clamp(24px, 3.2vw, 48px)' },
             }}
         >
@@ -342,7 +328,7 @@ export default function Aquarium() {
                             sx={{
                                 width: { xs: '220px', md: 'clamp(260px, 24vw, 300px)' },
                                 m: 0,
-                                color: textColor,
+                                color: palette.text,
                                 lineHeight: 0,
                             }}
                         >
@@ -359,7 +345,7 @@ export default function Aquarium() {
                             sx={{
                                 mt: '24px',
                                 maxWidth: '48ch',
-                                color: mutedText,
+                                color: palette.mutedText,
                                 fontFamily: 'var(--joy-fontFamily-body)',
                                 fontSize: '16px',
                                 lineHeight: 1.6,
@@ -376,7 +362,7 @@ export default function Aquarium() {
                                 flexWrap: 'wrap',
                                 gap: '8px 18px',
                                 mt: '28px',
-                                color: faintText,
+                                color: palette.faintText,
                                 fontFamily: 'var(--joy-fontFamily-body)',
                                 fontSize: '9px',
                                 fontWeight: 500,
@@ -407,7 +393,7 @@ export default function Aquarium() {
                                     display: 'inline-flex',
                                     alignItems: 'center',
                                     gap: '10px',
-                                    color: textColor,
+                                    color: palette.text,
                                     fontFamily: 'var(--joy-fontFamily-body)',
                                     fontSize: '10px',
                                     fontWeight: 500,
@@ -442,7 +428,7 @@ export default function Aquarium() {
                                     display: 'inline-flex',
                                     alignItems: 'center',
                                     gap: '10px',
-                                    color: textColor,
+                                    color: palette.text,
                                     fontFamily: 'var(--joy-fontFamily-body)',
                                     fontSize: '10px',
                                     fontWeight: 500,
@@ -476,9 +462,7 @@ export default function Aquarium() {
                                 groupPosts={groupPosts}
                                 className={index === 1 ? 'aquarium-feed--right' : ''}
                                 height={{ xs: '560px', md: '640px' }}
-                                postBackground={postBackground}
-                                postColor={postColor}
-                                mutedColor={postMuted}
+                                palette={palette}
                             />
                         ))}
                     </Box>

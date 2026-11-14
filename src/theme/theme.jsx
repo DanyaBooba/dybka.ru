@@ -1,5 +1,3 @@
-import { useState, useEffect } from 'react'
-import useMediaQuery from '@mui/material/useMediaQuery'
 import { extendTheme } from '@mui/joy/styles'
 
 export const theme = extendTheme({
@@ -29,6 +27,20 @@ export const theme = extendTheme({
                     borderColor: 'rgba(255, 255, 255, 0.3)',
                     glowColor: 'rgba(255, 255, 255, 0.8)',
                 },
+                quote: {
+                    background: '#fff',
+                    text: '#000',
+                    mutedText: 'rgba(0, 0, 0, .55)',
+                },
+                aquarium: {
+                    background: '#f8fafc',
+                    postBackground: '#fff',
+                    text: '#000',
+                    mutedText: 'rgba(0, 0, 0, .62)',
+                    faintText: 'rgba(0, 0, 0, .45)',
+                    postMutedText: 'rgba(0, 0, 0, .45)',
+                    verifiedColor: '#1d807d',
+                },
             },
         },
         dark: {
@@ -53,6 +65,20 @@ export const theme = extendTheme({
                     backgroundColor: 'rgba(20, 20, 20, 0.6)',
                     borderColor: 'rgba(255, 255, 255, 0.1)',
                     glowColor: 'rgba(255, 255, 255, 0.2)',
+                },
+                quote: {
+                    background: '#000',
+                    text: '#fff',
+                    mutedText: 'rgba(255, 255, 255, .55)',
+                },
+                aquarium: {
+                    background: '#121212',
+                    postBackground: '#1a1a1a',
+                    text: '#fff',
+                    mutedText: 'rgba(255, 255, 255, .62)',
+                    faintText: 'rgba(255, 255, 255, .45)',
+                    postMutedText: 'rgba(255, 255, 255, .42)',
+                    verifiedColor: '#0abab5',
                 },
                 neutral: {
                     50: '#fafafa',
@@ -82,25 +108,3 @@ export const theme = extendTheme({
         },
     },
 })
-
-export const currentTheme = () => {
-    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
-    const [mode, setMode] = useState(prefersDarkMode ? 'dark' : 'light')
-
-    useEffect(() => {
-        setMode(prefersDarkMode ? 'dark' : 'light')
-    }, [prefersDarkMode])
-
-    return theme.colorSchemes[mode].palette
-}
-
-export const infoTheme = () => {
-    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
-    const [mode, setMode] = useState(prefersDarkMode ? 'dark' : 'light')
-
-    useEffect(() => {
-        setMode(prefersDarkMode ? 'dark' : 'light')
-    }, [prefersDarkMode])
-
-    return mode
-}
