@@ -1,126 +1,149 @@
 import Box from '@mui/joy/Box'
-import Typography from '@mui/joy/Typography'
-import { ArrowUpRight, ChatCircle, Fish, Heart } from '@phosphor-icons/react'
+import { useColorScheme } from '@mui/joy/styles'
+import useMediaQuery from '@mui/material/useMediaQuery'
+import {
+    ArrowsClockwise,
+    ArrowUpRight,
+    ChatCircle,
+    ChatIcon,
+    DotsThreeVertical,
+    Heart,
+    ShareIcon,
+} from '@phosphor-icons/react'
 import projects from '../data/projects'
+import AquariumLogo from './aquarium-logo'
 
 const aquarium = projects.find((project) => project.title === 'Аквариум')
 
 const posts = [
     {
-        name: 'Максим Ефимцев',
-        time: '4 дня назад',
-        text: 'Рандом )',
-        images: [
-            '/img/contests/2025/baumanka/main.jpg',
-            '/img/contests/2025/rucode/main.jpg',
-            '/img/contests/2025/pstgu/cap.jpg',
-            '/img/contests/2024/icpc/cap.jpg',
-        ],
-        likes: 1,
-        replies: 0,
-    },
-    {
         name: 'Даниил Дыбка',
         time: '4 дня назад',
+        avatar: '/img/contests/2025/baumanka/main.jpg',
+        avatarPosition: '50% 32%',
         text: 'Поправили баблы в сообщениях в вебе, были некоторые проблемы с их отображением, сейчас стало лучше. А также активно исправляются звонки в мобильном приложении, больше всего проблем доставляет интеграция их с системными звонками Android и iOS. Хочется, чтобы мобильное приложение вышло удобным и без багов на старте. Посмотрим, что получится.',
         images: [],
+        likes: 12,
+        replies: 3,
+    },
+    {
+        name: 'Максим Ефимцев',
+        time: '4 дня назад',
+        avatar: '/img/contests/2026/russian-engineer/cap.jpg',
+        avatarPosition: '58% 30%',
+        text: 'Рандом )',
+        images: [
+            '/img/contests/2025/rucode/main.jpg',
+            '/img/contests/2025/pstgu/cap.jpg',
+        ],
         likes: 4,
-        replies: 2,
+        replies: 1,
     },
     {
         name: 'Альтушка Нефор',
         time: '6 дней назад',
+        avatar: '/img/contests/2025/rucode/main.jpg',
+        avatarPosition: '78% 30%',
         text: 'Вчерашняя прогулка',
-        images: [
-            '/img/contests/2025/saintp/cap.jpg',
-            '/img/contests/2024/pstgu/cap.jpg',
-        ],
-        likes: 2,
-        replies: 1,
+        images: ['/img/contests/2025/saintp/cap.jpg'],
+        likes: 7,
+        replies: 2,
     },
     {
         name: 'Лена Соколова',
         time: 'неделю назад',
+        avatar: '/img/contests/2024/pstgu/cap.jpg',
+        avatarPosition: '50% 30%',
         text: 'Кто-нибудь ещё помнит, как звучит тишина без уведомлений?',
         images: [],
-        likes: 3,
-        replies: 1,
+        likes: 9,
+        replies: 4,
     },
 ]
 
-function FeedCard({ post }) {
+function Post({ post, postBackground, postColor, mutedColor }) {
     return (
         <Box
             sx={{
-                px: '16px',
-                py: '14px',
-                borderBottom: '1px solid rgba(0,0,0,.08)',
-                bgcolor: '#fff',
+                width: '100%',
+                maxWidth: '548px',
+                p: '20px',
+                borderRadius: '24px',
+                bgcolor: postBackground,
+                color: postColor,
             }}
         >
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <Box sx={{ display: 'flex', alignItems: 'start', gap: '8px' }}>
                 <Box
+                    component="img"
+                    src={post.avatar}
+                    alt=""
                     sx={{
-                        display: 'grid',
-                        width: '28px',
-                        height: '28px',
+                        width: '40px',
+                        height: '40px',
                         flexShrink: 0,
                         borderRadius: '50%',
-                        bgcolor: '#111',
-                        color: '#fff',
-                        fontFamily: 'var(--joy-fontFamily-body)',
-                        fontSize: '10px',
-                        fontWeight: 500,
-                        placeItems: 'center',
+                        objectFit: 'cover',
+                        objectPosition: post.avatarPosition,
                     }}
-                >
-                    {post.name.charAt(0)}
-                </Box>
-                <Box>
-                    <Typography
+                />
+                <Box sx={{ minWidth: 0 }}>
+                    <Box
+                        component="div"
                         sx={{
-                            color: '#000',
                             fontFamily: 'var(--joy-fontFamily-body)',
-                            fontSize: '11px',
+                            fontSize: '16px',
                             fontWeight: 500,
                             lineHeight: 1.3,
                         }}
                     >
                         {post.name}
-                    </Typography>
-                    <Typography
+                    </Box>
+                    <Box
+                        component="div"
                         sx={{
-                            color: 'rgba(0,0,0,.42)',
+                            color: mutedColor,
                             fontFamily: 'var(--joy-fontFamily-body)',
-                            fontSize: '9px',
+                            fontSize: '12px',
                             lineHeight: 1.3,
                         }}
                     >
                         {post.time}
-                    </Typography>
+                    </Box>
+                </Box>
+                <Box
+                    component="span"
+                    sx={{
+                        display: 'inline-flex',
+                        ml: 'auto',
+                        color: mutedColor,
+                        flexShrink: 0,
+                    }}
+                >
+                    <DotsThreeVertical size={20} weight="bold" />
                 </Box>
             </Box>
 
-            <Typography
+            <Box
+                component="div"
                 sx={{
-                    mt: '10px',
-                    color: 'rgba(0,0,0,.72)',
+                    mt: '14px',
                     fontFamily: 'var(--joy-fontFamily-body)',
-                    fontSize: '11px',
-                    lineHeight: 1.5,
+                    fontSize: '16px',
+                    lineHeight: 1.55,
                 }}
             >
                 {post.text}
-            </Typography>
+            </Box>
 
             {post.images.length > 0 ? (
                 <Box
+                    component="div"
                     sx={{
-                        display: 'grid',
-                        gridTemplateColumns:
-                            post.images.length === 1 ? '1fr' : 'repeat(2, minmax(0, 1fr))',
-                        gap: '4px',
-                        mt: '10px',
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                        gap: '10px',
+                        mt: '14px',
                     }}
                 >
                     {post.images.map((src) => (
@@ -130,10 +153,11 @@ function FeedCard({ post }) {
                             src={src}
                             alt=""
                             sx={{
-                                width: '100%',
-                                aspectRatio: '16 / 10',
+                                display: 'block',
+                                width: '120px',
+                                height: '120px',
+                                borderRadius: '12px',
                                 objectFit: 'cover',
-                                filter: 'grayscale(1)',
                             }}
                         />
                     ))}
@@ -144,45 +168,102 @@ function FeedCard({ post }) {
                 sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '14px',
-                    mt: '10px',
-                    color: 'rgba(0,0,0,.42)',
-                    fontFamily: 'var(--joy-fontFamily-body)',
-                    fontSize: '9px',
+                    gap: '18px',
+                    mt: '16px',
+                    color: mutedColor,
                 }}
             >
-                <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                    <Heart size={12} weight="regular" />
-                    {post.likes}
+                <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                    <Heart size={18} weight="regular" />
+                    <Box component="span" sx={{ fontSize: '12px' }}>
+                        {post.likes}
+                    </Box>
                 </Box>
-                <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                    <ChatCircle size={12} weight="regular" />
-                    {post.replies}
+                <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                    <ChatIcon size={18} weight="regular" />
+                    <Box component="span" sx={{ fontSize: '12px' }}>
+                        {post.replies}
+                    </Box>
+                </Box>
+                <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+                    <ShareIcon size={18} weight="regular" />
                 </Box>
             </Box>
         </Box>
     )
 }
 
-function FeedGroup({ hidden }) {
+function FeedGroup({ posts: groupPosts, hidden, postBackground, postColor, mutedColor }) {
     return (
         <Box
             aria-hidden={hidden ? 'true' : undefined}
             sx={{
                 display: 'flex',
                 flexDirection: 'column',
-                flexShrink: 0,
+                gap: '12px',
                 pb: '12px',
+                flexShrink: 0,
             }}
         >
-            {posts.map((post) => (
-                <FeedCard key={post.name + post.time} post={post} />
+            {groupPosts.map((post) => (
+                <Post
+                    key={post.name + post.time}
+                    post={post}
+                    postBackground={postBackground}
+                    postColor={postColor}
+                    mutedColor={mutedColor}
+                />
             ))}
         </Box>
     )
 }
 
+function FeedColumn({ groupPosts, className, height, postBackground, postColor, mutedColor }) {
+    return (
+        <Box
+            aria-hidden="true"
+            sx={{
+                width: '100%',
+                height,
+                overflow: 'hidden',
+            }}
+        >
+            <Box className={`aquarium-feed ${className}`}>
+                <FeedGroup
+                    posts={groupPosts}
+                    postBackground={postBackground}
+                    postColor={postColor}
+                    mutedColor={mutedColor}
+                />
+                <FeedGroup
+                    posts={groupPosts}
+                    hidden
+                    postBackground={postBackground}
+                    postColor={postColor}
+                    mutedColor={mutedColor}
+                />
+            </Box>
+        </Box>
+    )
+}
+
 export default function Aquarium() {
+    const { mode, systemMode } = useColorScheme()
+    const twoColumns = useMediaQuery('(min-width: 1280px)')
+    const dark = mode === 'dark' || (mode === 'system' && systemMode === 'dark')
+
+    const sectionBackground = '#f2f2f2'
+    const textColor = '#000'
+    const mutedText = 'rgba(0,0,0,.62)'
+    const faintText = 'rgba(0,0,0,.45)'
+    const postBackground = dark ? '#1a1a1a' : '#fff'
+    const postColor = dark ? '#fff' : '#000'
+    const postMuted = dark ? 'rgba(255,255,255,.42)' : 'rgba(0,0,0,.45)'
+
+    const leftPosts = posts.filter((_, index) => index % 2 === 0)
+    const rightPosts = posts.filter((_, index) => index % 2 === 1)
+    const columns = twoColumns ? [leftPosts, rightPosts] : [posts]
+
     return (
         <Box
             component="section"
@@ -191,10 +272,9 @@ export default function Aquarium() {
             sx={{
                 position: 'relative',
                 zIndex: 1,
-                bgcolor: '#f2f2f2',
-                color: '#000',
+                bgcolor: sectionBackground,
+                color: textColor,
                 px: { xs: '20px', md: 'clamp(24px, 3.2vw, 48px)' },
-                py: { xs: '72px', md: 'clamp(96px, 10vw, 140px)' },
             }}
         >
             <Box sx={{ maxWidth: '1600px', mx: 'auto' }}>
@@ -203,49 +283,55 @@ export default function Aquarium() {
                         display: 'grid',
                         gridTemplateColumns: {
                             xs: '1fr',
-                            md: 'minmax(0, 0.9fr) minmax(0, 1.1fr)',
+                            md: 'minmax(0, 0.78fr) minmax(0, 1.22fr)',
                         },
                         gap: { xs: '40px', md: 'clamp(48px, 7vw, 110px)' },
                         alignItems: 'center',
-                        pt: { xs: '40px', md: '56px' },
                     }}
                 >
                     <Box>
-                        <Typography
-                            level="h2"
+                        <Box
+                            component="h2"
                             id="aquarium-title"
+                            aria-label="Аквариум"
                             sx={{
-                                color: '#000',
-                                fontFamily: 'var(--joy-fontFamily-display)',
-                                fontSize: 'clamp(3rem, 5.4vw, 5.6rem)',
-                                fontWeight: 400,
-                                lineHeight: 0.92,
-                                letterSpacing: '-0.04em',
+                                width: { xs: '220px', md: 'clamp(260px, 24vw, 300px)' },
+                                m: 0,
+                                color: textColor,
+                                lineHeight: 0,
                             }}
                         >
-                            Аквариум
-                        </Typography>
-                        <Typography
+                            <AquariumLogo
+                                style={{
+                                    display: 'block',
+                                    width: '100%',
+                                    height: 'auto',
+                                }}
+                            />
+                        </Box>
+                        <Box
+                            component="div"
                             sx={{
-                                mt: '20px',
+                                mt: '24px',
                                 maxWidth: '48ch',
-                                color: 'rgba(0,0,0,.62)',
+                                color: mutedText,
                                 fontFamily: 'var(--joy-fontFamily-body)',
-                                fontSize: '13px',
+                                fontSize: '16px',
                                 lineHeight: 1.6,
                             }}
                         >
                             Мессенджер и микроблог для близких: личные и групповые чаты,
                             звонки, публикации и профиль. Веб-версия, приложения для iOS и
                             Android.
-                        </Typography>
+                        </Box>
                         <Box
+                            component="div"
                             sx={{
                                 display: 'flex',
                                 flexWrap: 'wrap',
                                 gap: '8px 18px',
                                 mt: '28px',
-                                color: 'rgba(0,0,0,.45)',
+                                color: faintText,
                                 fontFamily: 'var(--joy-fontFamily-body)',
                                 fontSize: '9px',
                                 fontWeight: 500,
@@ -277,7 +363,7 @@ export default function Aquarium() {
                                     alignItems: 'center',
                                     gap: '10px',
                                     pb: '5px',
-                                    color: '#000',
+                                    color: textColor,
                                     fontFamily: 'var(--joy-fontFamily-body)',
                                     fontSize: '10px',
                                     fontWeight: 500,
@@ -313,7 +399,7 @@ export default function Aquarium() {
                                     alignItems: 'center',
                                     gap: '10px',
                                     pb: '5px',
-                                    color: '#000',
+                                    color: textColor,
                                     fontFamily: 'var(--joy-fontFamily-body)',
                                     fontSize: '10px',
                                     fontWeight: 500,
@@ -322,87 +408,36 @@ export default function Aquarium() {
                                     textDecoration: 'none',
                                     transition: 'opacity .25s ease',
                                     '&:hover': { opacity: 0.55 },
-                                    '&:hover .aquarium-arrow': {
-                                        transform: 'translate(4px, -4px)',
-                                    },
                                 }}
                             >
                                 О проекте
-                                <ArrowUpRight
-                                    className="aquarium-arrow"
-                                    size={16}
-                                    weight="light"
-                                    aria-hidden="true"
-                                    style={{
-                                        transition:
-                                            'transform .5s cubic-bezier(0.22, 1, 0.36, 1)',
-                                    }}
-                                />
                             </Box>
                         </Box>
                     </Box>
 
                     <Box
-                        aria-hidden="true"
                         sx={{
-                            overflow: 'hidden',
-                            bgcolor: '#fff',
-                            border: '1px solid rgba(0,0,0,.14)',
-                            height: { xs: '440px', md: '560px' },
+                            display: 'grid',
+                            gridTemplateColumns: twoColumns
+                                ? 'repeat(2, minmax(0, 1fr))'
+                                : '1fr',
+                            gap: '12px',
+                            width: '100%',
+                            maxWidth: twoColumns ? '1108px' : '548px',
+                            justifySelf: 'end',
                         }}
                     >
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
-                                height: '44px',
-                                px: '16px',
-                                borderBottom: '1px solid rgba(0,0,0,.1)',
-                            }}
-                        >
-                            <Box
-                                sx={{
-                                    display: 'inline-flex',
-                                    alignItems: 'center',
-                                    gap: '8px',
-                                    color: '#000',
-                                    fontFamily: 'var(--joy-fontFamily-body)',
-                                    fontSize: '11px',
-                                    fontWeight: 500,
-                                }}
-                            >
-                                <Fish size={16} weight="fill" />
-                                Аквариум
-                            </Box>
-                            <Box
-                                sx={{
-                                    color: 'rgba(0,0,0,.42)',
-                                    fontFamily: 'var(--joy-fontFamily-body)',
-                                    fontSize: '9px',
-                                    letterSpacing: '0.1em',
-                                    textTransform: 'uppercase',
-                                }}
-                            >
-                                Лента
-                            </Box>
-                        </Box>
-
-                        <Box
-                            sx={{
-                                height: 'calc(100% - 44px)',
-                                overflow: 'hidden',
-                                maskImage:
-                                    'linear-gradient(180deg, transparent 0%, #000 7%, #000 93%, transparent 100%)',
-                                WebkitMaskImage:
-                                    'linear-gradient(180deg, transparent 0%, #000 7%, #000 93%, transparent 100%)',
-                            }}
-                        >
-                            <Box className="aquarium-feed">
-                                <FeedGroup />
-                                <FeedGroup hidden />
-                            </Box>
-                        </Box>
+                        {columns.map((groupPosts, index) => (
+                            <FeedColumn
+                                key={index}
+                                groupPosts={groupPosts}
+                                className={index === 1 ? 'aquarium-feed--right' : ''}
+                                height={{ xs: '560px', md: '640px' }}
+                                postBackground={postBackground}
+                                postColor={postColor}
+                                mutedColor={postMuted}
+                            />
+                        ))}
                     </Box>
                 </Box>
             </Box>

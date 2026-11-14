@@ -70,8 +70,12 @@
 .aquarium-feed {
     display: flex;
     flex-direction: column;
-    animation: aquariumFeed 36s linear infinite;
+    animation: aquariumFeed 60s linear infinite;
     will-change: transform;
+}
+
+.aquarium-feed--right {
+    animation-duration: 56s;
 }
 
 .aquarium-feed:hover {

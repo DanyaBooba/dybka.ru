@@ -189,6 +189,7 @@ export default function Hero() {
                             fontWeight: 400,
                             lineHeight: 0.95,
                             letterSpacing: '-0.03em',
+                            color: '#fff',
                         }}
                     >
                         Даниил Дыбка
@@ -253,6 +254,7 @@ export default function Hero() {
                                 fontWeight: 400,
                                 lineHeight: 1.05,
                                 letterSpacing: '-0.02em',
+                                color: '#fff',
                             }}
                         >
                             {event.title}
