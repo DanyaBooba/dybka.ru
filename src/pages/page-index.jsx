@@ -2,6 +2,7 @@ import Header from '../components/header'
 import Hero from '../components/hero'
 import Quote from '../components/quote'
 import Aquarium from '../components/aquarium'
+import IzobretariumCase from '../components/izobretarium-case'
 import PamyatNovomuchenikov from '../components/pamyat-novomuchenikov'
 
 export default function PageIndex() {
@@ -11,6 +12,7 @@ export default function PageIndex() {
             <Hero />
             <Quote />
             <Aquarium />
+            <IzobretariumCase />
             <PamyatNovomuchenikov />
         </>
     )

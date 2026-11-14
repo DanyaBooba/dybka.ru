@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import Box from '@mui/joy/Box'
-import { useTheme } from '@mui/joy/styles'
+import { useColorScheme, useTheme } from '@mui/joy/styles'
 import Header from '../components/header'
 
 const chapters = [
@@ -22,6 +22,7 @@ const chapters = [
     {
         title: 'Сборщик пакетов Gulp',
         icon: '/img/illustrations/tech/gulp.svg',
+        iconHeight: 'clamp(32px, 3vw, 44px)',
         paragraphs: [
             'Первая проблема, с которой я столкнулся – повторяющиеся блоки, такие как шапка, подвал и элементы навигации. Мне приходилось изменять их на каждой странице, что было явно неудобно.',
             'Поэтому я решил попробовать технологию Gulp — сборщика проектов, которая позволила автоматизировать рутинные задачи и использовать шаблоны на страницах. При помощи Gulp я мог задать правила сжатия файлов, конвертации изображений и прочего.'
@@ -37,6 +38,7 @@ const chapters = [
     {
         title: 'Фреймворк Laravel и Bootstrap',
         icon: '/img/illustrations/tech/laravel.svg',
+        iconHeight: 'clamp(32px, 3vw, 44px)',
         paragraphs: [
             'В 2019 году я начал разрабатывать свой первый большой проект — социальную сеть «Аквариум». У меня не было конкретной идеи проекта, мне просто хотелось приобрести опыт. Как не удивительно, проект я не забросил и поддерживаю его уже 7 лет.',
             'Разработку я начал на языке программирования PHP, но быстро понял, что с масштабированием проекта разработка будет занимать все больше времени. Поэтому я начал искать какой-нибудь фреймворк языка программирования PHP. И мой выбор упал в сторону Laravel.',
@@ -48,6 +50,7 @@ const chapters = [
     {
         title: 'Фреймворк React',
         icon: '/img/illustrations/tech/react.svg',
+        iconHeight: 'clamp(34px, 3.2vw, 46px)',
         paragraphs: [
             'Более года я программировал с использованием Laravel. Мне захотелось повысить свои навыки frontend, поэтому я решил заняться изучением фреймворка React.',
             'Мне хотелось, чтобы мои интерфейсы выглядели современно, поддерживали анимации и запросы к серверу.',
@@ -58,6 +61,7 @@ const chapters = [
     {
         title: 'Node.js и Express',
         icon: '/img/illustrations/tech/nodejs.svg',
+        iconHeight: 'clamp(32px, 3vw, 44px)',
         paragraphs: [
             'Прошло несколько месяцев активного использования React. Я успел разработать несколько сайтов, познакомиться с разными дизайн-системами. И настал момент, когда я захотел обрабатывать пользовательские запросы.',
             'По прошлому опыту, возвращаться к Laravel мне не хотелось. Поэтому я решил попробовать изучить платформу Node.js и фреймворк Express.',
@@ -69,6 +73,7 @@ const chapters = [
     {
         title: 'Мобильное приложение',
         icon: '/img/illustrations/tech/react.svg',
+        iconHeight: 'clamp(34px, 3.2vw, 46px)',
         paragraphs: [
             'Изучение веб-разработке заняло у меня несколько лет. Всё время я занимался только ею. Мне захотелось небольшого разнообразия. К тому же, у меня всё чаще стали появляться задачи, связанные с разработкой мобильного приложения.',
             'Поэтому я стал анализировать существующие технологии. Мне важно было иметь возможность применить свой опыт в веб-разработке и не потратить много времени на изучение новой технологии. Поэтому я не стал рассматривать Android Studio, Xcode и Flutter. Я выбрал фреймворк React Native и платформу Expo.',
@@ -78,6 +83,8 @@ const chapters = [
     {
         title: 'Next.js',
         icon: '/img/illustrations/tech/nextjs.svg',
+        iconHeight: 'clamp(22px, 2.2vw, 32px)',
+        invertOnDark: true,
         paragraphs: [
             'Со временем я понял, что React не всегда закрывает все задачи, которые возникают при разработке современных сайтов. Мне хотелось лучше работать с поисковой оптимизацией.',
             'Поэтому я решил познакомиться с Next.js — фреймворком на базе React, который расширяет его возможности. При обычном использовании React веб-приложение получается формата SPA, где 1 файл index.html. Из-за чего некоторые поисковые роботы не видят остальные страницы сайта. Next.js решает эту проблему серверным рендерингом страниц по заданным правилам.'
@@ -86,6 +93,7 @@ const chapters = [
     {
         title: 'NestJS',
         icon: '/img/illustrations/tech/nestjs.svg',
+        iconHeight: 'clamp(26px, 2.6vw, 38px)',
         paragraphs: [
             'По мере развития проектов серверная часть становилась всё сложнее. Express отлично подходил для небольших приложений, но мне хотелось лучше структурировать код, разделять ответственность между модулями и использовать более строгую архитектуру.',
             'Так я познакомился с NestJS — серверным фреймворком для Node.js, построенным на TypeScript. Он предлагает готовую архитектуру приложения, систему модулей, контроллеров и сервисов, а также множество инструментов для разработки API.',
@@ -97,6 +105,8 @@ const chapters = [
 export default function PageAbout() {
     const theme = useTheme()
     const palette = theme.vars.palette
+    const { mode, systemMode } = useColorScheme()
+    const dark = mode === 'dark' || (mode === 'system' && systemMode === 'dark')
 
     useEffect(() => {
         window.scrollTo(0, 0)
@@ -198,9 +208,11 @@ export default function PageAbout() {
                                                 src={chapter.icon}
                                                 alt=""
                                                 sx={{
-                                                    width: 'clamp(28px, 3vw, 64px)',
-                                                    height: 'clamp(28px, 3vw, 64px)',
+                                                    height: chapter.iconHeight ?? 'clamp(32px, 3vw, 44px)',
+                                                    width: 'auto',
+                                                    maxWidth: '100%',
                                                     objectFit: 'contain',
+                                                    filter: chapter.invertOnDark && dark ? 'invert(1)' : 'none',
                                                 }}
                                             />
                                         )}

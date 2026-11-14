@@ -1,4 +1,5 @@
 import Box from '@mui/joy/Box'
+import { Link, useLocation } from 'react-router-dom'
 
 const links = [
     { label: 'Проекты', href: '/projects' },
@@ -8,6 +9,11 @@ const links = [
 ]
 
 export default function Header() {
+    const { pathname } = useLocation()
+    const items = pathname === '/'
+        ? links
+        : [{ label: 'Главная', href: '/' }, ...links]
+
     return (
         <Box
             component="header"
@@ -30,7 +36,7 @@ export default function Header() {
                 sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '12px',
+                    gap: { xs: '4px', md: '12px' },
                     pointerEvents: 'auto',
                     color: '#fff',
                     fontSize: { xs: '11px', md: '14px' },
@@ -40,21 +46,45 @@ export default function Header() {
                     whiteSpace: 'nowrap',
                 }}
             >
-                {links.map((link) => (
-                    <Box
-                        key={link.href}
-                        component="a"
-                        href={link.href}
-                        sx={{
-                            color: 'inherit',
-                            textDecoration: 'none',
-                            px: 2,
-                            py: 1,
-                        }}
-                    >
-                        {link.label}
-                    </Box>
-                ))}
+                {items.map((link) => {
+                    const active = pathname === link.href
+                    const linkSx = {
+                        color: 'inherit',
+                        textDecoration: 'none',
+                        px: { xs: '6px', md: 2 },
+                        py: 1,
+                    }
+
+                    if (active) {
+                        return (
+                            <Box
+                                key={link.href}
+                                component="span"
+                                aria-current="page"
+                                sx={{
+                                    ...linkSx,
+                                    textDecoration: 'underline',
+                                    textUnderlineOffset: '4px',
+                                    cursor: 'default',
+                                }}
+                            >
+                                {link.label}
+                            </Box>
+                        )
+                    }
+
+                    return (
+                        <Box
+                            key={link.href}
+                            component={Link}
+                            to={link.href}
+                            onClick={() => window.scrollTo(0, 0)}
+                            sx={linkSx}
+                        >
+                            {link.label}
+                        </Box>
+                    )
+                })}
             </Box>
         </Box>
     )
