@@ -1,0 +1,68 @@
+.hero-noise {
+    position: absolute;
+    inset: -20%;
+    z-index: 4;
+    pointer-events: none;
+    opacity: 0.12;
+    background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22180%22%20height%3D%22180%22%3E%3Cfilter%20id%3D%22n%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%220.82%22%20numOctaves%3D%224%22%20stitchTiles%3D%22stitch%22%2F%3E%3CfeColorMatrix%20type%3D%22saturate%22%20values%3D%220%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22180%22%20height%3D%22180%22%20filter%3D%22url(%23n)%22%20opacity%3D%220.55%22%2F%3E%3C%2Fsvg%3E");
+    background-size: 180px 180px;
+    animation: heroGrain 0.72s steps(2) infinite;
+    will-change: transform;
+}
+
+@keyframes heroGrain {
+    0% {
+        transform: translate3d(0, 0, 0);
+    }
+    25% {
+        transform: translate3d(-1.5%, 1%, 0);
+    }
+    50% {
+        transform: translate3d(1%, -1.5%, 0);
+    }
+    75% {
+        transform: translate3d(-1%, -1%, 0);
+    }
+    100% {
+        transform: translate3d(1.5%, 1%, 0);
+    }
+}
+
+@keyframes heroImageIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes heroImageOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes heroTextIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-noise {
+        animation: none;
+    }
+
+    .hero-arrow {
+        transition: none !important;
+    }
+}

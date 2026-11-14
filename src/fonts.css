@@ -1,0 +1,23 @@
+@font-face {
+    font-family: 'TT Ramillas';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('/fonts/tt-ramillas-regular.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Aeonik Pro';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('/fonts/aeonik-pro-regular.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Aeonik Pro';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('/fonts/aeonik-pro-medium.woff2') format('woff2');
+}

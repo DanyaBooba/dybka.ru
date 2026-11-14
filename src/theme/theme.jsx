@@ -3,6 +3,10 @@ import useMediaQuery from '@mui/material/useMediaQuery'
 import { extendTheme } from '@mui/joy/styles'
 
 export const theme = extendTheme({
+    fontFamily: {
+        body: "'Aeonik Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+        display: "'TT Ramillas', Georgia, serif",
+    },
     colorSchemes: {
         light: {
             palette: {

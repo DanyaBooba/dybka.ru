@@ -7,7 +7,7 @@ export default [
         title: 'Теоретическая информатика и компьютерные технологии',
         desc: 'Конференция в МГТУ им. Н.Э. Баумана, кафедры ИУ-9.',
         date: '28 октября 2026 г.',
-        link: 'bmstu-student-spring-2'
+        link: 'bmstu-russian-engineer-3'
     },
     {
         imageCap: '2026/studvesna/cap.jpg',
@@ -21,7 +21,7 @@ export default [
         title: 'Факультетский вечер',
         desc: 'Факультетский вечер ФИПМ ПСТГУ',
         date: '2 ноября 2025 г.',
-        link: 'pstgu'
+        link: 'pstgu-faculty-evening-2'
     },
     {
         imageCap: '2025/baumanka/main.jpg',
