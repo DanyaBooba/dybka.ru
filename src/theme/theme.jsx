@@ -11,10 +11,10 @@ export const theme = extendTheme({
         light: {
             palette: {
                 head: {
-                    themeColor: '#f4f6f7'
+                    themeColor: '#fff'
                 },
                 background: {
-                    body: '#f4f6f7',
+                    body: '#fff',
                 },
                 header: {
                     borderColor: 'rgba(210, 219, 227, .5)',
@@ -34,12 +34,12 @@ export const theme = extendTheme({
         dark: {
             palette: {
                 head: {
-                    themeColor: '#1a1a1a'
+                    themeColor: '#000'
                 },
                 background: {
-                    body: '#1a1a1a',      // Темно-серый фон
-                    surface: '#303030',   // Серый для поверхностей
-                    popup: '#242424'      // Серый для попапов
+                    body: '#000',
+                    surface: '#303030',
+                    popup: '#242424'
                 },
                 header: {
                     borderColor: '#3a3a3a',

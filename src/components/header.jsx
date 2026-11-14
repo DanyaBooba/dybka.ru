@@ -19,7 +19,7 @@ export default function Header() {
                 zIndex: 20,
                 display: 'flex',
                 justifyContent: 'center',
-                pt: { xs: '18px', md: '26px' },
+                pt: '12px',
                 pointerEvents: 'none',
                 mixBlendMode: 'difference',
             }}
@@ -30,7 +30,7 @@ export default function Header() {
                 sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: { xs: '16px', md: '28px' },
+                    gap: '12px',
                     pointerEvents: 'auto',
                     color: '#fff',
                     fontSize: { xs: '10.5px', md: '11px' },
@@ -48,6 +48,8 @@ export default function Header() {
                         sx={{
                             color: 'inherit',
                             textDecoration: 'none',
+                            px: 2,
+                            py: 1
                         }}
                     >
                         {link.label}

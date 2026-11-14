@@ -2,12 +2,11 @@ import Box from '@mui/joy/Box'
 import { useColorScheme } from '@mui/joy/styles'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import {
-    ArrowsClockwise,
     ArrowUpRight,
-    ChatCircle,
     ChatIcon,
     DotsThreeVertical,
     Heart,
+    SealCheckIcon,
     ShareIcon,
 } from '@phosphor-icons/react'
 import projects from '../data/projects'
@@ -18,10 +17,10 @@ const aquarium = projects.find((project) => project.title === 'Аквариум'
 const posts = [
     {
         name: 'Даниил Дыбка',
+        verified: true,
         time: '4 дня назад',
-        avatar: '/img/contests/2025/baumanka/main.jpg',
-        avatarPosition: '50% 32%',
-        text: 'Поправили баблы в сообщениях в вебе, были некоторые проблемы с их отображением, сейчас стало лучше. А также активно исправляются звонки в мобильном приложении, больше всего проблем доставляет интеграция их с системными звонками Android и iOS. Хочется, чтобы мобильное приложение вышло удобным и без багов на старте. Посмотрим, что получится.',
+        avatar: '/img/aquarium/user-daniil.jpg',
+        text: '🐟 Приложение Аквариума доступно в App Store!<br/>Скорей скачивайте по поиску:<br/>Аквариум мессенджер<br/>🤩 <i>Работает с iOS и iPadOS 15.1+</i>',
         images: [],
         likes: 12,
         replies: 3,
@@ -29,35 +28,64 @@ const posts = [
     {
         name: 'Максим Ефимцев',
         time: '4 дня назад',
-        avatar: '/img/contests/2026/russian-engineer/cap.jpg',
-        avatarPosition: '58% 30%',
-        text: 'Рандом )',
+        avatar: '/img/aquarium/user-maxim.jpg',
+        text: 'Август балует видами',
         images: [
-            '/img/contests/2025/rucode/main.jpg',
-            '/img/contests/2025/pstgu/cap.jpg',
+            '/img/aquarium/post-maxim-1.jpg'
         ],
         likes: 4,
         replies: 1,
     },
     {
-        name: 'Альтушка Нефор',
+        name: 'Александр Семченко',
+        verified: true,
         time: '6 дней назад',
-        avatar: '/img/contests/2025/rucode/main.jpg',
-        avatarPosition: '78% 30%',
-        text: 'Вчерашняя прогулка',
-        images: ['/img/contests/2025/saintp/cap.jpg'],
+        avatar: '/img/aquarium/user-sasha.jpg',
+        text: 'природа конечно шикарна, но небо еще лучше ',
+        images: [
+            '/img/aquarium/post-sasha-1.jpg',
+            '/img/aquarium/post-sasha-2.jpg',
+            '/img/aquarium/post-sasha-3.jpg'
+        ],
         likes: 7,
         replies: 2,
     },
     {
-        name: 'Лена Соколова',
+        name: 'Fentazzi',
         time: 'неделю назад',
-        avatar: '/img/contests/2024/pstgu/cap.jpg',
-        avatarPosition: '50% 30%',
-        text: 'Кто-нибудь ещё помнит, как звучит тишина без уведомлений?',
+        avatar: '/img/aquarium/user-fentazzi.jpg',
+        text: 'Короче, разрабы крутые, все четко, веб сайт и приложение кайфовые',
         images: [],
         likes: 9,
         replies: 4,
+    },
+    {
+        name: 'Rapi',
+        time: '7 часов назад',
+        avatar: '/img/aquarium/user-rapi.jpg',
+        text: 'Люблю аквариум. Если честно аквариум лучший современный мессенджер по дизайну и функционалу который я использовал. Я использовал миллион разных мессенджеров и скажу что этот самый лучший',
+        images: [],
+        likes: 32,
+        replies: 17,
+    },
+    {
+        name: 'точно не темочка',
+        verified: true,
+        time: '12 дней назад',
+        avatar: '/img/aquarium/user-tema.jpg',
+        text: 'Поздравляю школьников и студентов с началом учебного года. Желаю отлично провести это время',
+        images: [],
+        likes: 8,
+        replies: 3,
+    },
+    {
+        name: 'Дмитрий Геймдев',
+        time: '3 дня назад',
+        avatar: '/img/aquarium/user-dima.jpg',
+        text: 'Пока особо новостей нет. Выполняю первый заказ + начал делать клон игры со стима, да бы на нем заработать на ноутбук)',
+        images: [],
+        likes: 17,
+        replies: 13,
     },
 ]
 
@@ -84,7 +112,6 @@ function Post({ post, postBackground, postColor, mutedColor }) {
                         flexShrink: 0,
                         borderRadius: '50%',
                         objectFit: 'cover',
-                        objectPosition: post.avatarPosition,
                     }}
                 />
                 <Box sx={{ minWidth: 0 }}>
@@ -95,9 +122,28 @@ function Post({ post, postBackground, postColor, mutedColor }) {
                             fontSize: '16px',
                             fontWeight: 500,
                             lineHeight: 1.3,
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            gap: '4px',
                         }}
                     >
-                        {post.name}
+                        <div>
+                            {post.name}
+                        </div>
+                        {post?.verified && (
+                            <Box sx={{
+                                width: '15px',
+                                height: '15px',
+                                '& svg': {
+                                    fill: "#1d807d",
+                                    width: '15px',
+                                    height: '15px'
+                                }
+                            }}>
+                                <SealCheckIcon weight="fill" />
+                            </Box>
+                        )}
                     </Box>
                     <Box
                         component="div"
@@ -133,7 +179,7 @@ function Post({ post, postBackground, postColor, mutedColor }) {
                     lineHeight: 1.55,
                 }}
             >
-                {post.text}
+                <div dangerouslySetInnerHTML={{ __html: post.text }} />
             </Box>
 
             {post.images.length > 0 ? (
@@ -201,7 +247,6 @@ function FeedGroup({ posts: groupPosts, hidden, postBackground, postColor, muted
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '12px',
-                pb: '12px',
                 flexShrink: 0,
             }}
         >
@@ -252,7 +297,7 @@ export default function Aquarium() {
     const twoColumns = useMediaQuery('(min-width: 1280px)')
     const dark = mode === 'dark' || (mode === 'system' && systemMode === 'dark')
 
-    const sectionBackground = '#f2f2f2'
+    const sectionBackground = dark ? '#121212' : '#f8fafc'
     const textColor = '#000'
     const mutedText = 'rgba(0,0,0,.62)'
     const faintText = 'rgba(0,0,0,.45)'
@@ -289,7 +334,7 @@ export default function Aquarium() {
                         alignItems: 'center',
                     }}
                 >
-                    <Box>
+                    <Box sx={{ py: 8 }}>
                         <Box
                             component="h2"
                             id="aquarium-title"
@@ -362,7 +407,6 @@ export default function Aquarium() {
                                     display: 'inline-flex',
                                     alignItems: 'center',
                                     gap: '10px',
-                                    pb: '5px',
                                     color: textColor,
                                     fontFamily: 'var(--joy-fontFamily-body)',
                                     fontSize: '10px',
@@ -398,7 +442,6 @@ export default function Aquarium() {
                                     display: 'inline-flex',
                                     alignItems: 'center',
                                     gap: '10px',
-                                    pb: '5px',
                                     color: textColor,
                                     fontFamily: 'var(--joy-fontFamily-body)',
                                     fontSize: '10px',
@@ -417,7 +460,7 @@ export default function Aquarium() {
 
                     <Box
                         sx={{
-                            display: 'grid',
+                            display: { md: 'grid', xs: 'none' },
                             gridTemplateColumns: twoColumns
                                 ? 'repeat(2, minmax(0, 1fr))'
                                 : '1fr',
