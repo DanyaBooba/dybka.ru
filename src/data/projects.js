@@ -1,6 +1,7 @@
 export default [
     {
         title: 'Приложение Память',
+        slug: 'pamyat-app',
         category: 'app',
         desc: 'Мобильное и веб-приложение «Память Новомучеников» собственной разработки для iOS и Android',
         stack: ['iOS', 'Android', 'React Native'],
@@ -9,6 +10,7 @@ export default [
     },
     {
         title: 'Авторские курсы',
+        slug: 'courses',
         category: 'web',
         desc: 'Сайт с авторскими курсами по программированию',
         stack: ['React', 'JoyUI', 'Framer Motion',],
@@ -17,6 +19,7 @@ export default [
     },
     {
         title: 'Приложение Аквариума',
+        slug: 'aquarium-app',
         category: 'app',
         desc: 'Все, чтобы связь держалась долго. Мобильное приложение мессенджера «Аквариум» собственной разработки для iOS и Android',
         img: 'aquarium-app',
@@ -25,6 +28,7 @@ export default [
     },
     {
         title: 'Новый сайт creagoo.ru',
+        slug: 'creagoo',
         category: 'web',
         desc: 'Обновленный сайт Creagoo в 2026',
         img: 'creagoo',
@@ -34,6 +38,7 @@ export default [
     },
     {
         title: 'Веб-виджет: система объявлений',
+        slug: 'ads-widget',
         category: 'web',
         desc: 'Реализация системы объявлений для встраивания на сайты организаций',
         stack: ['PHP', 'MySQL', 'WebSocket', '1С:Университет'],
@@ -41,6 +46,7 @@ export default [
     },
     {
         title: 'Аквариум',
+        slug: 'aquarium',
         category: 'web',
         desc: 'Удобный способ держать связь. В связи с ограничениями было решено разработать собственный мессенджер',
         img: 'aquarium',
@@ -53,6 +59,7 @@ export default [
     },
     {
         title: 'Лендинг виджетов',
+        slug: 'widgets-landing',
         category: 'web',
         desc: 'Страница с демонстрацией работы виджетов и инструкцией подключения',
         img: 'zhp',
@@ -61,13 +68,15 @@ export default [
     },
     {
         title: 'Телеграм-бот',
-        category: 'other',
+        slug: 'telegram-bot',
+        category: 'bot',
         desc: 'Телеграм-бот с рассылкой проекта «За Христа Пострадавшие»',
         stack: ['Node.js'],
         link: 'https://zahrista_bot.t.me',
     },
     {
         title: 'Мини-приложение ВК',
+        slug: 'vk-mini-app',
         category: 'other',
         desc: 'Мини-приложение ВК, которое отображает виджет базы данных «За Христа Пострадавшие»',
         stack: ['React'],
@@ -75,6 +84,7 @@ export default [
     },
     {
         title: 'Редизайн сайта Изобретариум',
+        slug: 'izobretarium',
         category: 'web',
         desc: 'Обновил сайт детского технопарка Изобретариум. Улучшил UI/UX',
         img: 'izobretarium',
@@ -87,6 +97,7 @@ export default [
     },
     {
         title: 'Виджет «За Христа Пострадавшие»',
+        slug: 'zhp-widget',
         category: 'web',
         desc: 'Реализация виджета, отображающего новомученников на текущую дату',
         stack: ['React'],
@@ -94,6 +105,7 @@ export default [
     },
     {
         title: 'Страница новомученников «За Христа Пострадавшие»',
+        slug: 'zhp-page',
         category: 'web',
         desc: 'Реализация страницы, которая отображает подробную информацию о каждом новомученнике на текущую дату',
         stack: ['PHP'],
@@ -101,6 +113,7 @@ export default [
     },
     {
         title: 'dybka.ru',
+        slug: 'dybka',
         category: 'web',
         desc: 'Мой лендинг.',
         img: 'dybka',

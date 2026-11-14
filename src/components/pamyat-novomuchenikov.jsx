@@ -58,13 +58,13 @@ export default function PamyatNovomuchenikov() {
                             component="h2"
                             id="pamyat-title"
                             sx={{
-                                fontFamily: "'PT Serif', Georgia, serif",
+                                fontFamily: "'Inter', Georgia, serif",
                                 fontSize: 'clamp(24px, 3.2vw, 48px)',
                                 fontWeight: 700,
                                 color: theme.vars.palette.pamyat.titleColor,
                                 m: 0,
                                 lineHeight: '24px',
-                                mb: 'clamp(4px, 0.75vw, 12px)',
+                                mb: 'clamp(4px, 0.75vw, 16px)',
                             }}
                         >
                             Память новомучеников

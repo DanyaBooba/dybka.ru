@@ -60,7 +60,7 @@ const posts = [
         replies: 4,
     },
     {
-        name: 'Rapi',
+        name: 'Repi',
         time: '7 часов назад',
         avatar: '/img/aquarium/user-rapi.jpg',
         text: 'Люблю аквариум. Если честно аквариум лучший современный мессенджер по дизайну и функционалу который я использовал. Я использовал миллион разных мессенджеров и скажу что этот самый лучший',
@@ -118,9 +118,9 @@ function Post({ post, palette }) {
                     <Box
                         component="div"
                         sx={{
-                            fontFamily: 'var(--joy-fontFamily-body)',
+                            fontFamily: "'Inter', Georgia, serif",
                             fontSize: '16px',
-                            fontWeight: 500,
+                            fontWeight: 600,
                             lineHeight: 1.3,
                             display: 'flex',
                             flexDirection: 'row',
@@ -149,7 +149,7 @@ function Post({ post, palette }) {
                         component="div"
                         sx={{
                             color: palette.postMutedText,
-                            fontFamily: 'var(--joy-fontFamily-body)',
+                            fontFamily: "'Inter', Georgia, serif",
                             fontSize: '12px',
                             lineHeight: 1.3,
                         }}
@@ -174,7 +174,7 @@ function Post({ post, palette }) {
                 component="div"
                 sx={{
                     mt: '14px',
-                    fontFamily: 'var(--joy-fontFamily-body)',
+                    fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
                     fontSize: '16px',
                     lineHeight: 1.55,
                 }}

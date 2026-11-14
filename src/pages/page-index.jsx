@@ -4,6 +4,7 @@ import Quote from '../components/quote'
 import Aquarium from '../components/aquarium'
 import IzobretariumCase from '../components/izobretarium-case'
 import PamyatNovomuchenikov from '../components/pamyat-novomuchenikov'
+import Contacts from '../components/contacts'
 
 export default function PageIndex() {
     return (
@@ -14,6 +15,7 @@ export default function PageIndex() {
             <Aquarium />
             <IzobretariumCase />
             <PamyatNovomuchenikov />
+            <Contacts />
         </>
     )
 }
