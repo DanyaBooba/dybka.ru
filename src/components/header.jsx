@@ -33,7 +33,7 @@ export default function Header() {
                     gap: '12px',
                     pointerEvents: 'auto',
                     color: '#fff',
-                    fontSize: { xs: '10.5px', md: '11px' },
+                    fontSize: { xs: '11px', md: '14px' },
                     fontWeight: 500,
                     lineHeight: 1,
                     letterSpacing: '0.01em',
@@ -49,7 +49,7 @@ export default function Header() {
                             color: 'inherit',
                             textDecoration: 'none',
                             px: 2,
-                            py: 1
+                            py: 1,
                         }}
                     >
                         {link.label}

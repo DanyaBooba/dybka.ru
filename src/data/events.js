@@ -197,12 +197,5 @@ export default [
         desc: 'Организационная и предметная среда, проводимая в МФТИ.',
         date: '18-21 марта 2022 г.',
         link: 'mfti-a-start-in-innovation'
-    },
-    {
-        imageCap: '2022/worldskills/cap.jpg',
-        title: 'WorldSkills',
-        desc: 'Национальный чемпионат сквозных рабочих профессий высокотехнологичных отраслей промышленности.',
-        date: '2022 г.',
-        link: 'worldskills'
-    },
+    }
 ]
