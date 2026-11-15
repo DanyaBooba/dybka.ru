@@ -1,15 +1,20 @@
 {
     "name": "Даниил Дыбка — разработчик веб-платформ",
     "short_name": "Даниил Дыбка",
+    "description": "Портфолио Даниила Дыбка: веб-платформы, сайты, приложения, боты и игры.",
+    "lang": "ru",
+    "dir": "ltr",
+    "start_url": "/",
+    "scope": "/",
+    "display": "standalone",
+    "background_color": "#f2f2f0",
+    "theme_color": "#f2f2f0",
     "icons": [
         {
-            "src": "favicon.ico",
-            "sizes": "128x128",
-            "type": "icon"
+            "src": "/favicon.ico",
+            "sizes": "256x256",
+            "type": "image/x-icon",
+            "purpose": "any"
         }
-    ],
-    "start_url": "/",
-    "display": "standalone",
-    "background_color": "#ffffff",
-    "theme_color": "#ffffff"
+    ]
 }

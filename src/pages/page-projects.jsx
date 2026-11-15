@@ -4,7 +4,11 @@ import { useColorScheme, useTheme } from '@mui/joy/styles'
 import { Link } from 'react-router-dom'
 import { Eye, EyeClosed } from '@phosphor-icons/react'
 import Header from '../components/header'
+import Seo from '../components/seo'
 import projects, { games, archived } from '../data/projects'
+import { SITE_URL, WEBSITE_ID } from '../data/seo'
+
+const PROJECTS_DESCRIPTION = 'Проекты Даниила Дыбка: веб-платформы, приложения, боты, игры и архив. React, TypeScript, Laravel, Unity и другие технологии.'
 
 
 const filters = [
@@ -127,6 +131,32 @@ export default function PageProjects() {
 
     return (
         <>
+            <Seo
+                title="Проекты — Даниил Дыбка"
+                description={PROJECTS_DESCRIPTION}
+                keywords="проекты Даниила Дыбка, портфолио, веб-разработка, React, TypeScript, приложения, боты, игры, архив"
+                path="/projects"
+                jsonLd={[
+                    {
+                        '@type': 'CollectionPage',
+                        name: 'Проекты',
+                        description: PROJECTS_DESCRIPTION,
+                        url: `${SITE_URL}/projects`,
+                        inLanguage: 'ru-RU',
+                        isPartOf: { '@id': WEBSITE_ID },
+                    },
+                    {
+                        '@type': 'ItemList',
+                        name: 'Проекты',
+                        itemListElement: projects.map((project, index) => ({
+                            '@type': 'ListItem',
+                            position: index + 1,
+                            url: `${SITE_URL}/projects/${project.slug}`,
+                            name: project.title,
+                        })),
+                    },
+                ]}
+            />
             <Header />
             <Box
                 component="main"
@@ -241,60 +271,60 @@ export default function PageProjects() {
                             const hasLink = Boolean(project.link)
 
                             return (
-                            <Box
-                                component="li"
-                                key={project.title}
-                                sx={{
-                                    borderBottom: '1px solid',
-                                    borderColor: palette.divider,
-                                }}
-                            >
                                 <Box
-                                    component={hasLink ? 'a' : 'div'}
-                                    {...(hasLink ? {
-                                        href: project.link,
-                                        target: '_blank',
-                                        rel: 'noreferrer',
-                                    } : {})}
+                                    component="li"
+                                    key={project.title}
                                     sx={{
-                                        display: 'flex',
-                                        alignItems: 'baseline',
-                                        justifyContent: 'space-between',
-                                        flexWrap: 'wrap',
-                                        gap: '12px 24px',
-                                        py: 'clamp(18px, 2.4vw, 28px)',
-                                        color: palette.about.titleColor,
-                                        textDecoration: 'none',
-                                        fontFamily: 'var(--joy-fontFamily-body)',
-                                        fontSize: 'clamp(18px, 1.8vw, 24px)',
-                                        fontWeight: 500,
-                                        letterSpacing: '-0.02em',
-                                        cursor: hasLink ? 'pointer' : 'default',
-                                        transition: 'opacity .2s ease',
-                                        ...(hasLink ? { '&:hover': { opacity: 0.55 } } : {}),
+                                        borderBottom: '1px solid',
+                                        borderColor: palette.divider,
                                     }}
                                 >
-                                    <Box component="span">
-                                        {project.title}
-                                    </Box>
-                                    {project.stack?.length ? (
-                                        <Box
-                                            component="span"
-                                            sx={{
-                                                ml: 'auto',
-                                                fontSize: '10px',
-                                                fontWeight: 500,
-                                                letterSpacing: '0.12em',
-                                                textTransform: 'uppercase',
-                                                textAlign: 'right',
-                                                color: palette.text.tertiary,
-                                            }}
-                                        >
-                                            {project.stack.join(' · ')}
+                                    <Box
+                                        component={hasLink ? 'a' : 'div'}
+                                        {...(hasLink ? {
+                                            href: project.link,
+                                            target: '_blank',
+                                            rel: 'noreferrer',
+                                        } : {})}
+                                        sx={{
+                                            display: 'flex',
+                                            alignItems: 'baseline',
+                                            justifyContent: 'space-between',
+                                            flexWrap: 'wrap',
+                                            gap: '12px 24px',
+                                            py: 'clamp(18px, 2.4vw, 28px)',
+                                            color: palette.about.titleColor,
+                                            textDecoration: 'none',
+                                            fontFamily: 'var(--joy-fontFamily-body)',
+                                            fontSize: 'clamp(18px, 1.8vw, 24px)',
+                                            fontWeight: 500,
+                                            letterSpacing: '-0.02em',
+                                            cursor: hasLink ? 'pointer' : 'default',
+                                            transition: 'opacity .2s ease',
+                                            ...(hasLink ? { '&:hover': { opacity: 0.55 } } : {}),
+                                        }}
+                                    >
+                                        <Box component="span">
+                                            {project.title}
                                         </Box>
-                                    ) : null}
+                                        {project.stack?.length ? (
+                                            <Box
+                                                component="span"
+                                                sx={{
+                                                    ml: 'auto',
+                                                    fontSize: '10px',
+                                                    fontWeight: 500,
+                                                    letterSpacing: '0.12em',
+                                                    textTransform: 'uppercase',
+                                                    textAlign: 'right',
+                                                    color: palette.text.tertiary,
+                                                }}
+                                            >
+                                                {project.stack.join(' · ')}
+                                            </Box>
+                                        ) : null}
+                                    </Box>
                                 </Box>
-                            </Box>
                             )
                         })}
                     </Box>

@@ -5,8 +5,10 @@ import { Navigate, useParams } from 'react-router-dom'
 import { Fancybox } from '@fancyapps/ui'
 import '@fancyapps/ui/dist/fancybox/fancybox.css'
 import Header from '../components/header'
+import Seo from '../components/seo'
 import events from '../data/events'
 import eventGalleries from '../data/event-galleries'
+import { SITE_URL, WEBSITE_ID } from '../data/seo'
 
 export default function PageEvent() {
     const theme = useTheme()
@@ -41,6 +43,24 @@ export default function PageEvent() {
 
     return (
         <>
+            <Seo
+                title={`${event.title} — Даниил Дыбка`}
+                description={`${event.desc} ${event.date}.`}
+                keywords={`${event.title}, ${event.date}, мероприятие, конкурс, Даниил Дыбка`}
+                path={`/events/${event.link}`}
+                image={`/img/contests/${event.imageCap}`}
+                imageAlt={event.title}
+                type="article"
+                jsonLd={{
+                    '@type': 'Event',
+                    name: event.title,
+                    description: event.desc,
+                    url: `${SITE_URL}/events/${event.link}`,
+                    image: `${SITE_URL}/img/contests/${event.imageCap}`,
+                    inLanguage: 'ru-RU',
+                    isPartOf: { '@id': WEBSITE_ID },
+                }}
+            />
             <Header />
 
             <Box

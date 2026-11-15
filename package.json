@@ -6,7 +6,11 @@
     "scripts": {
         "start": "npm run dev",
         "dev": "vite",
+        "seo": "node scripts/seo-pages.mjs",
+        "prebuild": "npm run seo",
         "build": "vite build",
+        "postbuild": "node scripts/snap.mjs",
+        "snap": "node scripts/snap.mjs",
         "lint": "eslint .",
         "preview": "vite preview"
     },
@@ -31,6 +35,7 @@
         "eslint-plugin-react-hooks": "^7.1.1",
         "eslint-plugin-react-refresh": "^0.5.7",
         "globals": "^17.13.0",
+        "react-snap": "^1.23.0",
         "vite": "^8.3.6"
     }
 }

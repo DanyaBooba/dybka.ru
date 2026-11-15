@@ -32,22 +32,6 @@ export default function Contacts() {
                     alignItems: 'flex-start',
                 }}
             >
-                <Box
-                    component="h2"
-                    id="contacts-title"
-                    sx={{
-                        m: 0,
-                        mb: 'clamp(24px, 4vw, 40px)',
-                        fontFamily: 'var(--joy-fontFamily-body)',
-                        fontSize: '10px',
-                        fontWeight: 500,
-                        letterSpacing: '0.12em',
-                        textTransform: 'uppercase',
-                        color: palette.text.tertiary,
-                    }}
-                >
-                    Контакты
-                </Box>
 
                 <Box
                     component="a"
