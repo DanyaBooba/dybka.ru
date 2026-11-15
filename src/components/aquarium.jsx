@@ -261,6 +261,39 @@ function FeedGroup({ posts: groupPosts, hidden, palette }) {
     )
 }
 
+function MobileFeed({ palette }) {
+    return (
+        <Box
+            aria-label="Посты Аквариума"
+            sx={{
+                display: { xs: 'flex', md: 'none' },
+                gap: '12px',
+                mt: '36px',
+                mx: '-20px',
+                px: '20px',
+                overflowX: 'auto',
+                scrollSnapType: 'x mandatory',
+                scrollbarWidth: 'none',
+                WebkitOverflowScrolling: 'touch',
+                '&::-webkit-scrollbar': { display: 'none' },
+            }}
+        >
+            {posts.map((post) => (
+                <Box
+                    key={post.name + post.time}
+                    sx={{
+                        flex: '0 0 auto',
+                        width: 'min(82vw, 360px)',
+                        scrollSnapAlign: 'start',
+                    }}
+                >
+                    <Post post={post} palette={palette} />
+                </Box>
+            ))}
+        </Box>
+    )
+}
+
 function FeedColumn({ groupPosts, className, height, palette }) {
     return (
         <Box
@@ -313,14 +346,14 @@ export default function Aquarium() {
                     sx={{
                         display: 'grid',
                         gridTemplateColumns: {
-                            xs: '1fr',
+                            xs: 'minmax(0, 1fr)',
                             md: 'minmax(0, 0.78fr) minmax(0, 1.22fr)',
                         },
                         gap: { xs: '40px', md: 'clamp(48px, 7vw, 110px)' },
                         alignItems: 'center',
                     }}
                 >
-                    <Box sx={{ py: 8 }}>
+                    <Box sx={{ py: 8, minWidth: 0 }}>
                         <Box
                             component="h2"
                             id="aquarium-title"
@@ -362,7 +395,7 @@ export default function Aquarium() {
                                 flexWrap: 'wrap',
                                 gap: '8px 18px',
                                 mt: '28px',
-                                color: palette.faintText,
+                                color: palette.mutedText,
                                 fontFamily: 'var(--joy-fontFamily-body)',
                                 fontSize: '9px',
                                 fontWeight: 500,
@@ -442,6 +475,7 @@ export default function Aquarium() {
                                 О проекте
                             </Box>
                         </Box>
+                        <MobileFeed palette={palette} />
                     </Box>
 
                     <Box

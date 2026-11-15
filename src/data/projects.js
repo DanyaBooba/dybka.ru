@@ -38,13 +38,9 @@ export default [
         stack: ['iOS', 'Android', 'React Native', 'WebSocket'],
         link: 'https://aquarium.org.ru/apps',
         customPage: 'aquarium-app',
-        page: {
-            title: 'Приложение Аквариума',
-            desc: 'Мобильное приложение мессенджера «Аквариум» для iOS и Android: чаты, лента, звонки и стикеры. Разработано за 6 месяцев.',
-        },
     },
     {
-        title: 'Новый сайт creagoo.ru',
+        title: 'Сайт игровой корпорации Creagoo',
         slug: 'creagoo',
         categories: ['web'],
         desc: 'Обновленный сайт Creagoo в 2026',

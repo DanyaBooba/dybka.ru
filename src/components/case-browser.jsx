@@ -12,16 +12,16 @@ import {
 
 const schemes = {
     light: {
-        border: 'rgba(22, 35, 27, .14)',
+        border: 'rgba(0, 0, 0, .14)',
         shell: '#ffffff',
-        chrome: '#e9e7e1',
-        tab: '#f6f4ef',
-        toolbar: '#f6f4ef',
-        address: '#ffffff',
-        text: 'rgba(22, 35, 27, .74)',
-        icon: 'rgba(22, 35, 27, .46)',
-        divider: 'rgba(22, 35, 27, .1)',
-        shadow: '0 30px 90px rgba(28, 44, 33, .18), 0 2px 6px rgba(28, 44, 33, .08)',
+        chrome: '#e4e4e4',
+        tab: '#efefef',
+        toolbar: '#efefef',
+        address: '#fafafa',
+        text: 'rgba(0, 0, 0, .74)',
+        icon: 'rgba(0, 0, 0, .46)',
+        divider: 'rgba(0, 0, 0, .1)',
+        shadow: '0 30px 90px rgba(0, 0, 0, .16), 0 2px 6px rgba(0, 0, 0, .06)',
     },
     dark: {
         border: 'rgba(255, 255, 255, .14)',

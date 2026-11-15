@@ -60,11 +60,8 @@ export default function Technologies() {
                                     key={item.name}
                                     sx={{
                                         display: 'flex',
-                                        alignItems: 'center',
+                                        alignItems: 'stretch',
                                         gap: '12px',
-                                        py: 'clamp(10px, 1.2vw, 14px)',
-                                        borderBottom: '1px solid',
-                                        borderColor: palette.divider,
                                     }}
                                 >
                                     {item.light || item.dark ? (
@@ -75,6 +72,7 @@ export default function Technologies() {
                                             aria-hidden="true"
                                             sx={{
                                                 ...iconSx,
+                                                alignSelf: 'center',
                                                 objectFit: 'contain',
                                             }}
                                         />
@@ -84,6 +82,7 @@ export default function Technologies() {
                                             aria-hidden="true"
                                             sx={{
                                                 ...iconSx,
+                                                alignSelf: 'center',
                                                 bgcolor: palette.about.titleColor,
                                                 maskImage: `url(${item.icon})`,
                                                 maskSize: 'contain',
@@ -99,6 +98,13 @@ export default function Technologies() {
                                     <Box
                                         component="span"
                                         sx={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            flex: 1,
+                                            minWidth: 0,
+                                            py: 'clamp(10px, 1.2vw, 14px)',
+                                            borderBottom: '1px solid',
+                                            borderColor: palette.divider,
                                             fontFamily: 'var(--joy-fontFamily-body)',
                                             fontSize: 'clamp(14px, 1.1vw, 16px)',
                                             fontWeight: 500,

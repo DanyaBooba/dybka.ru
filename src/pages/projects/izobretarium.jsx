@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import Box from '@mui/joy/Box'
 import { useColorScheme } from '@mui/joy/styles'
 import { Link } from 'react-router-dom'
@@ -94,12 +94,10 @@ const browserPages = [
     },
 ]
 
-// Скриншот панели администраторов: подойдёт webp, jpg или png с любым из этих имён.
-const ADMIN_SCREENSHOTS = [
-    '/img/projects/izobretarium-admin.webp',
-    '/img/projects/izobretarium-admin.jpg',
-    '/img/projects/izobretarium-admin.png',
-]
+const adminScreenshots = {
+    light: '/img/pages/izobretarium/izoserver@light.jpg',
+    dark: '/img/pages/izobretarium/izoserver@dark.jpg',
+}
 
 const metrics = [
     { label: 'Производительность', before: [89, 62], after: [99, 83] },
@@ -126,7 +124,7 @@ const changes = [
 const getPalette = (dark) => dark
     ? {
         page: '#101611',
-        panel: '#161e18',
+        panel: '#1c1c1c',
         ink: '#f0f3ed',
         muted: 'rgba(240, 243, 237, .66)',
         faint: 'rgba(240, 243, 237, .42)',
@@ -134,10 +132,12 @@ const getPalette = (dark) => dark
         green: '#76ce98',
         greenSoft: 'rgba(118, 206, 152, .13)',
         orange: '#eba171',
+        tabActiveBg: '#c9c9c4',
+        tabActiveText: '#141414',
         browserDark: true,
     }
     : {
-        panel: '#faf8f2',
+        panel: '#e8e8e8',
         ink: '#17211b',
         muted: 'rgba(23, 33, 27, .64)',
         faint: 'rgba(23, 33, 27, .42)',
@@ -145,6 +145,8 @@ const getPalette = (dark) => dark
         green: '#26794c',
         greenSoft: 'rgba(38, 121, 76, .1)',
         orange: '#c96f2f',
+        tabActiveBg: '#5a5a57',
+        tabActiveText: '#ffffff',
         browserDark: false,
     }
 
@@ -332,6 +334,40 @@ function PreviewBrowser({ palette }) {
     const viewRef = useRef(null)
     const imageRef = useRef(null)
     const progressRef = useRef(0)
+    const tabListRef = useRef(null)
+    const tabRefs = useRef([])
+    const [tabIndicator, setTabIndicator] = useState({ left: 0, width: 0 })
+
+    useLayoutEffect(() => {
+        const list = tabListRef.current
+        const tab = tabRefs.current[activeIndex]
+
+        if (!list || !tab) return undefined
+
+        let active = true
+
+        const measure = () => {
+            if (!active) return
+            setTabIndicator({ left: tab.offsetLeft, width: tab.offsetWidth })
+        }
+
+        measure()
+
+        const observer = new ResizeObserver(measure)
+        observer.observe(list)
+        observer.observe(tab)
+        window.addEventListener('resize', measure)
+
+        if (document.fonts?.ready) {
+            document.fonts.ready.then(measure)
+        }
+
+        return () => {
+            active = false
+            observer.disconnect()
+            window.removeEventListener('resize', measure)
+        }
+    }, [activeIndex])
 
     const update = useCallback(() => {
         const section = sectionRef.current
@@ -347,10 +383,7 @@ function PreviewBrowser({ palette }) {
             1,
             Math.max(0, -section.getBoundingClientRect().top / range),
         )
-        const maxShift = Math.min(
-            Math.max(0, image.offsetHeight - view.clientHeight),
-            view.clientHeight * 8,
-        )
+        const maxShift = Math.max(0, image.offsetHeight - view.clientHeight)
 
         progressRef.current = progress
         image.style.transform = `translate3d(0, ${-progress * maxShift}px, 0)`
@@ -427,9 +460,11 @@ function PreviewBrowser({ palette }) {
             >
                 <Box sx={{ width: '100%' }}>
                     <Box
+                        ref={tabListRef}
                         role="tablist"
                         aria-label="Страницы сайта Изобретариум"
                         sx={{
+                            position: 'relative',
                             display: 'flex',
                             gap: '2px',
                             width: 'fit-content',
@@ -446,6 +481,22 @@ function PreviewBrowser({ palette }) {
                             mx: 'auto',
                         }}
                     >
+                        <Box
+                            aria-hidden="true"
+                            sx={{
+                                position: 'absolute',
+                                top: '4px',
+                                bottom: '4px',
+                                left: 0,
+                                width: `${tabIndicator.width}px`,
+                                borderRadius: '999px',
+                                bgcolor: palette.tabActiveBg,
+                                opacity: tabIndicator.width ? 1 : 0,
+                                pointerEvents: 'none',
+                                transform: `translate3d(${tabIndicator.left}px, 0, 0)`,
+                                transition: 'transform .36s cubic-bezier(.22, 1, .36, 1), width .36s cubic-bezier(.22, 1, .36, 1)',
+                            }}
+                        />
                         {browserPages.map((page, index) => {
                             const active = index === activeIndex
 
@@ -456,12 +507,17 @@ function PreviewBrowser({ palette }) {
                                     role="tab"
                                     id={`izobr-tab-${page.id}`}
                                     key={page.id}
+                                    ref={(element) => {
+                                        tabRefs.current[index] = element
+                                    }}
                                     aria-selected={active}
                                     aria-controls="izobr-browser-panel"
                                     tabIndex={active ? 0 : -1}
                                     onClick={() => selectPage(index)}
                                     onKeyDown={(event) => handleTabKeyDown(event, index)}
                                     sx={{
+                                        position: 'relative',
+                                        zIndex: 1,
                                         appearance: 'none',
                                         flexShrink: 0,
                                         m: 0,
@@ -469,17 +525,17 @@ function PreviewBrowser({ palette }) {
                                         py: '8px',
                                         border: 0,
                                         borderRadius: '999px',
-                                        bgcolor: active ? palette.ink : 'transparent',
-                                        color: active ? palette.page : palette.muted,
+                                        bgcolor: 'transparent',
+                                        color: active ? palette.tabActiveText : palette.muted,
                                         fontFamily: 'var(--joy-fontFamily-body)',
                                         fontSize: '16px',
                                         fontWeight: active ? 500 : 400,
                                         lineHeight: 1,
                                         whiteSpace: 'nowrap',
                                         cursor: 'pointer',
-                                        transition: 'background-color .2s ease, color .2s ease',
+                                        transition: 'color .2s ease',
                                         '&:hover': {
-                                            color: active ? palette.page : palette.ink,
+                                            color: active ? palette.tabActiveText : palette.ink,
                                         },
                                         '&:focus-visible': {
                                             outline: '1px solid',
@@ -510,9 +566,9 @@ function PreviewBrowser({ palette }) {
                             )}
                             viewportSx={{
                                 height: {
-                                    xs: '460px',
-                                    sm: 'clamp(360px, 46svh, 520px)',
-                                    md: 'clamp(360px, 52svh, 800px)',
+                                    xs: 'clamp(440px, 66svh, 560px)',
+                                    sm: 'clamp(420px, 56svh, 640px)',
+                                    md: 'clamp(420px, 64svh, 920px)',
                                 },
                             }}
                         >
@@ -549,9 +605,10 @@ function PreviewBrowser({ palette }) {
     )
 }
 
-function AdminScreenshot({ palette }) {
-    const [loaded, setLoaded] = useState(false)
-    const [sourceIndex, setSourceIndex] = useState(0)
+function AdminScreenshot({ palette, dark }) {
+    const [loadedSrc, setLoadedSrc] = useState(null)
+    const src = dark ? adminScreenshots.dark : adminScreenshots.light
+    const loaded = loadedSrc === src
 
     return (
         <Box
@@ -629,17 +686,12 @@ function AdminScreenshot({ palette }) {
 
             <Box
                 component="img"
-                src={ADMIN_SCREENSHOTS[sourceIndex]}
+                src={src}
                 alt="Панель администраторов сайта Изобретариум: новости, программы и мероприятия"
                 aria-hidden={!loaded}
                 loading="lazy"
                 decoding="async"
-                onLoad={() => setLoaded(true)}
-                onError={() => {
-                    if (sourceIndex < ADMIN_SCREENSHOTS.length - 1) {
-                        setSourceIndex((index) => index + 1)
-                    }
-                }}
+                onLoad={() => setLoadedSrc(src)}
                 sx={{
                     display: 'block',
                     width: '100%',
@@ -705,8 +757,15 @@ export default function IzobretariumProjectPage() {
                     }}
                 >
                     <Box>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                            <IzobretariumLogo style={{ width: '200px', height: 'auto' }} />
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '14px',
+                                width: { xs: '140px', sm: '170px', md: '200px' },
+                            }}
+                        >
+                            <IzobretariumLogo style={{ width: '100%', height: 'auto' }} />
                         </Box>
 
                         <Box
@@ -746,8 +805,15 @@ export default function IzobretariumProjectPage() {
                     </Box>
                 </Box>
 
-                <Box sx={{ pt: 12 }}>
-                    <Box sx={{ width: '100%', display: 'flex', flexDirection: 'row', gap: 12 }}>
+                <Box sx={{ pt: { xs: 5, md: 12 } }}>
+                    <Box
+                        sx={{
+                            width: '100%',
+                            display: 'flex',
+                            flexDirection: { xs: 'column', md: 'row' },
+                            gap: { xs: '26px', md: 'clamp(28px, 3.4vw, 52px)' },
+                        }}
+                    >
                         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                             <Box
                                 component="p"
@@ -792,8 +858,13 @@ export default function IzobretariumProjectPage() {
                                 component="dl"
                                 sx={{
                                     display: 'grid',
-                                    gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
-                                    gap: '18px 20px',
+                                    gridTemplateColumns: {
+                                        xs: 'repeat(2, minmax(0, 1fr))',
+                                        md: 'repeat(2, minmax(0, max-content))',
+                                    },
+                                    columnGap: { xs: '16px', md: 'clamp(28px, 3vw, 44px)' },
+                                    rowGap: '18px',
+                                    justifyContent: 'start',
                                     m: 0,
                                 }}
                             >
@@ -1173,7 +1244,7 @@ export default function IzobretariumProjectPage() {
                     </Box>
                 </Box>
 
-                <AdminScreenshot palette={p} />
+                <AdminScreenshot palette={p} dark={dark} />
             </Box>
 
             <Box

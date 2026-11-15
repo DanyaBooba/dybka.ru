@@ -10,7 +10,6 @@ import { SITE_URL, WEBSITE_ID } from '../data/seo'
 
 const PROJECTS_DESCRIPTION = 'Проекты Даниила Дыбка: веб-платформы, приложения, боты, игры и архив. React, TypeScript, Laravel, Unity и другие технологии.'
 
-
 const filters = [
     { key: 'all', label: 'Все' },
     { key: 'web', label: 'Веб' },
