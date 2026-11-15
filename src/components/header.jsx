@@ -48,6 +48,7 @@ export default function Header() {
             >
                 {items.map((link) => {
                     const active = pathname === link.href
+                        || (link.href !== '/' && pathname.startsWith(`${link.href}/`))
                     const linkSx = {
                         color: 'inherit',
                         textDecoration: 'none',

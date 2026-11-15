@@ -1,43 +1,38 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import Box from '@mui/joy/Box'
 import { useColorScheme, useTheme } from '@mui/joy/styles'
 import { Link } from 'react-router-dom'
+import { Eye, EyeClosed } from '@phosphor-icons/react'
 import Header from '../components/header'
-import projects from '../data/projects'
+import projects, { games, archived } from '../data/projects'
 
-const categories = [
+
+const filters = [
+    { key: 'all', label: 'Все' },
     { key: 'web', label: 'Веб' },
     { key: 'app', label: 'Приложения' },
     { key: 'bot', label: 'Боты' },
     { key: 'other', label: 'Прочее' },
+    { key: 'games', label: 'Игры', special: true },
+    { key: 'archive', label: 'Архив', special: true },
 ]
 
-function ProjectCard({ project, image, outlineColor }) {
+
+function ProjectCard({ project, image, outlineColor, titleColor, href }) {
     return (
         <Box
-            component={Link}
-            to={`/projects/${project.slug}`}
+            component={href ? 'a' : Link}
+            {...(href ? { href } : { to: `/projects/${project.slug}` })}
             aria-label={project.title}
             sx={{
-                position: 'relative',
-                display: 'block',
-                aspectRatio: '16 / 9',
-                borderRadius: '16px',
-                overflow: 'hidden',
+                display: 'flex',
+                flexDirection: 'column',
+                width: '100%',
                 textDecoration: 'none',
-                color: '#fff',
-                bgcolor: '#1b1b1b',
-                backgroundImage: image
-                    ? undefined
-                    : 'linear-gradient(135deg, #181818 0%, #303030 100%)',
+                color: 'inherit',
+                mb: 2,
                 '&:hover .project-card-image': {
                     transform: 'scale(1.04)',
-                },
-                '&:hover .project-card-overlay': {
-                    opacity: 0.82,
-                },
-                '&:hover .project-card-title': {
-                    transform: 'translateY(-2px)',
                 },
                 '&:focus-visible': {
                     outline: '2px solid',
@@ -46,55 +41,54 @@ function ProjectCard({ project, image, outlineColor }) {
                 },
             }}
         >
-            {image ? (
-                <Box
-                    component="img"
-                    className="project-card-image"
-                    src={image}
-                    alt=""
-                    loading="lazy"
-                    decoding="async"
-                    sx={{
-                        position: 'absolute',
-                        inset: 0,
-                        display: 'block',
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                        transition: 'transform .7s cubic-bezier(0.22, 1, 0.36, 1)',
-                    }}
-                />
-            ) : null}
-
             <Box
-                className="project-card-overlay"
                 sx={{
-                    position: 'absolute',
-                    inset: 0,
-                    background:
-                        'linear-gradient(180deg, rgba(0,0,0,0) 32%, rgba(0,0,0,.72) 100%)',
-                    transition: 'opacity .4s ease',
+                    position: 'relative',
+                    width: '100%',
+                    aspectRatio: '16 / 9',
+                    borderRadius: '8px',
+                    overflow: 'hidden',
+                    bgcolor: '#1b1b1b',
+                    backgroundImage: image
+                        ? undefined
+                        : 'linear-gradient(135deg, #181818 0%, #303030 100%)',
                 }}
-            />
+            >
+                {image ? (
+                    <Box
+                        component="img"
+                        className="project-card-image"
+                        src={image}
+                        alt=""
+                        loading="lazy"
+                        decoding="async"
+                        onError={(event) => { event.currentTarget.style.opacity = '0' }}
+                        sx={{
+                            position: 'absolute',
+                            inset: 0,
+                            display: 'block',
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover',
+                            filter: 'grayscale(.3)',
+                            transition: 'transform .3s cubic-bezier(0.22, 1, 0.36, 1)',
+                        }}
+                    />
+                ) : null}
+            </Box>
 
             <Box
                 component="h2"
                 className="project-card-title"
                 sx={{
-                    position: 'absolute',
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    zIndex: 1,
                     m: 0,
-                    p: 'clamp(18px, 2.2vw, 30px)',
-                    fontFamily: 'var(--joy-fontFamily-display)',
-                    fontSize: 'clamp(20px, 2.2vw, 30px)',
-                    fontWeight: 400,
+                    mt: 'clamp(10px, 1vw, 14px)',
+                    fontFamily: 'var(--joy-fontFamily-body)',
+                    fontSize: 'clamp(24px, 2.2vw, 24px)',
+                    fontWeight: 500,
                     lineHeight: 1.08,
                     letterSpacing: '-0.02em',
-                    color: '#fff',
-                    transition: 'transform .4s ease',
+                    color: titleColor,
                 }}
             >
                 {project.title}
@@ -108,10 +102,26 @@ export default function PageProjects() {
     const palette = theme.vars.palette
     const { mode, systemMode } = useColorScheme()
     const dark = mode === 'dark' || (mode === 'system' && systemMode === 'dark')
+    const [filter, setFilter] = useState('all')
 
     useEffect(() => {
         window.scrollTo(0, 0)
     }, [])
+
+    const countFor = (key) => {
+        if (key === 'all') return projects.length
+        if (key === 'games') return games.length
+        if (key === 'archive') return archived.length
+        return projects.filter((project) => project.categories.includes(key)).length
+    }
+    const visibleProjects = filter === 'all'
+        ? projects
+        : projects.filter((project) => project.categories.includes(filter))
+    const pageTitle = filter === 'games'
+        ? 'Игры'
+        : filter === 'archive'
+            ? 'Архив'
+            : 'Проекты'
 
     return (
         <>
@@ -145,7 +155,7 @@ export default function PageProjects() {
                             color: palette.about.titleColor,
                         }}
                     >
-                        Проекты
+                        {pageTitle}
                     </Box>
 
                     <Box
@@ -161,41 +171,133 @@ export default function PageProjects() {
                             fontWeight: 500,
                             letterSpacing: '0.12em',
                             textTransform: 'uppercase',
-                            color: palette.text.tertiary,
                         }}
                     >
-                        {categories.map((category) => (
-                            <Box component="span" key={category.key}>
-                                {category.label} ({projects.filter((project) => project.category === category.key).length})
-                            </Box>
-                        ))}
+                        {filters.map((item) => {
+                            const active = filter === item.key
+
+                            return (
+                                <Box
+                                    component="button"
+                                    type="button"
+                                    key={item.key}
+                                    onClick={() => setFilter(item.key)}
+                                    aria-pressed={active}
+                                    sx={{
+                                        appearance: 'none',
+                                        m: 0,
+                                        p: 0,
+                                        border: 0,
+                                        background: 'none',
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        gap: '7px',
+                                        font: 'inherit',
+                                        letterSpacing: 'inherit',
+                                        textTransform: 'inherit',
+                                        color: active
+                                            ? palette.about.titleColor
+                                            : palette.text.tertiary,
+                                        opacity: active ? 1 : 0.45,
+                                        cursor: active ? 'default' : 'pointer',
+                                        transition: 'opacity .2s ease, color .2s ease',
+                                        '&:hover': {
+                                            opacity: active ? 1 : 0.72,
+                                        },
+                                        '&:focus-visible': {
+                                            outline: '1px solid',
+                                            outlineColor: palette.text.primary,
+                                            outlineOffset: '4px',
+                                        },
+                                    }}
+                                >
+                                    {item.special ? (
+                                        active
+                                            ? <Eye size={14} weight="regular" aria-hidden="true" style={{ flexShrink: 0 }} />
+                                            : <EyeClosed size={14} weight="regular" aria-hidden="true" style={{ flexShrink: 0 }} />
+                                    ) : null}
+                                    {item.label} ({countFor(item.key)})
+                                </Box>
+                            )
+                        })}
                     </Box>
                 </Box>
 
-                <Box
-                    sx={{
-                        maxWidth: '1200px',
-                        mx: 'auto',
-                        display: 'grid',
-                        gridTemplateColumns: {
-                            xs: '1fr',
-                            md: 'repeat(2, minmax(0, 1fr))',
-                        },
-                        gap: { xs: '16px', md: '24px' },
-                        pb: 'clamp(64px, 10vw, 120px)',
-                    }}
-                >
-                    {projects.map((project) => (
-                        <ProjectCard
-                            key={project.slug}
-                            project={project}
-                            image={project.img
-                                ? `/img/projects/${project.img}@${dark ? 'dark' : 'light'}.jpg`
-                                : null}
-                            outlineColor={palette.text.primary}
-                        />
-                    ))}
-                </Box>
+                {filter === 'archive' ? (
+                    <Box
+                        component="ul"
+                        sx={{
+                            maxWidth: '1200px',
+                            mx: 'auto',
+                            listStyle: 'none',
+                            my: 0,
+                            p: 0,
+                            pb: 'clamp(64px, 10vw, 120px)',
+                        }}
+                    >
+                        {archived.map((project) => (
+                            <Box
+                                component="li"
+                                key={project.title}
+                                sx={{
+                                    borderBottom: '1px solid',
+                                    borderColor: palette.divider,
+                                }}
+                            >
+                                <Box
+                                    component="a"
+                                    href={project.link}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    sx={{
+                                        display: 'block',
+                                        py: 'clamp(18px, 2.4vw, 28px)',
+                                        color: palette.about.titleColor,
+                                        textDecoration: 'none',
+                                        fontFamily: 'var(--joy-fontFamily-body)',
+                                        fontSize: 'clamp(18px, 1.8vw, 24px)',
+                                        fontWeight: 500,
+                                        letterSpacing: '-0.02em',
+                                        transition: 'opacity .2s ease',
+                                        '&:hover': { opacity: 0.55 },
+                                    }}
+                                >
+                                    {project.title}
+                                </Box>
+                            </Box>
+                        ))}
+                    </Box>
+                ) : (
+                    <Box
+                        sx={{
+                            maxWidth: '1200px',
+                            mx: 'auto',
+                            display: 'grid',
+                            gridTemplateColumns: {
+                                xs: '1fr',
+                                md: 'repeat(2, minmax(0, 1fr))',
+                            },
+                            gap: { xs: '16px', md: '16px' },
+                            alignItems: 'start',
+                            pb: 'clamp(64px, 10vw, 120px)',
+                        }}
+                    >
+                        {(filter === 'games' ? games : visibleProjects).map((project) => (
+                            <ProjectCard
+                                key={project.slug ?? project.link}
+                                project={project}
+                                image={filter === 'games'
+                                    ? (project.img ? `/img/games/${project.img}.jpg` : undefined)
+                                    : project.img
+                                        ? `/img/projects/${project.img}@${dark ? 'dark' : 'light'}.jpg`
+                                        : undefined}
+                                href={filter === 'games' ? project.link : undefined}
+                                outlineColor={palette.text.primary}
+                                titleColor={palette.about.titleColor}
+                            />
+                        ))}
+                    </Box>
+                )}
             </Box>
         </>
     )

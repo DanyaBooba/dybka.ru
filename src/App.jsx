@@ -12,6 +12,7 @@ export default function App() {
                     <Route path="*" element={<PageIndex />} />
                 </Routes>
             </BrowserRouter>
+            <div className="site-noise" aria-hidden="true" />
         </AppTheme>
     )
 }

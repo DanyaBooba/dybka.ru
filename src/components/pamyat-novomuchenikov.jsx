@@ -63,8 +63,8 @@ export default function PamyatNovomuchenikov() {
                                 fontWeight: 700,
                                 color: theme.vars.palette.pamyat.titleColor,
                                 m: 0,
-                                lineHeight: '24px',
-                                mb: 'clamp(4px, 0.75vw, 16px)',
+                                lineHeight: 'normal',
+                                // mb: 'clamp(4px, 0.75vw, 16px)',
                             }}
                         >
                             Память новомучеников
@@ -76,7 +76,7 @@ export default function PamyatNovomuchenikov() {
                                 m: 0
                             }}
                         >
-                            Святые дня, биографии и карта
+                            Святые дня, биографии и карта событий
                         </Box>
                     </Box>
                 </Box>

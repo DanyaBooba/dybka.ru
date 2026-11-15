@@ -125,7 +125,7 @@ export default function Hero() {
                         height: '100%',
                         objectFit: 'cover',
                         objectPosition: { xs: '50% 32%', md: '50% 38%' },
-                        // filter: 'grayscale(0.2) contrast(1) brightness(.9)',
+                        filter: 'grayscale(0.2) contrast(1) brightness(.9)',
                         animation: 'heroImageOut 1.2s ease both',
                     }}
                 />
@@ -144,7 +144,7 @@ export default function Hero() {
                     height: '100%',
                     objectFit: 'cover',
                     objectPosition: { xs: '50% 32%', md: '50% 38%' },
-                    // filter: 'grayscale(0.2) contrast(1) brightness(.9)',
+                    filter: 'grayscale(0.2) contrast(1) brightness(.9)',
                     animation: 'heroImageIn 1.2s ease both',
                 }}
             />

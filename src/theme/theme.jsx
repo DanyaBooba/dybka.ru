@@ -9,10 +9,10 @@ export const theme = extendTheme({
         light: {
             palette: {
                 head: {
-                    themeColor: '#fff'
+                    themeColor: '#f2f2f0'
                 },
                 background: {
-                    body: '#fff',
+                    body: '#ececec',
                 },
                 header: {
                     borderColor: 'rgba(210, 219, 227, .5)',
@@ -28,7 +28,7 @@ export const theme = extendTheme({
                     glowColor: 'rgba(255, 255, 255, 0.8)',
                 },
                 quote: {
-                    background: '#fff',
+                    background: '#f2f2f0',
                     text: '#000',
                     mutedText: 'rgba(0, 0, 0, .55)',
                 },
@@ -52,10 +52,10 @@ export const theme = extendTheme({
         dark: {
             palette: {
                 head: {
-                    themeColor: '#000'
+                    themeColor: '#141414'
                 },
                 background: {
-                    body: '#000',
+                    body: '#141414',
                     surface: '#303030',
                     popup: '#242424'
                 },
@@ -73,7 +73,7 @@ export const theme = extendTheme({
                     glowColor: 'rgba(255, 255, 255, 0.2)',
                 },
                 quote: {
-                    background: '#000',
+                    background: '#141414',
                     text: '#fff',
                     mutedText: 'rgba(255, 255, 255, .55)',
                 },
