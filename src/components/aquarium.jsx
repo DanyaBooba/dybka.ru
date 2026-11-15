@@ -12,7 +12,7 @@ import {
 import projects from '../data/projects'
 import AquariumLogo from './aquarium-logo'
 
-const aquarium = projects.find((project) => project.title === 'Аквариум')
+const aquarium = projects.find((project) => project.slug === 'aquarium')
 
 const posts = [
     {
@@ -421,7 +421,7 @@ export default function Aquarium() {
                             </Box>
                             <Box
                                 component="a"
-                                href={`${aquarium.link}/welcome`}
+                                href={`/projects/aquarium`}
                                 target="_blank"
                                 rel="noreferrer"
                                 sx={{

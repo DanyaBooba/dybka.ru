@@ -11,11 +11,17 @@ import {
     SITE_URL,
     WEBSITE_ID,
 } from '../data/seo'
-import PamyatAppProjectPage from './projects/pamyat-app'
 import { ArrowUpRight } from '@phosphor-icons/react'
+import PamyatAppProjectPage from './projects/pamyat-app'
+import IzobretariumProjectPage from './projects/izobretarium'
+import AquariumProjectPage from './projects/aquarium'
+import AquariumAppProjectPage from './projects/aquarium-app'
 
 const customProjectPages = {
     'pamyat-app': PamyatAppProjectPage,
+    'izobretarium': IzobretariumProjectPage,
+    'aquarium': AquariumProjectPage,
+    'aquarium-app': AquariumAppProjectPage,
 }
 
 const categoryLabels = {

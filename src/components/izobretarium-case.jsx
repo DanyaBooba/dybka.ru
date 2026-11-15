@@ -177,9 +177,10 @@ export default function IzobretariumCase() {
             <Box
                 sx={{
                     display: 'flex',
+                    flexWrap: 'wrap',
                     alignItems: 'center',
-                    gap: '24px',
-                    mt: 'clamp(24px, 3vw, 36px)',
+                    gap: '12px 28px',
+                    mt: '36px',
                 }}
             >
                 <Box
@@ -188,16 +189,26 @@ export default function IzobretariumCase() {
                     target="_blank"
                     rel="noreferrer"
                     sx={{
-                        ...linkSx,
-                        color: palette.text.primary,
-                        '&:hover .izobretarium-arrow': {
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '10px',
+                        color: palette.text,
+                        fontFamily: 'var(--joy-fontFamily-body)',
+                        fontSize: '10px',
+                        fontWeight: 500,
+                        letterSpacing: '0.1em',
+                        textTransform: 'uppercase',
+                        textDecoration: 'none',
+                        transition: 'opacity .25s ease',
+                        '&:hover': { opacity: 0.55 },
+                        '&:hover .aquarium-arrow': {
                             transform: 'translate(4px, -4px)',
                         },
                     }}
                 >
                     Открыть сайт
                     <ArrowUpRight
-                        className="izobretarium-arrow"
+                        className="aquarium-arrow"
                         size={16}
                         weight="light"
                         aria-hidden="true"
@@ -206,6 +217,28 @@ export default function IzobretariumCase() {
                                 'transform .5s cubic-bezier(0.22, 1, 0.36, 1)',
                         }}
                     />
+                </Box>
+                <Box
+                    component="a"
+                    href={`/projects/izobretarium`}
+                    target="_blank"
+                    rel="noreferrer"
+                    sx={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '10px',
+                        color: palette.text,
+                        fontFamily: 'var(--joy-fontFamily-body)',
+                        fontSize: '10px',
+                        fontWeight: 500,
+                        letterSpacing: '0.1em',
+                        textTransform: 'uppercase',
+                        textDecoration: 'none',
+                        transition: 'opacity .25s ease',
+                        '&:hover': { opacity: 0.55 },
+                    }}
+                >
+                    О проекте
                 </Box>
             </Box>
         </Box>
@@ -223,11 +256,10 @@ export default function IzobretariumCase() {
             <Box
                 sx={{
                     overflow: 'hidden',
-                    borderRadius: '16px',
+                    borderRadius: '12px',
                     border: '1px solid',
                     borderColor: browserBorder,
                     bgcolor: browserBackground,
-                    // boxShadow: browserShadow,
                 }}
             >
                 <Box
@@ -235,7 +267,7 @@ export default function IzobretariumCase() {
                         display: 'flex',
                         alignItems: 'center',
                         height: 'clamp(38px, 4vw, 46px)',
-                        px: '12px',
+                        px: '10px',
                         bgcolor: topbarBackground,
                     }}
                 >
@@ -247,8 +279,8 @@ export default function IzobretariumCase() {
                             gap: '7px',
                             width: '100%',
                             height: 'clamp(24px, 2.6vw, 28px)',
-                            px: '10px',
-                            borderRadius: '8px',
+                            px: '8px',
+                            borderRadius: '6px',
                             bgcolor: urlBackground,
                             color: palette.text.tertiary,
                             fontFamily: 'var(--joy-fontFamily-body)',

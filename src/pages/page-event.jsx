@@ -239,6 +239,7 @@ export default function PageEvent() {
                                         width: '100%',
                                         height: { xs: '320px', md: '620px' },
                                         objectFit: 'cover',
+                                        borderRadius: '12px',
                                         objectPosition: imagePositionSx(event.position),
                                     }}
                                 />
