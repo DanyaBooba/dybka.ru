@@ -5,6 +5,7 @@ import PageIndex from '../pages/page-index'
 import PageAbout from '../pages/page-about'
 import PageProjects from '../pages/page-projects'
 import PageProject from '../pages/page-project'
+import PageSmi from '../pages/page-smi'
 const PageEvent = lazy(() => import('../pages/page-event'))
 // import PageContests from '../pages/Contests/PageContests'
 // import PageSMI from '../pages/SMI/PageSMI'
@@ -19,7 +20,7 @@ const RoutesMain = [
         key="event"
     />,
     // <Route path="/contests" element={<PageContests />} key="contests" />,
-    // <Route path="/smi" element={<PageSMI />} key="smi" />,
+    <Route path="/smi" element={<PageSmi />} key="smi" />,
     <Route path="/about" element={<PageAbout />} key="about" />,
 ]
 

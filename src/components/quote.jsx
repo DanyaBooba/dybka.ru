@@ -13,7 +13,6 @@ export default function Quote() {
             sx={{
                 position: 'relative',
                 zIndex: 1,
-                bgcolor: palette.background,
                 color: palette.text,
                 px: { xs: '20px', md: 'clamp(24px, 3.2vw, 48px)' },
                 py: { xs: '64px', md: '110px' },

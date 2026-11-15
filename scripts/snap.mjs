@@ -29,6 +29,7 @@ try {
         skipThirdPartyRequests: true,
     })
     console.log(`react-snap: ${include.length} pages prerendered`)
+    process.exit(0)
 } catch (error) {
     console.error(error)
     process.exit(1)

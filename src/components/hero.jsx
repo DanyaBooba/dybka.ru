@@ -4,6 +4,7 @@ import Typography from '@mui/joy/Typography'
 import { ArrowUpRight } from '@phosphor-icons/react'
 import events from '../data/events'
 import mainEvents from '../data/main-events'
+import { imagePositionSx } from '../data/image-position'
 
 const months = {
     января: 0,
@@ -124,7 +125,7 @@ export default function Hero() {
                         width: '100%',
                         height: '100%',
                         objectFit: 'cover',
-                        objectPosition: { xs: '50% 32%', md: '50% 38%' },
+                        objectPosition: imagePositionSx(previousEvent.position),
                         filter: 'grayscale(0.2) contrast(1) brightness(.9)',
                         animation: 'heroImageOut 1.2s ease both',
                     }}
@@ -143,7 +144,7 @@ export default function Hero() {
                     width: '100%',
                     height: '100%',
                     objectFit: 'cover',
-                    objectPosition: { xs: '50% 32%', md: '50% 38%' },
+                    objectPosition: imagePositionSx(event.position),
                     filter: 'grayscale(0.2) contrast(1) brightness(.9)',
                     animation: 'heroImageIn 1.2s ease both',
                 }}
@@ -173,6 +174,7 @@ export default function Hero() {
                     gap: 'clamp(28px, 5vw, 80px)',
                     width: '100%',
                     p: 'clamp(24px, 4.6vw, 64px)',
+                    pb: { xs: '88px', md: 'clamp(24px, 4.6vw, 64px)' },
                 }}
             >
                 <Box

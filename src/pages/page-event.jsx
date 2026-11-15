@@ -9,6 +9,7 @@ import Seo from '../components/seo'
 import events from '../data/events'
 import eventGalleries from '../data/event-galleries'
 import { SITE_URL, WEBSITE_ID } from '../data/seo'
+import { imagePositionSx } from '../data/image-position'
 
 export default function PageEvent() {
     const theme = useTheme()
@@ -23,7 +24,17 @@ export default function PageEvent() {
     useEffect(() => {
         if (!event) return undefined
 
-        Fancybox.bind('[data-fancybox="event-gallery"]', {})
+        Fancybox.bind('[data-fancybox="event-gallery"]', {
+            closeButton: false,
+            Carousel: {
+                Toolbar: {
+                    display: {
+                        left: [],
+                        right: ['toggleFull', 'close'],
+                    },
+                },
+            },
+        })
 
         return () => {
             Fancybox.destroy()
@@ -86,7 +97,7 @@ export default function PageEvent() {
                         width: '100%',
                         height: '100%',
                         objectFit: 'cover',
-                        objectPosition: { xs: '50% 32%', md: '50% 38%' },
+                        objectPosition: imagePositionSx(event.position),
                         filter: 'grayscale(0.2) contrast(1) brightness(.9)',
                     }}
                 />
@@ -167,7 +178,7 @@ export default function PageEvent() {
                                 mt: 'clamp(16px, 2vw, 24px)',
                                 maxWidth: '60ch',
                                 fontFamily: 'var(--joy-fontFamily-body)',
-                                fontSize: 'clamp(16px, 1.25vw, 18px)',
+                                fontSize: { xs: '14px', sm: '16px', md: 'clamp(16px, 1.25vw, 18px)' },
                                 lineHeight: 1.6,
                                 color: palette.text.secondary,
                             }}
@@ -183,7 +194,7 @@ export default function PageEvent() {
                                     <Box
                                         key={index}
                                         sx={{
-                                            fontSize: '30px',
+                                            fontSize: 'clamp(18px, 3.2vw, 30px)',
                                             fontFamily: 'var(--joy-fontFamily-body)',
                                             color: palette.text.primary,
                                             maxWidth: '48ch',
@@ -228,6 +239,7 @@ export default function PageEvent() {
                                         width: '100%',
                                         height: { xs: '320px', md: '620px' },
                                         objectFit: 'cover',
+                                        objectPosition: imagePositionSx(event.position),
                                     }}
                                 />
                             </Box>

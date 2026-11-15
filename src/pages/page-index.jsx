@@ -5,6 +5,7 @@ import Quote from '../components/quote'
 import Aquarium from '../components/aquarium'
 import IzobretariumCase from '../components/izobretarium-case'
 import PamyatNovomuchenikov from '../components/pamyat-novomuchenikov'
+import Technologies from '../components/technologies'
 import Contacts from '../components/contacts'
 import {
     DEFAULT_DESCRIPTION,
@@ -30,6 +31,7 @@ export default function PageIndex() {
             <Aquarium />
             <IzobretariumCase />
             <PamyatNovomuchenikov />
+            <Technologies />
             <Contacts />
         </>
     )

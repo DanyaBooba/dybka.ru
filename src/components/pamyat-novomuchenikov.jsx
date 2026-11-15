@@ -1,13 +1,14 @@
 import { Box, useTheme } from "@mui/joy";
 import { ArrowUpRight } from "@phosphor-icons/react";
-import PamyatLogo from "./pamyat-logo";
+import PamyatLogo from "./pamyat-logo"
+import ProjectScreenshots from "./project-screenshots";
 
 const screenshots = [
-    '/img/pamyat/iPhone App Store 1.jpg',
-    '/img/pamyat/iPhone App Store 2.jpg',
-    '/img/pamyat/iPhone App Store 3.jpg',
-    '/img/pamyat/iPhone App Store 4.jpg',
-    '/img/pamyat/iPhone App Store 5.jpg',
+    '/img/pamyat/img-1.jpg',
+    '/img/pamyat/img-2.jpg',
+    '/img/pamyat/img-3.jpg',
+    '/img/pamyat/img-4.jpg',
+    '/img/pamyat/img-5.jpg',
 ]
 
 const linkSx = {
@@ -122,36 +123,14 @@ export default function PamyatNovomuchenikov() {
                     </Box>
                 </Box>
 
-                <Box sx={{
-                    display: 'flex',
-                    alignItems: 'flex-start',
-                    gap: '16px',
-                    mt: { xs: '32px', md: '48px' },
-                    overflowX: 'auto',
-                    scrollSnapType: 'x mandatory',
-                    scrollbarWidth: 'none',
-                    '&::-webkit-scrollbar': { display: 'none' },
-                }}>
-                    {screenshots.map((src, index) => (
-                        <Box
-                            key={src}
-                            component="img"
-                            src={src}
-                            alt={`Скриншот приложения «Память новомучеников», ${index + 1}`}
-                            loading="lazy"
-                            sx={{
-                                display: 'block',
-                                width: 'clamp(190px, 22vw, 300px)',
-                                height: 'auto',
-                                aspectRatio: '1206 / 2622',
-                                flexShrink: 0,
-                                borderRadius: '20px',
-                                scrollSnapAlign: 'start',
-                            }}
-                        />
-                    ))}
-                </Box>
+                <ProjectScreenshots
+                    items={screenshots}
+                    layout="row"
+                    aspectRatio="1206 / 2622"
+                    altPrefix="Скриншот приложения «Память новомучеников»"
+                    sx={{ mt: { xs: '32px', md: '48px' } }}
+                />
             </Box>
-        </Box >
+        </Box>
     )
 }

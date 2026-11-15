@@ -8,7 +8,12 @@ export default [
             'Выступление с докладом, посвященным интеграции платформы 1С:Университет с разработанными веб-виджетом и сервером для дальнейшей установки на сайты учебных заведений.'
         ],
         date: '28 октября 2026 г.',
-        link: 'bmstu-russian-engineer-3'
+        link: 'bmstu-russian-engineer-3',
+        position: {
+            mobile: '18% 30%',
+            tablet: '30% 36%',
+            desktop: '50% 38%',
+        },
     },
     {
         imageCap: '2026/studvesna/cap.jpg',
@@ -152,7 +157,12 @@ export default [
             'Представлен проект цифрового двойника имитационного стенда умного города, позволяющий получить дистанционный доступ к устройству интернета вещей.'
         ],
         date: '3 марта 2023 г.',
-        link: 'the-future-of-st-petersburg-is-in-the-creativity-of-young-people'
+        link: 'the-future-of-st-petersburg-is-in-the-creativity-of-young-people',
+        position: {
+            mobile: '75% 30%',
+            tablet: '50% 36%',
+            desktop: '50% 38%',
+        },
     },
     {
         imageCap: '2022/bionika/cap.jpg',

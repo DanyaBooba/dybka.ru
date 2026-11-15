@@ -1,13 +1,13 @@
 export const SITE_URL = 'https://dybka.ru'
 export const SITE_NAME = 'dybka.ru'
 export const PERSON_NAME = 'Даниил Дыбка'
-export const PERSON_ROLE = 'Разработчик веб-платформ'
+export const PERSON_ROLE = 'разработчик цифровых сервисов'
 export const PERSON_ID = `${SITE_URL}/#person`
 export const WEBSITE_ID = `${SITE_URL}/#website`
 export const DEFAULT_IMAGE = '/img/og/og-default.jpg'
-export const DEFAULT_TITLE = 'Даниил Дыбка — разработчик веб-платформ'
+export const DEFAULT_TITLE = 'Даниил Дыбка — разработчик цифровых сервисов'
 export const DEFAULT_DESCRIPTION = 'Портфолио Даниила Дыбка: веб-платформы, сайты, приложения, боты и игры. React, TypeScript, дизайн интерфейсов и запуск цифровых продуктов.'
-export const DEFAULT_KEYWORDS = 'Даниил Дыбка, dybka.ru, портфолио, разработчик веб-платформ, frontend, React, TypeScript, JavaScript, веб-разработка, сайты, приложения'
+export const DEFAULT_KEYWORDS = 'Даниил Дыбка, dybka.ru, портфолио, разработчик цифровых сервисов, frontend, React, TypeScript, JavaScript, веб-разработка, сайты, приложения'
 
 export const SOCIAL_LINKS = [
     'https://ddybka.t.me/',

@@ -90,8 +90,8 @@ const chapters = [
     {
         title: 'Next.js',
         icon: '/img/illustrations/tech/nextjs.svg',
-        iconHeight: 'clamp(12px, 2.2vw, 18px)',
-        invertOnDark: true,
+        iconDark: '/img/illustrations/tech/nextjs-dark.svg',
+        iconHeight: 'clamp(30px, 3.1vw, 42px)',
         paragraphs: [
             'Со временем я понял, что React не всегда закрывает все задачи, которые возникают при разработке сайтов. Мне хотелось лучше работать с поисковой оптимизацией.',
             'Поэтому я решил познакомиться с Next.js — фреймворком на базе React, который расширяет его возможности. При обычном использовании React веб-приложение получается формата SPA, где 1 файл index.html. Из-за чего некоторые поисковые роботы не видят остальные страницы сайта. Next.js решает эту проблему серверным рендерингом страниц по заданным правилам.'
@@ -100,7 +100,7 @@ const chapters = [
     {
         title: 'NestJS',
         icon: '/img/illustrations/tech/nestjs.svg',
-        iconHeight: 'clamp(22px, 2.6vw, 34px)',
+        iconHeight: 'clamp(32px, 3.2vw, 44px)',
         paragraphs: [
             'По мере развития проектов серверная часть становилась всё сложнее. Express отлично подходил для небольших приложений, но мне хотелось лучше структурировать код, разделять ответственность между модулями и использовать более строгую архитектуру.',
             'Так я познакомился с NestJS — серверным фреймворком для Node.js, построенным на TypeScript. Он предлагает готовую архитектуру приложения, систему модулей, контроллеров и сервисов, а также множество инструментов для разработки API.',
@@ -223,21 +223,22 @@ export default function PageAbout() {
                                             sx={{
                                                 display: 'flex',
                                                 alignItems: 'center',
-                                                justifyContent: 'space-between',
+                                                justifyContent: 'flex-start',
                                                 gap: '16px',
+                                                height: 'clamp(44px, 4.4vw, 56px)',
                                                 mb: 'clamp(16px, 2vw, 24px)',
                                             }}
                                         >
                                             <Box
                                                 component="img"
-                                                src={chapter.icon}
+                                                src={chapter.iconDark && dark ? chapter.iconDark : chapter.icon}
                                                 alt=""
                                                 sx={{
                                                     height: chapter.iconHeight ?? 'clamp(32px, 3vw, 44px)',
                                                     width: 'auto',
                                                     maxWidth: '100%',
+                                                    maxHeight: '100%',
                                                     objectFit: 'contain',
-                                                    filter: chapter.invertOnDark && dark ? 'invert(1)' : 'none',
                                                 }}
                                             />
                                         </Box>
@@ -278,7 +279,7 @@ export default function PageAbout() {
                                                 color: palette.text.secondary,
                                             }}
                                         >
-                                            <div dangerouslySetInnerHTML={{ __html: paragraph }} />
+                                            <span dangerouslySetInnerHTML={{ __html: paragraph }} />
                                         </Box>
                                     ))}
                                 </Box>

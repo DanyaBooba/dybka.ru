@@ -76,15 +76,16 @@ export default [
     },
     {
         title: 'Интервью «ТВ-Реутов» (статья)',
-        link: 'https://reutovmedia.ru/spetsialnyj-reportazh/item/9655-yunye-izobretateli'
+        // link: 'https://reutovmedia.ru/spetsialnyj-reportazh/item/9655-yunye-izobretateli'
     },
     {
         title: 'Победа в МАИ (МАИ)',
-        link: 'https://mai.ru/press/news/detail.php?ID=169454'
+        link: 'https://mai.ru/press/news/detail.php?ID=169454',
+        date: '10 ноября 2022 г.'
     },
     {
         title: 'Интервью «РЕУТ» (статья)',
-        link: 'https://in-reutov.ru/novosti/obrazovanie/daniil-dybka-i-ilya-rozanov-stali-pobeditelyami-vserossiyskogo-konkursa'
+        // link: 'https://in-reutov.ru/novosti/obrazovanie/daniil-dybka-i-ilya-rozanov-stali-pobeditelyami-vserossiyskogo-konkursa'
     },
     {
         title: 'Участие в программе канала «Царьград»',

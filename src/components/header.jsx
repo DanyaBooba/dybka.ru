@@ -19,13 +19,15 @@ export default function Header() {
             component="header"
             sx={{
                 position: 'fixed',
-                top: 0,
+                top: { xs: 'auto', md: 0 },
+                bottom: { xs: 0, md: 'auto' },
                 left: 0,
                 right: 0,
                 zIndex: 20,
                 display: 'flex',
                 justifyContent: 'center',
-                pt: '12px',
+                pt: { xs: 0, md: 'calc(12px + env(safe-area-inset-top, 0px))' },
+                pb: { xs: 'calc(8px + env(safe-area-inset-bottom, 0px))', md: 0 },
                 pointerEvents: 'none',
                 mixBlendMode: 'difference',
             }}
@@ -60,13 +62,14 @@ export default function Header() {
                         return (
                             <Box
                                 key={link.href}
-                                component="span"
+                                component={Link}
+                                to={link.href}
+                                onClick={() => window.scrollTo(0, 0)}
                                 aria-current="page"
                                 sx={{
                                     ...linkSx,
                                     textDecoration: 'underline',
                                     textUnderlineOffset: '4px',
-                                    cursor: 'default',
                                 }}
                             >
                                 {link.label}

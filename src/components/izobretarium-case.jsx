@@ -256,19 +256,13 @@ export default function IzobretariumCase() {
                             lineHeight: 1,
                         }}
                     >
-                        <IzobretariumLogo
-                            style={{
-                                width: '12px',
-                                height: '10px',
-                                flexShrink: 0,
-                            }}
-                        />
                         <Box
                             component="span"
                             sx={{
                                 overflow: 'hidden',
                                 textOverflow: 'ellipsis',
                                 whiteSpace: 'nowrap',
+                                fontSize: '14px'
                             }}
                         >
                             izobretarium.ru
