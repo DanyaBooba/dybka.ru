@@ -237,7 +237,10 @@ export default function PageProjects() {
                             pb: 'clamp(64px, 10vw, 120px)',
                         }}
                     >
-                        {archived.map((project) => (
+                        {archived.map((project) => {
+                            const hasLink = Boolean(project.link)
+
+                            return (
                             <Box
                                 component="li"
                                 key={project.title}
@@ -247,12 +250,18 @@ export default function PageProjects() {
                                 }}
                             >
                                 <Box
-                                    component="a"
-                                    href={project.link}
-                                    target="_blank"
-                                    rel="noreferrer"
+                                    component={hasLink ? 'a' : 'div'}
+                                    {...(hasLink ? {
+                                        href: project.link,
+                                        target: '_blank',
+                                        rel: 'noreferrer',
+                                    } : {})}
                                     sx={{
-                                        display: 'block',
+                                        display: 'flex',
+                                        alignItems: 'baseline',
+                                        justifyContent: 'space-between',
+                                        flexWrap: 'wrap',
+                                        gap: '12px 24px',
                                         py: 'clamp(18px, 2.4vw, 28px)',
                                         color: palette.about.titleColor,
                                         textDecoration: 'none',
@@ -260,14 +269,34 @@ export default function PageProjects() {
                                         fontSize: 'clamp(18px, 1.8vw, 24px)',
                                         fontWeight: 500,
                                         letterSpacing: '-0.02em',
+                                        cursor: hasLink ? 'pointer' : 'default',
                                         transition: 'opacity .2s ease',
-                                        '&:hover': { opacity: 0.55 },
+                                        ...(hasLink ? { '&:hover': { opacity: 0.55 } } : {}),
                                     }}
                                 >
-                                    {project.title}
+                                    <Box component="span">
+                                        {project.title}
+                                    </Box>
+                                    {project.stack?.length ? (
+                                        <Box
+                                            component="span"
+                                            sx={{
+                                                ml: 'auto',
+                                                fontSize: '10px',
+                                                fontWeight: 500,
+                                                letterSpacing: '0.12em',
+                                                textTransform: 'uppercase',
+                                                textAlign: 'right',
+                                                color: palette.text.tertiary,
+                                            }}
+                                        >
+                                            {project.stack.join(' · ')}
+                                        </Box>
+                                    ) : null}
                                 </Box>
                             </Box>
-                        ))}
+                            )
+                        })}
                     </Box>
                 ) : (
                     <Box
