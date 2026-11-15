@@ -33,11 +33,13 @@ function ProjectCard({ project, image, outlineColor, titleColor, href }) {
                 mb: 2,
                 '&:hover .project-card-image': {
                     transform: 'scale(1.04)',
+                    filter: 'grayscale(0)',
                 },
                 '&:focus-visible': {
                     outline: '2px solid',
                     outlineColor,
                     outlineOffset: '4px',
+                    filter: 'grayscale(0)',
                 },
             }}
         >
