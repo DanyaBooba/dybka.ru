@@ -207,7 +207,7 @@ export default function PamyatAppProjectPage() {
                     </Box>
                 </Box>
 
-                {/* <Box
+                <Box
                     component="h2"
                     sx={{
                         fontFamily: 'var(--joy-fontFamily-display)',
@@ -219,71 +219,17 @@ export default function PamyatAppProjectPage() {
                         mb: { xs: '24px', md: '32px' },
                     }}
                 >
-                    Новомученики поминаемые на текущий день
-                </Box> */}
-                <ProjectScreenshots
-                    items={[featureScreenshots[0]]}
-                    layout="wide"
-                    sx={{ mb: { xs: '16px', md: '24px' } }}
-                />
+                    Скриншоты
+                </Box>
 
-                {/* <Box
-                    component="h2"
-                    sx={{
-                        fontFamily: 'var(--joy-fontFamily-display)',
-                        fontSize: 'clamp(24px, 3.2vw, 32px)',
-                        fontWeight: 700,
-                        color: theme.vars.palette.pamyat.titleColor,
-                        m: 0,
-                        lineHeight: 'normal',
-                        mb: { xs: '24px', md: '32px' },
-                    }}
-                >
-                    Календарь памяти
-                </Box> */}
                 <ProjectScreenshots
-                    items={[featureScreenshots[1]]}
+                    items={featureScreenshots}
                     layout="wide"
-                    sx={{ mb: { xs: '16px', md: '24px' } }}
-                />
-
-                {/* <Box
-                    component="h2"
                     sx={{
-                        fontFamily: 'var(--joy-fontFamily-display)',
-                        fontSize: 'clamp(24px, 3.2vw, 32px)',
-                        fontWeight: 700,
-                        color: theme.vars.palette.pamyat.titleColor,
-                        m: 0,
-                        lineHeight: 'normal',
-                        mb: { xs: '24px', md: '32px' },
+                        display: 'grid',
+                        gap: { xs: '16px', md: '24px' },
+                        mb: { xs: 'clamp(48px, 10vw, 72px)', md: 'clamp(64px, 8vw, 96px)' },
                     }}
-                >
-                    Карта событий
-                </Box> */}
-                <ProjectScreenshots
-                    items={[featureScreenshots[2]]}
-                    layout="wide"
-                    sx={{ mb: { xs: '16px', md: '24px' } }}
-                />
-
-                {/* <Box
-                    component="h2"
-                    sx={{
-                        fontFamily: 'var(--joy-fontFamily-display)',
-                        fontSize: 'clamp(24px, 3.2vw, 32px)',
-                        color: theme.vars.palette.pamyat.titleColor,
-                        m: 0,
-                        lineHeight: 'normal',
-                        mb: { xs: '24px', md: '32px' },
-                    }}
-                >
-                    Поиск по биографиям
-                </Box> */}
-                <ProjectScreenshots
-                    items={[featureScreenshots[3]]}
-                    layout="wide"
-                    sx={{ mb: { xs: '16px', md: '24px' } }}
                 />
 
                 <Box
@@ -295,11 +241,10 @@ export default function PamyatAppProjectPage() {
                         color: theme.vars.palette.pamyat.titleColor,
                         m: 0,
                         lineHeight: 'normal',
-                        mt: { xs: 'clamp(32px, 8vw, 48px)', md: 'clamp(48px, 6vw, 64px)' },
                         mb: { xs: '24px', md: '32px' },
                     }}
                 >
-                    Скриншоты приложения
+                    Экраны
                 </Box>
 
                 <ProjectScreenshots

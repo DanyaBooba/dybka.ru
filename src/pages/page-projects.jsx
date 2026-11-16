@@ -51,7 +51,7 @@ function ProjectCard({ project, image, outlineColor, titleColor, href }) {
                     position: 'relative',
                     width: '100%',
                     aspectRatio: '16 / 9',
-                    borderRadius: '8px',
+                    borderRadius: '12px',
                     overflow: 'hidden',
                     bgcolor: '#1b1b1b',
                     backgroundImage: image

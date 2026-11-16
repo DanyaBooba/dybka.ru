@@ -44,8 +44,7 @@ const posts = [
         text: 'природа конечно шикарна, но небо еще лучше ',
         images: [
             '/img/aquarium/post-sasha-1.jpg',
-            '/img/aquarium/post-sasha-2.jpg',
-            '/img/aquarium/post-sasha-3.jpg'
+            '/img/aquarium/post-sasha-2.jpg'
         ],
         likes: 7,
         replies: 2,
@@ -261,39 +260,6 @@ function FeedGroup({ posts: groupPosts, hidden, palette }) {
     )
 }
 
-function MobileFeed({ palette }) {
-    return (
-        <Box
-            aria-label="Посты Аквариума"
-            sx={{
-                display: { xs: 'flex', md: 'none' },
-                gap: '12px',
-                mt: '36px',
-                mx: '-20px',
-                px: '20px',
-                overflowX: 'auto',
-                scrollSnapType: 'x mandatory',
-                scrollbarWidth: 'none',
-                WebkitOverflowScrolling: 'touch',
-                '&::-webkit-scrollbar': { display: 'none' },
-            }}
-        >
-            {posts.map((post) => (
-                <Box
-                    key={post.name + post.time}
-                    sx={{
-                        flex: '0 0 auto',
-                        width: 'min(82vw, 360px)',
-                        scrollSnapAlign: 'start',
-                    }}
-                >
-                    <Post post={post} palette={palette} />
-                </Box>
-            ))}
-        </Box>
-    )
-}
-
 function FeedColumn({ groupPosts, className, height, palette }) {
     return (
         <Box
@@ -475,7 +441,6 @@ export default function Aquarium() {
                                 О проекте
                             </Box>
                         </Box>
-                        <MobileFeed palette={palette} />
                     </Box>
 
                     <Box

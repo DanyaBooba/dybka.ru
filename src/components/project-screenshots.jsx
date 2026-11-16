@@ -1,19 +1,8 @@
-import { useEffect, useId } from 'react'
+import { useId } from 'react'
 import Box from '@mui/joy/Box'
 import { useColorScheme } from '@mui/joy/styles'
 import '@fancyapps/ui/dist/fancybox/fancybox.css'
-
-const fancyboxOptions = {
-    closeButton: false,
-    Carousel: {
-        Toolbar: {
-            display: {
-                left: [],
-                right: ['toggleFull', 'close'],
-            },
-        },
-    },
-}
+import useFancybox from './use-fancybox'
 
 const getSource = (item, dark) => {
     if (typeof item === 'string') return item
@@ -27,6 +16,7 @@ export default function ProjectScreenshots({
     layout = 'row',
     aspectRatio,
     altPrefix = 'Скриншот',
+    loading = 'lazy',
     sx,
 }) {
     const { mode, systemMode } = useColorScheme()
@@ -35,22 +25,7 @@ export default function ProjectScreenshots({
     const isWide = layout === 'wide'
     const galleryId = useId().replaceAll(':', '')
 
-    useEffect(() => {
-        const selector = `[data-fancybox="${galleryId}"]`
-        let disposed = false
-        let unbind
-
-        import('@fancyapps/ui').then(({ Fancybox }) => {
-            if (disposed) return
-            Fancybox.bind(selector, fancyboxOptions)
-            unbind = () => Fancybox.unbind(selector)
-        })
-
-        return () => {
-            disposed = true
-            unbind?.()
-        }
-    }, [galleryId])
+    useFancybox(`[data-fancybox="${galleryId}"]`)
 
     return (
         <Box
@@ -98,14 +73,14 @@ export default function ProjectScreenshots({
                             component="img"
                             src={src}
                             alt={alt}
-                            loading="lazy"
+                            loading={loading}
                             decoding="async"
                             sx={{
                                 display: 'block',
                                 width: '100%',
                                 height: 'auto',
                                 aspectRatio: aspectRatio || undefined,
-                                borderRadius: isWide ? '8px' : '20px',
+                                borderRadius: '12px',
                             }}
                         />
                     </Box>

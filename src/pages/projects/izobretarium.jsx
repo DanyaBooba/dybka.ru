@@ -1,19 +1,18 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import Box from '@mui/joy/Box'
 import { useColorScheme } from '@mui/joy/styles'
-import { Link } from 'react-router-dom'
 import {
-    ArrowDown,
-    ArrowRight,
     ArrowUpRight,
     BookOpen,
     CalendarDots,
+    Desktop,
+    DeviceMobile,
     Image as ImageIcon,
     NewspaperClipping,
-    TrendUp,
 } from '@phosphor-icons/react'
 import CaseBrowser from '../../components/case-browser'
 import IzobretariumLogo from '../../components/izobretarium-logo'
+import useFancybox from '../../components/use-fancybox'
 
 const browserPages = [
     {
@@ -21,7 +20,7 @@ const browserPages = [
         label: 'Главная',
         path: '/',
         href: 'https://izobretarium.ru',
-        title: 'Изобретариум — детский технопарк',
+        title: 'Детский технопарк Изобретариум',
         alt: 'Главная страница сайта Изобретариум: навигация, обложка, быстрые ссылки и новости',
         light: {
             src: '/img/projects/izobretarium-preview-light.webp',
@@ -39,28 +38,28 @@ const browserPages = [
         href: 'https://izobretarium.ru/courses/',
         title: 'Учебные программы',
         alt: 'Страница учебных программ Изобретариума с фильтрами и карточками курсов',
-        light: { src: '/img/projects/izobretarium-pages/programs@light.webp' },
-        dark: { src: '/img/projects/izobretarium-pages/programs@dark.webp' },
+        light: { src: '/img/pages/izobretarium/programs@light.webp' },
+        dark: { src: '/img/pages/izobretarium/programs@dark.webp' },
     },
     {
         id: 'program-unity',
         label: 'Страница программы',
         path: '/courses/developing-vr-and-ar-applications-and-games-in-unity/',
         href: 'https://izobretarium.ru/courses/developing-vr-and-ar-applications-and-games-in-unity/',
-        title: 'VR и AR в Unity',
+        title: 'Разработка приложений и игр VR и AR в Unity',
         alt: 'Страница программы «Разработка приложений и игр VR и AR в Unity»',
-        light: { src: '/img/projects/izobretarium-pages/program-unity@light.webp' },
-        dark: { src: '/img/projects/izobretarium-pages/program-unity@dark.webp' },
+        light: { src: '/img/pages/izobretarium/program-unity@light.webp' },
+        dark: { src: '/img/pages/izobretarium/program-unity@dark.webp' },
     },
     {
         id: 'school',
         label: 'Школа',
         path: '/school/',
         href: 'https://izobretarium.ru/school/',
-        title: 'Школа Изобретателей',
+        title: 'Образовательные программы для семейных классов Изобретариума',
         alt: 'Страница «Школа Изобретателей»: программы для семейных классов',
-        light: { src: '/img/projects/izobretarium-pages/school@light.webp' },
-        dark: { src: '/img/projects/izobretarium-pages/school@dark.webp' },
+        light: { src: '/img/pages/izobretarium/school@light.webp' },
+        dark: { src: '/img/pages/izobretarium/school@dark.webp' },
     },
     {
         id: 'party',
@@ -69,8 +68,8 @@ const browserPages = [
         href: 'https://izobretarium.ru/party',
         title: 'Ваш праздник у нас',
         alt: 'Страница праздников в Изобретариуме: форматы мероприятий и запись',
-        light: { src: '/img/projects/izobretarium-pages/party@light.webp' },
-        dark: { src: '/img/projects/izobretarium-pages/party@dark.webp' },
+        light: { src: '/img/pages/izobretarium/party@light.webp' },
+        dark: { src: '/img/pages/izobretarium/party@dark.webp' },
     },
     {
         id: 'master-classes',
@@ -79,18 +78,18 @@ const browserPages = [
         href: 'https://izobretarium.ru/master-classes/',
         title: 'Мастер-классы',
         alt: 'Страница мастер-классов Изобретариума: профессии, форматы и запись',
-        light: { src: '/img/projects/izobretarium-pages/master-classes@light.webp' },
-        dark: { src: '/img/projects/izobretarium-pages/master-classes@dark.webp' },
+        light: { src: '/img/pages/izobretarium/master-classes@light.webp' },
+        dark: { src: '/img/pages/izobretarium/master-classes@dark.webp' },
     },
     {
         id: 'startup-studio',
         label: 'Стартап-студия',
         path: '/startup-studio/',
         href: 'https://izobretarium.ru/startup-studio/',
-        title: 'Стартап студия',
+        title: 'Стартап-студия',
         alt: 'Страница «Стартап студия Изобретариума 3.0»: резиденты, оборудование и заявка',
-        light: { src: '/img/projects/izobretarium-pages/startup-studio@light.webp' },
-        dark: { src: '/img/projects/izobretarium-pages/startup-studio@dark.webp' },
+        light: { src: '/img/pages/izobretarium/startup-studio@light.webp' },
+        dark: { src: '/img/pages/izobretarium/startup-studio@dark.webp' },
     },
 ]
 
@@ -100,7 +99,7 @@ const adminScreenshots = {
 }
 
 const metrics = [
-    { label: 'Производительность', before: [89, 62], after: [99, 83] },
+    { label: 'Общая производительность', before: [89, 62], after: [99, 93] },
     { label: 'Специальные возможности', before: [53, 49], after: [90, 90] },
     { label: 'Рекомендации', before: [77, 77], after: [100, 96] },
     { label: 'Поисковая оптимизация', before: [73, 73], after: [100, 100] },
@@ -109,15 +108,15 @@ const metrics = [
 const changes = [
     {
         title: 'Архитектура',
-        text: 'Пересобрана структура сайта: программы, новости и мероприятия получили понятные разделы, общую сетку и предсказуемую навигацию.',
+        text: 'Переработали структуру проекта и навигацию по сайту, благодаря чему все страницы выстроены в иерархию, по которой удобно перемещаться.',
     },
     {
         title: 'Визуальный язык',
-        text: 'Новая типографика, карточки, цветовые акценты и ритм. Сайт стал спокойнее и понятнее для детей и родителей, сохранив характер технопарка.',
+        text: 'Обновили типографику проекта, дизайн карточек и цветовые акценты. Сайт стал выглядеть единообразно и структурированно, сохранив характер технопарка.',
     },
     {
         title: 'Оптимизация',
-        text: 'Переработаны загрузка медиа, шрифты и разметка. Вместе с доступностью и семантикой это дало рост PageSpeed на компьютере и телефоне.',
+        text: 'Переработали загрузку медиа и шрифтов, а также разметку страниц. Вместе с улучшением доступности и семантики это ускорило загрузку.',
     },
 ]
 
@@ -179,7 +178,7 @@ function Stat({ value, label, palette }) {
             <Box
                 sx={{
                     fontFamily: 'var(--joy-fontFamily-display)',
-                    fontSize: 'clamp(3rem, 6.4vw, 6.4rem)',
+                    fontSize: 'clamp(2.6rem, 6.4vw, 6.4rem)',
                     fontWeight: 400,
                     lineHeight: 0.86,
                     letterSpacing: '-0.055em',
@@ -204,121 +203,131 @@ function Stat({ value, label, palette }) {
     )
 }
 
-function MetricCell({ device, before, after, board }) {
-    const delta = after - before
-    const good = after >= 90
-    const afterColor = good ? board.good : board.warn
+const comparisonGrid = {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+    columnGap: { xs: '18px', sm: '28px', md: 'clamp(36px, 5vw, 76px)' },
+}
+
+function ScoreRow({ value, tone, track, mobile }) {
+    const Icon = mobile ? DeviceMobile : Desktop
+    const label = mobile ? 'Мобильный' : 'Компьютер'
+    const normalized = Math.min(100, Math.max(0, value))
 
     return (
         <Box
             role="group"
-            aria-label={`${device}: было ${before}, стало ${after}`}
-            sx={{ minWidth: 0 }}
+            aria-label={`${label}: ${value} из 100`}
+            sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: { xs: '6px', sm: '9px' },
+                minWidth: 0,
+            }}
         >
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
-                <Box component="span" sx={{ ...kickerSx, fontSize: '9px', color: board.faint }}>
-                    {device}
-                </Box>
-                <Box
-                    component="span"
-                    sx={{
-                        px: '7px',
-                        py: '3px',
-                        borderRadius: '999px',
-                        bgcolor: board.deltaBg,
-                        color: board.delta,
-                        fontFamily: 'var(--joy-fontFamily-body)',
-                        fontSize: '9px',
-                        fontWeight: 500,
-                        lineHeight: 1,
-                        fontVariantNumeric: 'tabular-nums',
-                    }}
-                >
-                    +{delta}
-                </Box>
+            <Box component="span" sx={{ display: 'inline-flex', flexShrink: 0, color: tone }}>
+                <Icon size={18} weight="regular" aria-hidden="true" />
             </Box>
-
             <Box
                 sx={{
-                    display: 'grid',
-                    gridTemplateColumns: 'minmax(0, 1fr) auto minmax(0, 1.18fr)',
-                    alignItems: 'end',
-                    gap: '7px',
-                    mt: '9px',
+                    position: 'relative',
+                    flex: 1,
+                    minWidth: 0,
+                    height: { xs: '8px', sm: '10px' },
+                    borderRadius: '999px',
+                    bgcolor: track,
+                    overflow: 'hidden',
                 }}
             >
                 <Box
                     sx={{
-                        p: '7px 8px',
-                        borderRadius: '9px',
-                        bgcolor: 'rgba(255, 255, 255, .045)',
-                        border: '1px solid rgba(255, 255, 255, .075)',
+                        width: `${normalized}%`,
+                        height: '100%',
+                        borderRadius: '999px',
+                        bgcolor: tone,
                     }}
-                >
-                    <Box
-                        component="span"
-                        sx={{ ...kickerSx, display: 'block', fontSize: '8px', color: board.faint }}
-                    >
-                        Было
-                    </Box>
-                    <Box
-                        component="span"
-                        sx={{
-                            display: 'block',
-                            mt: '4px',
-                            fontFamily: 'var(--joy-fontFamily-body)',
-                            fontSize: 'clamp(22px, 2.2vw, 30px)',
-                            fontWeight: 400,
-                            lineHeight: 1,
-                            letterSpacing: '-0.04em',
-                            color: 'rgba(239, 246, 239, .58)',
-                            fontVariantNumeric: 'tabular-nums',
-                        }}
-                    >
-                        {before}
-                    </Box>
-                </Box>
-
-                <ArrowRight
-                    size={12}
-                    weight="bold"
-                    color={board.faint}
-                    aria-hidden="true"
-                    style={{ marginBottom: '11px' }}
                 />
+            </Box>
+            <Box
+                component="span"
+                sx={{
+                    minWidth: '3ch',
+                    textAlign: 'right',
+                    fontFamily: 'var(--joy-fontFamily-body)',
+                    fontSize: { xs: '16px', sm: '18px', md: '21px' },
+                    fontWeight: 500,
+                    lineHeight: 1,
+                    letterSpacing: '-0.02em',
+                    color: tone,
+                    fontVariantNumeric: 'tabular-nums',
+                }}
+            >
+                {value}
+            </Box>
+        </Box>
+    )
+}
 
-                <Box
-                    sx={{
-                        p: '8px 9px',
-                        borderRadius: '9px',
-                        bgcolor: good ? 'rgba(162, 232, 186, .08)' : 'rgba(244, 196, 122, .08)',
-                        border: '1px solid',
-                        borderColor: good ? 'rgba(162, 232, 186, .18)' : 'rgba(244, 196, 122, .18)',
-                    }}
-                >
-                    <Box
-                        component="span"
-                        sx={{ ...kickerSx, display: 'block', fontSize: '8px', color: afterColor }}
-                    >
-                        Стало
-                    </Box>
-                    <Box
-                        component="span"
-                        sx={{
-                            display: 'block',
-                            mt: '3px',
-                            fontFamily: 'var(--joy-fontFamily-body)',
-                            fontSize: 'clamp(32px, 3.4vw, 44px)',
-                            fontWeight: 500,
-                            lineHeight: 0.95,
-                            letterSpacing: '-0.05em',
-                            color: afterColor,
-                            fontVariantNumeric: 'tabular-nums',
-                        }}
-                    >
-                        {after}
-                    </Box>
-                </Box>
+function ScoreColumn({ values, board, isAfter = false }) {
+    return (
+        <Box
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: { xs: '10px', sm: '12px' },
+                minWidth: 0,
+            }}
+        >
+            {values.map((value, index) => {
+                const tone = value < 50
+                    ? board.bad
+                    : isAfter
+                        ? (value >= 90 ? board.after : board.before)
+                        : board.before
+                const track = tone === board.after
+                    ? board.afterTrack
+                    : tone === board.bad
+                        ? board.badTrack
+                        : board.beforeTrack
+
+                return (
+                    <ScoreRow
+                        key={index}
+                        value={value}
+                        tone={tone}
+                        track={track}
+                        mobile={index === 1}
+                    />
+                )
+            })}
+        </Box>
+    )
+}
+
+function MetricGroup({ metric, board, last }) {
+    return (
+        <Box
+            sx={{
+                pt: { xs: '18px', md: 'clamp(20px, 2.2vw, 28px)' },
+                pb: last ? 0 : { xs: '18px', md: 'clamp(20px, 2.2vw, 28px)' },
+            }}
+        >
+            <Box
+                sx={{
+                    mb: { xs: '12px', md: '14px' },
+                    fontFamily: 'var(--joy-fontFamily-body)',
+                    fontSize: { xs: '15px', md: '18px' },
+                    fontWeight: 500,
+                    lineHeight: 1.3,
+                    letterSpacing: '-0.02em',
+                    color: board.ink,
+                }}
+            >
+                {metric.label}
+            </Box>
+            <Box sx={comparisonGrid}>
+                <ScoreColumn values={metric.before} board={board} />
+                <ScoreColumn values={metric.after} board={board} isAfter />
             </Box>
         </Box>
     )
@@ -331,6 +340,7 @@ function PreviewBrowser({ palette }) {
     const activePage = browserPages[activeIndex]
     const preview = dark ? activePage.dark : activePage.light
     const sectionRef = useRef(null)
+    const stickyRef = useRef(null)
     const viewRef = useRef(null)
     const imageRef = useRef(null)
     const progressRef = useRef(0)
@@ -373,15 +383,21 @@ function PreviewBrowser({ palette }) {
         const section = sectionRef.current
         const image = imageRef.current
         const view = viewRef.current
+        const sticky = stickyRef.current
 
         if (!section || !image || !view) return
 
-        const range = section.offsetHeight - window.innerHeight
+        const pinnedHeight = sticky?.offsetHeight || window.innerHeight
+        const range = section.offsetHeight - pinnedHeight
         if (range <= 0) return
 
+        // Завершаем прокрутку скриншота чуть раньше, чем секция отпустит
+        // браузер: так последние пиксели изображения гарантированно видны
+        // и не зависят от разницы между 100svh и window.innerHeight.
+        const travel = Math.max(1, range * 0.92)
         const progress = Math.min(
             1,
-            Math.max(0, -section.getBoundingClientRect().top / range),
+            Math.max(0, -section.getBoundingClientRect().top / travel),
         )
         const maxShift = Math.max(0, image.offsetHeight - view.clientHeight)
 
@@ -408,15 +424,19 @@ function PreviewBrowser({ palette }) {
         const observer = new ResizeObserver(onScroll)
         if (viewRef.current) observer.observe(viewRef.current)
         if (sectionRef.current) observer.observe(sectionRef.current)
+        if (imageRef.current) observer.observe(imageRef.current)
 
         return () => {
             window.cancelAnimationFrame(frame)
             window.removeEventListener('scroll', onScroll)
             window.removeEventListener('resize', onScroll)
             observer.disconnect()
-            if (imageRef.current) imageRef.current.style.transform = ''
         }
     }, [update])
+
+    useLayoutEffect(() => {
+        update()
+    }, [activeIndex, update])
 
     const selectPage = (index) => {
         setActiveIndex(index)
@@ -448,6 +468,7 @@ function PreviewBrowser({ palette }) {
             }}
         >
             <Box
+                ref={stickyRef}
                 sx={{
                     position: 'sticky',
                     top: 0,
@@ -559,11 +580,7 @@ function PreviewBrowser({ palette }) {
                             url={`izobretarium.ru${activePage.path}`}
                             title={activePage.title}
                             dark={palette.browserDark}
-                            favicon={(
-                                <IzobretariumLogo
-                                    style={{ width: '12px', height: '10px', color: palette.green }}
-                                />
-                            )}
+                            shadow={false}
                             viewportSx={{
                                 height: {
                                     xs: 'clamp(440px, 66svh, 560px)',
@@ -607,18 +624,34 @@ function PreviewBrowser({ palette }) {
 
 function AdminScreenshot({ palette, dark }) {
     const [loadedSrc, setLoadedSrc] = useState(null)
+    const galleryId = useId().replaceAll(':', '')
     const src = dark ? adminScreenshots.dark : adminScreenshots.light
     const loaded = loadedSrc === src
+    const alt = 'Панель администраторов сайта Изобретариум: новости, программы и мероприятия'
+
+    useFancybox(`[data-fancybox="${galleryId}"]`)
 
     return (
         <Box
+            component="a"
+            href={src}
+            data-fancybox={galleryId}
+            data-caption={alt}
+            aria-label={`Открыть скриншот: ${alt}`}
             sx={{
+                display: 'block',
                 position: 'relative',
                 overflow: 'hidden',
                 borderRadius: { xs: '16px', md: '20px' },
-                border: '1px solid',
-                borderColor: palette.line,
                 bgcolor: palette.panel,
+                cursor: 'zoom-in',
+                textDecoration: 'none',
+                color: 'inherit',
+                '&:focus-visible': {
+                    outline: '2px solid',
+                    outlineColor: palette.green,
+                    outlineOffset: '2px',
+                },
             }}
         >
             {!loaded ? (
@@ -687,7 +720,7 @@ function AdminScreenshot({ palette, dark }) {
             <Box
                 component="img"
                 src={src}
-                alt="Панель администраторов сайта Изобретариум: новости, программы и мероприятия"
+                alt={alt}
                 aria-hidden={!loaded}
                 loading="lazy"
                 decoding="async"
@@ -711,20 +744,33 @@ export default function IzobretariumProjectPage() {
     const { mode, systemMode } = useColorScheme()
     const dark = mode === 'dark' || (mode === 'system' && systemMode === 'dark')
     const p = getPalette(dark)
-    const board = {
-        bg: '#12251a',
-        ink: '#eff6ef',
-        muted: 'rgba(239, 246, 239, .6)',
-        faint: 'rgba(239, 246, 239, .38)',
-        line: 'rgba(255, 255, 255, .1)',
-        track: 'rgba(255, 255, 255, .1)',
-        good: '#a2e8ba',
-        warn: '#f4c47a',
-        delta: '#b9efcb',
-        deltaBg: 'rgba(162, 232, 186, .12)',
-        green: p.green,
-        orange: p.orange,
-    }
+    const board = dark
+        ? {
+            bg: '#1f1f1f',
+            glow: 'radial-gradient(110% 80% at 50% 0%, rgba(255, 255, 255, .045), transparent 60%), radial-gradient(80% 60% at 0% 100%, rgba(243, 163, 92, .05), transparent 70%), radial-gradient(80% 60% at 100% 100%, rgba(75, 209, 127, .05), transparent 70%)',
+            ink: '#f2f5f2',
+            faint: 'rgba(242, 245, 242, .45)',
+            line: 'rgba(255, 255, 255, .1)',
+            before: '#f3a35c',
+            beforeTrack: 'rgba(243, 163, 92, .16)',
+            after: '#4bd17f',
+            afterTrack: 'rgba(75, 209, 127, .16)',
+            bad: '#ff6b6b',
+            badTrack: 'rgba(255, 107, 107, .16)',
+        }
+        : {
+            bg: '#e2e2e2',
+            glow: 'linear-gradient(180deg, rgba(255, 255, 255, .4), rgba(255, 255, 255, 0) 55%)',
+            ink: '#17211b',
+            faint: 'rgba(23, 33, 27, .45)',
+            line: 'rgba(23, 33, 27, .1)',
+            before: '#c96f2f',
+            beforeTrack: 'rgba(201, 111, 47, .16)',
+            after: '#26794c',
+            afterTrack: 'rgba(38, 121, 76, .16)',
+            bad: '#c0392b',
+            badTrack: 'rgba(192, 57, 43, .16)',
+        }
 
     return (
         <Box
@@ -762,7 +808,7 @@ export default function IzobretariumProjectPage() {
                                 display: 'flex',
                                 alignItems: 'center',
                                 gap: '14px',
-                                width: { xs: '140px', sm: '170px', md: '200px' },
+                                width: { xs: '104px', sm: '150px', md: '200px' },
                             }}
                         >
                             <IzobretariumLogo style={{ width: '100%', height: 'auto' }} />
@@ -774,7 +820,7 @@ export default function IzobretariumProjectPage() {
                                 m: 0,
                                 mt: { xs: '18px', md: '26px' },
                                 fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-                                fontSize: 'clamp(3.3rem, 8.4vw, 8.2rem)',
+                                fontSize: 'clamp(2.5rem, 8.4vw, 8.2rem)',
                                 fontWeight: 500,
                                 lineHeight: 0.85,
                                 letterSpacing: '-0.06em',
@@ -825,7 +871,7 @@ export default function IzobretariumProjectPage() {
                                     maxWidth: '48ch',
                                 }}
                             >
-                                Сайт крупнейшего детского технопарка Московской области получил новый визуальный стиль, понятные сценарии использования и удобную панель управления для администраторов.
+                                Сайт крупнейшего детского технопарка Московской области получил новый визуальный стиль и понятные пользовательские сценарии. Для администраторов сделали удобную панель управления.
                             </Box>
 
                             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '14px 26px', mt: '26px' }}>
@@ -853,7 +899,7 @@ export default function IzobretariumProjectPage() {
                             </Box>
                         </Box>
 
-                        <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', flex: 1 }}>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', flex: 1, ml: 'auto' }}>
                             <Box
                                 component="dl"
                                 sx={{
@@ -866,13 +912,16 @@ export default function IzobretariumProjectPage() {
                                     rowGap: '18px',
                                     justifyContent: 'start',
                                     m: 0,
+                                    ml: { xs: '0', md: 'auto' },
+                                    mt: { xs: '42px', md: '0' },
+                                    mb: { xs: '72px', md: '0' }
                                 }}
                             >
                                 {[
                                     ['Роль', 'Дизайн и разработка'],
                                     ['Платформа', 'Веб-сайт'],
                                     ['Стек', 'React'],
-                                    ['Статус', 'В продакшене'],
+                                    ['Статус', 'Запущен'],
                                 ].map(([term, value]) => (
                                     <Box key={term}>
                                         <Box
@@ -906,40 +955,32 @@ export default function IzobretariumProjectPage() {
                     </Box>
                 </Box>
 
-                <Box sx={{ mt: { xs: '34px', md: 'clamp(48px, 6vw, 80px)' } }}>
-                    <PreviewBrowser palette={p} />
-                </Box>
-
                 <Box
                     sx={{
                         display: 'grid',
-                        gridTemplateColumns: { xs: '1fr', md: 'minmax(0, .65fr) repeat(2, minmax(0, 1fr))' },
-                        gap: { xs: '30px', md: 'clamp(32px, 5vw, 72px)' },
-                        alignItems: 'end',
+                        gridTemplateColumns: {
+                            xs: 'repeat(2, minmax(0, 1fr))',
+                            md: 'repeat(3, minmax(0, 1fr))',
+                        },
+                        gap: { xs: '24px 18px', md: 'clamp(32px, 5vw, 72px)' },
+                        alignItems: 'start',
                         mt: { xs: 'clamp(54px, 8vw, 80px)', md: 'clamp(72px, 9vw, 120px)' },
                         py: { xs: '30px', md: 'clamp(32px, 4vw, 52px)' },
                         borderTop: '1px solid',
                         borderBottom: '1px solid',
                         borderColor: p.line,
+                        '& > :last-child': {
+                            gridColumn: { xs: '1 / -1', md: 'auto' },
+                        },
                     }}
                 >
-                    <Box>
-                        <Box sx={{ ...kickerSx, color: p.faint }}>Сайт в цифрах</Box>
-                        <Box
-                            sx={{
-                                mt: '10px',
-                                maxWidth: '22ch',
-                                fontSize: '13px',
-                                lineHeight: 1.5,
-                                color: p.muted,
-                            }}
-                        >
-                            Технопарк, куда приходят учиться, и сайт, через который туда
-                            попадают.
-                        </Box>
-                    </Box>
                     <Stat value="2 500" label="учащихся занимаются <nobr>в технопарке</nobr>" palette={p} />
                     <Stat value="500" label="человек заходят <nobr>на сайт</nobr> каждый месяц" palette={p} />
+                    <Stat value="130+" label="образовательных программ в каталоге" palette={p} />
+                </Box>
+
+                <Box sx={{ mt: { xs: '34px', md: 'clamp(48px, 6vw, 80px)' } }}>
+                    <PreviewBrowser palette={p} />
                 </Box>
             </Box>
 
@@ -984,88 +1025,57 @@ export default function IzobretariumProjectPage() {
                             component="p"
                             sx={{ m: 0, fontSize: '14px', lineHeight: 1.55, color: p.muted }}
                         >
-                            Улучшение производительности и поисковой оптимизации предыдущей и новой версий сайта на основе данных с PageSpeed Insights.
-                        </Box>
-                        <Box
-                            component="span"
-                            sx={{
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '7px',
-                                mt: '14px',
-                                px: '10px',
-                                py: '6px',
-                                borderRadius: '999px',
-                                bgcolor: p.greenSoft,
-                                color: p.green,
-                                ...kickerSx,
-                                fontSize: '9px',
-                            }}
-                        >
-                            <TrendUp size={12} weight="bold" aria-hidden="true" />
-                            8 из 8 показателей выросли
+                            Сравнение старой и новой версий сайта по данным PageSpeed Insights.
                         </Box>
                     </Box>
                 </Box>
 
                 <Box
                     sx={{
+                        position: 'relative',
                         p: { xs: '20px', sm: 'clamp(24px, 3.4vw, 46px)' },
                         borderRadius: { xs: '20px', md: '28px' },
                         bgcolor: board.bg,
+                        backgroundImage: board.glow,
+                        border: '1px solid',
+                        borderColor: board.line,
                         color: board.ink,
                         overflow: 'hidden',
                     }}
                 >
-
-                    {metrics.map((metric) => (
-                        <Box
-                            key={metric.label}
-                            sx={{
-                                display: 'grid',
-                                gridTemplateColumns: { xs: '1fr', md: 'minmax(0, 1.15fr) minmax(0, .9fr) minmax(0, .9fr)' },
-                                gap: { xs: '14px', md: 'clamp(24px, 4vw, 56px)' },
-                                alignItems: 'center',
-                                py: { xs: '20px', md: 'clamp(22px, 2.2vw, 30px)' },
-                                borderBottom: '1px solid',
-                                borderColor: board.line,
-                                '&:last-of-type': { borderBottom: 0, pb: '4px' },
-                            }}
-                        >
+                    <Box
+                        sx={{
+                            ...comparisonGrid,
+                            pb: { xs: '12px', md: '16px' },
+                            borderBottom: '1px solid',
+                            borderColor: board.line,
+                        }}
+                    >
+                        {['Было:', 'Стало:'].map((label) => (
                             <Box
+                                key={label}
                                 sx={{
+                                    textAlign: 'center',
                                     fontFamily: 'var(--joy-fontFamily-body)',
-                                    fontSize: { xs: '15px', md: '16px' },
+                                    fontSize: { xs: '18px', md: '24px' },
                                     fontWeight: 500,
-                                    lineHeight: 1.35,
-                                    letterSpacing: '-0.01em',
+                                    lineHeight: 1.1,
+                                    letterSpacing: '-0.03em',
                                     color: board.ink,
                                 }}
                             >
-                                {metric.label}
+                                {label}
                             </Box>
-                            <Box
-                                sx={{
-                                    display: 'grid',
-                                    gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
-                                    gap: '16px',
-                                    gridColumn: { md: 'span 2' },
-                                }}
-                            >
-                                <MetricCell
-                                    device="Компьютер"
-                                    before={metric.before[0]}
-                                    after={metric.after[0]}
-                                    board={board}
-                                />
-                                <MetricCell
-                                    device="Мобильный"
-                                    before={metric.before[1]}
-                                    after={metric.after[1]}
-                                    board={board}
-                                />
-                            </Box>
-                        </Box>
+                        ))}
+                    </Box>
+
+                    {metrics.map((metric, index) => (
+                        <MetricGroup
+                            key={metric.label}
+                            metric={metric}
+                            board={board}
+                            last={index === metrics.length - 1}
+                        />
                     ))}
                 </Box>
             </Box>
@@ -1086,7 +1096,6 @@ export default function IzobretariumProjectPage() {
                     }}
                 >
                     <Box>
-                        <Box sx={{ ...kickerSx, color: p.orange }}>Под капотом</Box>
                         <Box
                             component="h2"
                             sx={{
@@ -1101,7 +1110,7 @@ export default function IzobretariumProjectPage() {
                                 color: p.ink,
                             }}
                         >
-                            Что переработали
+                            Что было переработано
                         </Box>
                     </Box>
 
@@ -1200,14 +1209,14 @@ export default function IzobretariumProjectPage() {
                             color: p.ink,
                         }}
                     >
-                        Панель администраторов
+                        Панель управления сайтом
                     </Box>
                     <Box>
                         <Box
                             component="p"
                             sx={{ m: 0, maxWidth: '46ch', fontSize: '15px', lineHeight: 1.6, color: p.muted }}
                         >
-                            Новости, образовательные программы и мероприятия обновляются через собственную панель управления. Полный контроль над контентом с удобными инструментами и сохранением в черновики.
+                            Новости, образовательные программы и мероприятия обновляются в собственной панели управления. Полный контроль над контентом: удобные инструменты и сохранение черновиков.
                         </Box>
                         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '8px', mt: '18px' }}>
                             {[

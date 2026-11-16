@@ -47,6 +47,7 @@ export default function CaseBrowser({
     title = 'Новая вкладка',
     favicon,
     dark = false,
+    shadow = true,
     children,
     viewportSx,
     sx,
@@ -63,7 +64,7 @@ export default function CaseBrowser({
                     border: '1px solid',
                     borderColor: scheme.border,
                     bgcolor: scheme.shell,
-                    boxShadow: scheme.shadow,
+                    boxShadow: shadow ? scheme.shadow : 'none',
                     isolation: 'isolate',
                 },
                 ...(sx ? (Array.isArray(sx) ? sx : [sx]) : []),
@@ -105,17 +106,16 @@ export default function CaseBrowser({
                                 maxWidth: '280px',
                                 height: '26px',
                                 ml: '6px',
-                                px: '10px',
-                                borderTopLeftRadius: '8px',
-                                borderTopRightRadius: '8px',
+                                px: '12px',
+                                borderRadius: '999px',
                                 bgcolor: scheme.tab,
                                 color: scheme.text,
                                 fontFamily: 'var(--joy-fontFamily-body)',
-                                fontSize: '10.5px',
+                                fontSize: '14px',
                                 lineHeight: 1,
+                                mx: 'auto'
                             }}
                         >
-                            <Box sx={{ display: 'inline-flex', flexShrink: 0 }}>{favicon}</Box>
                             <Box
                                 component="span"
                                 sx={{
@@ -126,77 +126,6 @@ export default function CaseBrowser({
                             >
                                 {title}
                             </Box>
-                            <Box component="span" sx={{ ...iconStyle, ml: 'auto', opacity: 0.6 }}>
-                                <X size={9} weight="bold" />
-                            </Box>
-                        </Box>
-
-                        <Box
-                            component="span"
-                            sx={{ ...iconStyle, ml: { xs: 'auto', sm: 0 }, color: scheme.icon }}
-                        >
-                            <Plus size={13} weight="bold" />
-                        </Box>
-                    </Box>
-
-                    <Box
-                        sx={{
-                            display: { xs: 'none', sm: 'flex' },
-                            alignItems: 'center',
-                            gap: '10px',
-                            height: '40px',
-                            px: '14px',
-                            borderBottom: '1px solid',
-                            borderColor: scheme.divider,
-                        }}
-                    >
-                        <Box component="span" sx={{ ...iconStyle, color: scheme.icon }}>
-                            <ArrowLeft size={13} weight="bold" />
-                        </Box>
-                        <Box component="span" sx={{ ...iconStyle, color: scheme.icon, opacity: 0.5 }}>
-                            <ArrowRight size={13} weight="bold" />
-                        </Box>
-                        <Box component="span" sx={{ ...iconStyle, color: scheme.icon }}>
-                            <ArrowClockwise size={13} weight="bold" />
-                        </Box>
-
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '7px',
-                                flex: 1,
-                                minWidth: 0,
-                                height: '26px',
-                                px: '10px',
-                                borderRadius: '7px',
-                                bgcolor: scheme.address,
-                                border: '1px solid',
-                                borderColor: scheme.divider,
-                                color: scheme.text,
-                                fontFamily: 'var(--joy-fontFamily-body)',
-                                fontSize: '10.5px',
-                                lineHeight: 1,
-                            }}
-                        >
-                            <Lock size={9} weight="fill" style={{ flexShrink: 0, opacity: 0.55 }} />
-                            <Box
-                                component="span"
-                                sx={{
-                                    overflow: 'hidden',
-                                    textOverflow: 'ellipsis',
-                                    whiteSpace: 'nowrap',
-                                }}
-                            >
-                                {url}
-                            </Box>
-                        </Box>
-
-                        <Box component="span" sx={{ ...iconStyle, color: scheme.icon }}>
-                            <Star size={13} />
-                        </Box>
-                        <Box component="span" sx={{ ...iconStyle, color: scheme.icon }}>
-                            <ShareNetwork size={13} />
                         </Box>
                     </Box>
                 </Box>

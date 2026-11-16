@@ -37,15 +37,26 @@ export default function Header() {
                 aria-label="Основная навигация"
                 sx={{
                     display: 'flex',
+                    flexWrap: 'wrap',
+                    justifyContent: 'center',
                     alignItems: 'center',
-                    gap: { xs: '4px', md: '12px' },
+                    columnGap: { xs: '10px', md: '12px' },
+                    rowGap: 0,
+                    maxWidth: '100%',
                     pointerEvents: 'auto',
                     color: '#fff',
-                    fontSize: { xs: '11px', md: '14px' },
+                    fontSize: { xs: '16px', md: '18px' },
                     fontWeight: 500,
-                    lineHeight: 1,
-                    letterSpacing: '0.01em',
+                    lineHeight: 1.5,
                     whiteSpace: 'nowrap',
+                    ...(items.length > 4
+                        ? {
+                            '@media (max-width: 389px)': {
+                                maxWidth: '285px',
+                                columnGap: '16px',
+                            },
+                        }
+                        : {}),
                 }}
             >
                 {items.map((link) => {
@@ -54,8 +65,8 @@ export default function Header() {
                     const linkSx = {
                         color: 'inherit',
                         textDecoration: 'none',
-                        px: { xs: '6px', md: 2 },
-                        py: 1,
+                        px: { xs: 0, md: 2 },
+                        py: { xs: 0.5, md: 1 },
                     }
 
                     if (active) {

@@ -1,9 +1,10 @@
-import { useEffect } from 'react'
+import { useEffect, useId } from 'react'
 import Box from '@mui/joy/Box'
 import { useColorScheme, useTheme } from '@mui/joy/styles'
 import { useParams } from 'react-router-dom'
 import Header from '../components/header'
 import Seo from '../components/seo'
+import useFancybox from '../components/use-fancybox'
 import projects from '../data/projects'
 import {
     DEFAULT_IMAGE,
@@ -52,6 +53,7 @@ export default function PageProject() {
     const { mode, systemMode } = useColorScheme()
     const dark = mode === 'dark' || (mode === 'system' && systemMode === 'dark')
     const { slug } = useParams()
+    const coverGalleryId = useId().replaceAll(':', '')
     const project = projects.find((item) => item.slug === slug)
     const projectTitle = project?.page?.title ?? project?.title
     const projectDescription = project?.page?.desc
@@ -78,6 +80,8 @@ export default function PageProject() {
     useEffect(() => {
         window.scrollTo(0, 0)
     }, [])
+
+    useFancybox(`[data-fancybox="${coverGalleryId}"]`)
 
     return (
         <>
@@ -218,11 +222,18 @@ export default function PageProject() {
 
                         {displayImage ? (
                             <Box
+                                component="a"
+                                href={displayImage}
+                                data-fancybox={coverGalleryId}
+                                data-caption={projectTitle}
+                                aria-label={`Открыть изображение проекта «${projectTitle}»`}
                                 sx={{
+                                    display: 'block',
                                     mt: 'clamp(32px, 4vw, 56px)',
-                                    borderRadius: '8px',
+                                    borderRadius: '12px',
                                     overflow: 'hidden',
                                     bgcolor: '#1b1b1b',
+                                    cursor: 'zoom-in',
                                 }}
                             >
                                 <Box

@@ -39,7 +39,7 @@ export const theme = extendTheme({
                     titleColor: '#000',
                 },
                 aquarium: {
-                    background: '#f8fafc',
+                    background: '#f8fafc66',
                     postBackground: '#fff',
                     text: '#000',
                     mutedText: 'rgba(0, 0, 0, .62)',
@@ -84,7 +84,7 @@ export const theme = extendTheme({
                     titleColor: '#fff',
                 },
                 aquarium: {
-                    background: '#121212',
+                    background: '#121212dd',
                     postBackground: '#1a1a1a',
                     text: '#fff',
                     mutedText: 'rgba(255, 255, 255, .62)',
