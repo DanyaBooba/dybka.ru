@@ -37,7 +37,7 @@ export default [
         img: 'aquarium-app',
         stack: ['iOS', 'Android', 'Веб'],
         link: 'https://aquarium.org.ru',
-        customPage: 'aquarium',
+        customPage: 'aquarium-app',
     },
     {
         title: 'Мессенджер «Аквариум»',
@@ -47,7 +47,7 @@ export default [
         img: 'aquarium-app',
         stack: ['iOS', 'Android', 'Веб'],
         link: 'https://aquarium.org.ru',
-        customPage: 'aquarium-app',
+        customPage: 'aquarium',
     },
     {
         title: 'Сайт команды Creagoo',

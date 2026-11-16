@@ -255,7 +255,7 @@ function EventRow({ event, index, gap, active, onActivate, palette, showInlineIm
                     </Box>
 
                     {showInlineImage ? (
-                        <Box sx={{ mt: '16px' }}>
+                        <Box sx={{ mt: '16px', maxWidth: '500px' }}>
                             <Box
                                 component="img"
                                 src={`/img/contests/${event.imageCap}`}

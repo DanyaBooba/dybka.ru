@@ -114,12 +114,12 @@ export default function PamyatNovomuchenikov() {
                     </Box>
                     <Box
                         component="a"
-                        href="https://map.dybka.ru/apps"
+                        href="/projects/pamyat-app"
                         target="_blank"
                         rel="noreferrer"
                         sx={linkSx}
                     >
-                        Мобильные приложения
+                        О проекте
                     </Box>
                 </Box>
 

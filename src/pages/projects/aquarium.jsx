@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import Box from '@mui/joy/Box'
 import { useColorScheme } from '@mui/joy/styles'
 import { Link } from 'react-router-dom'
@@ -19,6 +20,7 @@ import {
     PhoneCall,
     PhoneDisconnect,
     ShieldCheck,
+    Shuffle,
     Smiley,
     Sticker,
     VideoCamera,
@@ -26,10 +28,12 @@ import {
 import AquariumLogo from '../../components/aquarium-logo'
 import AquariumMark from '../../components/aquarium-mark'
 import CaseBrowser from '../../components/case-browser'
+import { Post } from '../../components/aquarium-post'
+import posts from '../../data/aquarium-posts'
 
 const getPalette = (dark) => dark
     ? {
-        page: '#071a19',
+        page: '#121212',
         ink: '#eafaf8',
         muted: 'rgba(234, 250, 248, .66)',
         faint: 'rgba(234, 250, 248, .42)',
@@ -40,10 +44,10 @@ const getPalette = (dark) => dark
         teal: '#45d9d2',
         tealDeep: '#7ce8e2',
         tealFill: '#14c4be',
-        featureBg: '#081f1d',
+        featureBg: '#121212',
     }
     : {
-        page: '#f3fbfa',
+        page: '#f8fafc',
         ink: '#072b29',
         muted: 'rgba(7, 43, 41, .64)',
         faint: 'rgba(7, 43, 41, .43)',
@@ -54,7 +58,7 @@ const getPalette = (dark) => dark
         teal: '#087b76',
         tealDeep: '#065b57',
         tealFill: '#0fbab5',
-        featureBg: '#ecfaf8',
+        featureBg: '#f8fafc',
     }
 
 const inter = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
@@ -76,12 +80,151 @@ const buttonBase = {
     px: '24px',
     borderRadius: '999px',
     fontFamily: inter,
-    fontSize: '13px',
+    fontSize: '16px',
     fontWeight: 600,
     lineHeight: 1,
     textDecoration: 'none',
     transition: 'transform .3s cubic-bezier(.22,1,.36,1), background-color .25s ease, color .25s ease, border-color .25s ease',
     '&:hover': { transform: 'translateY(-2px)' },
+}
+
+const heroPostPalette = {
+    postBackground: '#ffffff',
+    text: '#000000',
+    postMutedText: 'rgba(0, 0, 0, .45)',
+    verifiedColor: '#1d807d',
+}
+
+const heroPhoneWidth = 'clamp(160px, 15vw, 220px)'
+
+function pickRandomPost(currentName) {
+    const pool = currentName
+        ? posts.filter((post) => post.name !== currentName)
+        : posts
+    return pool[Math.floor(Math.random() * pool.length)]
+}
+
+function HeroVisual({ heroPost, dark }) {
+    const browserImageSx = {
+        position: 'absolute',
+        inset: 0,
+        display: 'block',
+        width: '100%',
+        height: '100%',
+        objectFit: 'cover',
+        objectPosition: 'top center',
+        transition: 'opacity .45s ease',
+    }
+
+    return (
+        <Box sx={{ position: 'relative', minWidth: 0 }}>
+            <Box
+                aria-hidden="true"
+                sx={{
+                    position: 'absolute',
+                    inset: '6% 4% 4%',
+                    borderRadius: '50%',
+                    bgcolor: '#0fbab5',
+                    opacity: 0.15,
+                    filter: 'blur(90px)',
+                    pointerEvents: 'none',
+                }}
+            />
+
+            <Box
+                sx={{
+                    position: 'relative',
+                    zIndex: 1,
+                    // pr: { xs: 0, sm: `calc(${heroPhoneWidth} - 28px)` }
+                }}
+            >
+                <CaseBrowser
+                    url="aquarium.org.ru"
+                    title="Аквариум – мессенджер и микроблог"
+                    dark
+                    viewportSx={{ aspectRatio: { xs: '16 / 11', md: '16 / 10' } }}
+                >
+                    <Box
+                        component="img"
+                        src="/img/pages/aquarium/aquarium@light.jpg"
+                        alt={dark ? '' : 'Лента Аквариума в светлой теме: записи, фотографии, лайки и комментарии'}
+                        aria-hidden={dark ? 'true' : undefined}
+                        loading="eager"
+                        decoding="async"
+                        sx={{
+                            ...browserImageSx,
+                            opacity: dark ? 0 : 1,
+                        }}
+                    />
+                    <Box
+                        component="img"
+                        src="/img/pages/aquarium/aquarium@dark.jpg"
+                        alt={dark ? 'Лента Аквариума в тёмной теме: записи, фотографии, лайки и комментарии' : ''}
+                        aria-hidden={dark ? undefined : 'true'}
+                        loading="eager"
+                        decoding="async"
+                        sx={{
+                            ...browserImageSx,
+                            opacity: dark ? 1 : 0,
+                        }}
+                    />
+                </CaseBrowser>
+            </Box>
+
+            <Box
+                sx={{
+                    position: 'absolute',
+                    right: { xs: '-4px', sm: 0 },
+                    top: '50%',
+                    bottom: 0,
+                    zIndex: 3,
+                    display: { xs: 'none', sm: 'none', md: 'none', lg: 'block' },
+                    width: heroPhoneWidth,
+                    transform: 'translateY(-50%) translateX(30px)',
+                    pointerEvents: 'none',
+                }}
+            >
+                <Box
+                    className="aquarium-hero-phone"
+                    sx={{
+                        width: '100%',
+                        filter: 'drop-shadow(0 16px 16px rgba(0, 0, 0, .3))',
+                        transform: 'rotate(2.4deg)',
+                    }}
+                >
+                    <Box
+                        component="img"
+                        src="/img/pages/aquarium/iphone.png"
+                        alt="Переписка в приложении «Аквариум» на iPhone"
+                        width={960}
+                        height={1981}
+                        loading="eager"
+                        fetchPriority="high"
+                        decoding="async"
+                        sx={{ display: 'block', width: '100%', height: 'auto' }}
+                    />
+                </Box>
+            </Box>
+
+            <Box
+                className="aquarium-hero-post"
+                sx={{
+                    display: { xs: 'none', sm: 'none', md: 'none', lg: 'block' },
+                    position: { xs: 'relative', sm: 'absolute' },
+                    left: { xs: 'auto', sm: '-16px', lg: '-64px' },
+                    bottom: { xs: 'auto', sm: '-40px', lg: '-64px' },
+                    zIndex: 4,
+                    width: { xs: 'min(280px, 80%)', md: 'clamp(250px, 21vw, 310px)' },
+                    mt: { xs: '-26px', sm: 0 },
+                    ml: { xs: '-8px', sm: 0 },
+                    transform: 'rotate(-2.4deg) scale(.75)',
+                    filter: 'drop-shadow(0 16px 16px rgba(0, 0, 0, .3))',
+                }}
+            >
+                <Post post={heroPost} palette={heroPostPalette} />
+            </Box>
+        </Box>
+    )
 }
 
 function FeatureCard({ p, icon: Icon, title, text, children, sx }) {
@@ -543,6 +686,11 @@ export default function AquariumProjectPage() {
     const { mode, systemMode } = useColorScheme()
     const dark = mode === 'dark' || (mode === 'system' && systemMode === 'dark')
     const p = getPalette(dark)
+    const [heroPost, setHeroPost] = useState(() => pickRandomPost())
+
+    const shuffleHeroPost = () => {
+        setHeroPost((current) => pickRandomPost(current.name))
+    }
 
     return (
         <Box
@@ -561,13 +709,16 @@ export default function AquariumProjectPage() {
                 aria-labelledby="aquarium-page-title"
                 sx={{
                     position: 'relative',
+                    display: 'flex',
+                    alignItems: 'center',
+                    minHeight: '100svh',
                     overflow: 'hidden',
                     bgcolor: '#04211f',
                     color: '#eafaf8',
                     backgroundImage:
                         'radial-gradient(900px 540px at 82% 8%, rgba(15, 186, 181, .30), transparent 62%), radial-gradient(640px 460px at 4% 96%, rgba(15, 186, 181, .14), transparent 64%)',
-                    pt: { xs: 'clamp(106px, 15vw, 140px)', md: 'clamp(130px, 13vw, 180px)' },
-                    pb: { xs: 'clamp(64px, 10vw, 90px)', md: 'clamp(90px, 10vw, 140px)' },
+                    pt: { xs: 'clamp(96px, 14vw, 124px)', md: 'clamp(104px, 12vh, 148px)' },
+                    pb: { xs: 'clamp(48px, 9vw, 72px)', md: 'clamp(56px, 9vh, 100px)' },
                 }}
             >
                 <Box
@@ -599,39 +750,17 @@ export default function AquariumProjectPage() {
                 <Box
                     sx={{
                         position: 'relative',
+                        width: '100%',
                         maxWidth: '1500px',
                         mx: 'auto',
                         px: { xs: '20px', md: 'clamp(24px, 3.2vw, 48px)' },
                         display: 'grid',
-                        gridTemplateColumns: { xs: '1fr', lg: 'minmax(0, .9fr) minmax(0, 1.1fr)' },
+                        gridTemplateColumns: { xs: '1fr', lg: 'minmax(0, .66fr) minmax(0, 1.34fr)' },
                         gap: { xs: 'clamp(44px, 8vw, 64px)', lg: 'clamp(40px, 5vw, 80px)' },
                         alignItems: 'center',
                     }}
                 >
                     <Box>
-                        <Box
-                            sx={{
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '9px',
-                                color: 'rgba(234, 250, 248, .68)',
-                                ...kickerSx,
-                                fontSize: '9.5px',
-                            }}
-                        >
-                            <Box
-                                aria-hidden="true"
-                                sx={{
-                                    width: '6px',
-                                    height: '6px',
-                                    borderRadius: '50%',
-                                    bgcolor: '#2fd6cf',
-                                    boxShadow: '0 0 0 4px rgba(47, 214, 207, .14)',
-                                }}
-                            />
-                            Мессенджер · Микроблог · Звонки
-                        </Box>
-
                         <Box
                             component="h1"
                             id="aquarium-page-title"
@@ -639,7 +768,7 @@ export default function AquariumProjectPage() {
                             sx={{
                                 m: 0,
                                 mt: { xs: '24px', md: '34px' },
-                                width: { xs: 'clamp(240px, 74vw, 320px)', md: 'clamp(300px, 30vw, 440px)' },
+                                width: { xs: 'clamp(190px, 58vw, 250px)', md: 'clamp(230px, 22vw, 330px)' },
                                 color: '#ffffff',
                                 lineHeight: 0,
                             }}
@@ -655,7 +784,7 @@ export default function AquariumProjectPage() {
                                 maxWidth: '18ch',
                                 fontFamily: inter,
                                 fontSize: 'clamp(26px, 3.6vw, 44px)',
-                                fontWeight: 500,
+                                fontWeight: 600,
                                 lineHeight: 1.06,
                                 letterSpacing: '-0.045em',
                                 color: '#f2fdfc',
@@ -678,7 +807,7 @@ export default function AquariumProjectPage() {
                             }}
                         >
                             Переписывайтесь, звоните и делитесь мыслями в ленте.
-                            Всё в одном пространстве — без рекламы и лишнего шума.
+                            Всё в одном пространстве.
                         </Box>
 
                         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '10px', mt: { xs: '26px', md: '34px' } }}>
@@ -689,19 +818,21 @@ export default function AquariumProjectPage() {
                                 rel="noreferrer"
                                 sx={{
                                     ...buttonBase,
+                                    px: { xs: '18px', md: '24px' },
                                     bgcolor: '#0fbab5',
                                     color: '#032422',
                                     '&:hover': { bgcolor: '#2ed0ca' },
                                 }}
                             >
-                                Открыть веб-версию
-                                <ArrowUpRight size={15} weight="bold" aria-hidden="true" />
+                                Открыть
                             </Box>
                             <Box
                                 component={Link}
-                                to="/projects/aquarium-app"
+                                to="https://aquarium.org.ru/apps"
+                                target="_blank"
                                 sx={{
                                     ...buttonBase,
+                                    px: { xs: '18px', md: '24px' },
                                     border: '1px solid',
                                     borderColor: 'rgba(234, 250, 248, .24)',
                                     color: '#eafaf8',
@@ -713,178 +844,40 @@ export default function AquariumProjectPage() {
                                     },
                                 }}
                             >
-                                Страница приложения
-                                <ArrowRight size={15} weight="bold" aria-hidden="true" />
+                                Скачать приложение
                             </Box>
-                        </Box>
-
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                flexWrap: 'wrap',
-                                alignItems: 'center',
-                                gap: '8px 20px',
-                                mt: { xs: '30px', md: '42px' },
-                                pt: '18px',
-                                borderTop: '1px solid rgba(234, 250, 248, .13)',
-                                fontFamily: inter,
-                                fontSize: '10px',
-                                fontWeight: 500,
-                                letterSpacing: '0.1em',
-                                textTransform: 'uppercase',
-                                color: 'rgba(234, 250, 248, .46)',
-                            }}
-                        >
-                            <Box component="span">Веб</Box>
-                            <Box component="span">iOS</Box>
-                            <Box component="span">Android</Box>
-                            <Box component="span" sx={{ ml: { md: 'auto' } }}>
-                                Без рекламы
-                            </Box>
-                        </Box>
-                    </Box>
-
-                    <Box sx={{ position: 'relative', minWidth: 0 }}>
-                        <Box
-                            sx={{
-                                position: 'relative',
-                                transform: { xs: 'none', lg: 'rotate(-1deg)' },
-                                transition: 'transform .5s cubic-bezier(.22,1,.36,1)',
-                                '&:hover': { transform: { lg: 'rotate(0deg) translateY(-4px)' } },
-                            }}
-                        >
-                            <CaseBrowser
-                                url="aquarium.org.ru"
-                                title="Аквариум — лента"
-                                dark
-                                favicon={(
-                                    <Box
-                                        sx={{
-                                            display: 'grid',
-                                            placeItems: 'center',
-                                            width: '13px',
-                                            height: '13px',
-                                            borderRadius: '4px',
-                                            bgcolor: '#0fbab5',
-                                            color: '#fff',
-                                        }}
-                                    >
-                                        <AquariumMark style={{ width: '9px', height: 'auto' }} />
-                                    </Box>
-                                )}
-                                viewportSx={{ aspectRatio: { xs: '16 / 11', md: '16 / 10' } }}
-                            >
-                                <Box
-                                    component="img"
-                                    src="/img/projects/aquarium@light.jpg"
-                                    alt="Лента Аквариума в веб-версии: записи, фотографии, лайки и комментарии"
-                                    loading="eager"
-                                    decoding="async"
-                                    sx={{
-                                        position: 'absolute',
-                                        inset: 0,
-                                        display: 'block',
-                                        width: '100%',
-                                        height: '100%',
-                                        objectFit: 'cover',
-                                        objectPosition: 'top center',
-                                    }}
-                                />
-                            </CaseBrowser>
-                        </Box>
-
-                        <Box
-                            sx={{
-                                position: 'absolute',
-                                left: { md: '-28px', lg: '-38px' },
-                                bottom: { md: '-30px', lg: '-38px' },
-                                display: { xs: 'none', md: 'flex' },
-                                flexDirection: 'column',
-                                gap: '8px',
-                                width: 'min(266px, 60%)',
-                                p: '14px',
-                                borderRadius: '20px',
-                                bgcolor: '#ffffff',
-                                color: '#072b29',
-                                boxShadow: '0 26px 70px rgba(0, 0, 0, .32)',
-                                transform: 'rotate(1.6deg)',
-                            }}
-                        >
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                <Box
-                                    component="img"
-                                    src="/img/aquarium/user-sasha.jpg"
-                                    alt=""
-                                    sx={{ width: '30px', height: '30px', borderRadius: '50%', objectFit: 'cover' }}
-                                />
-                                <Box>
-                                    <Box
-                                        sx={{
-                                            fontFamily: inter,
-                                            fontSize: '11px',
-                                            fontWeight: 600,
-                                            lineHeight: 1.2,
-                                        }}
-                                    >
-                                        Александра
-                                    </Box>
-                                    <Box
-                                        sx={{
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            gap: '4px',
-                                            mt: '2px',
-                                            fontFamily: inter,
-                                            fontSize: '9px',
-                                            lineHeight: 1.2,
-                                            color: 'rgba(7,43,41,.45)',
-                                        }}
-                                    >
-                                        <Box
-                                            aria-hidden="true"
-                                            sx={{ width: '5px', height: '5px', borderRadius: '50%', bgcolor: '#0fbab5' }}
-                                        />
-                                        в сети
-                                    </Box>
-                                </Box>
-                                <Box sx={{ ml: 'auto', color: 'rgba(7,43,41,.3)' }}>
-                                    <ChatCircleDots size={16} />
-                                </Box>
-                            </Box>
-                            <Box
+                            {/* <Box
+                                component="button"
+                                type="button"
+                                onClick={shuffleHeroPost}
+                                aria-label="Показать другую случайную запись"
+                                title="Другая случайная запись"
                                 sx={{
-                                    px: '11px',
-                                    py: '9px',
-                                    borderRadius: '4px 13px 13px 13px',
-                                    bgcolor: '#e7f8f6',
-                                    fontFamily: inter,
-                                    fontSize: '11px',
-                                    lineHeight: 1.4,
+                                    ...buttonBase,
+                                    width: '48px',
+                                    minWidth: '48px',
+                                    px: 0,
+                                    border: '1px solid',
+                                    borderColor: 'rgba(234, 250, 248, .24)',
+                                    bgcolor: 'rgba(255,255,255,.03)',
+                                    color: '#eafaf8',
+                                    cursor: 'pointer',
+                                    '&:hover': {
+                                        borderColor: 'rgba(234, 250, 248, .5)',
+                                        bgcolor: 'rgba(255,255,255,.07)',
+                                    },
+                                    '&:focus-visible': {
+                                        outline: '2px solid #2ed0ca',
+                                        outlineOffset: '3px',
+                                    },
                                 }}
                             >
-                                Давай созвонимся вечером, покажу новые стикеры ✨
-                            </Box>
-                        </Box>
-
-                        <Box
-                            sx={{
-                                position: 'absolute',
-                                right: { md: '-16px', lg: '-22px' },
-                                top: { md: '-18px', lg: '-24px' },
-                                display: { xs: 'none', md: 'grid' },
-                                placeItems: 'center',
-                                width: '54px',
-                                height: '54px',
-                                borderRadius: '17px',
-                                bgcolor: '#0fbab5',
-                                color: '#032422',
-                                boxShadow: '0 18px 40px rgba(0, 0, 0, .26)',
-                                transform: 'rotate(7deg)',
-                            }}
-                        >
-                            <FishSimple size={27} weight="fill" aria-hidden="true" />
+                                <Shuffle size={18} weight="bold" aria-hidden="true" />
+                            </Box> */}
                         </Box>
                     </Box>
+
+                    <HeroVisual heroPost={heroPost} dark={dark} />
                 </Box>
             </Box>
 
@@ -909,7 +902,6 @@ export default function AquariumProjectPage() {
                         }}
                     >
                         <Box>
-                            <Box sx={{ ...kickerSx, color: p.teal }}>Возможности · 06</Box>
                             <Box
                                 component="h2"
                                 id="aquarium-features-title"
@@ -926,7 +918,7 @@ export default function AquariumProjectPage() {
                                     textWrap: 'balance',
                                 }}
                             >
-                                Всё нужное под рукой
+                                Возможности Аквариума
                             </Box>
                         </Box>
                         <Box
@@ -941,8 +933,7 @@ export default function AquariumProjectPage() {
                                 color: p.muted,
                             }}
                         >
-                            Один мессенджер вместо десятка вкладок: разговоры, лента,
-                            звонки и мелочи, из которых складывается спокойное общение.
+                            Один мессенджер вместо десятка других: сообщения, лента, звонки и профиль — всё в одном пространстве.
                         </Box>
                     </Box>
 
@@ -1124,93 +1115,11 @@ export default function AquariumProjectPage() {
             </Box>
 
             <Box
-                sx={{
-                    maxWidth: '1500px',
-                    mx: 'auto',
-                    px: { xs: '20px', md: 'clamp(24px, 3.2vw, 48px)' },
-                    pt: { xs: 'clamp(48px, 8vw, 64px)', md: 'clamp(64px, 8vw, 100px)' },
-                }}
-            >
-                <Box
-                    component={Link}
-                    to="/projects/aquarium-app"
-                    sx={{
-                        display: 'flex',
-                        flexWrap: 'wrap',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        gap: '20px 40px',
-                        py: { xs: '22px', md: '30px' },
-                        borderTop: '1px solid',
-                        borderColor: p.line,
-                        borderBottom: '1px solid',
-                        color: p.ink,
-                        textDecoration: 'none',
-                        '&:hover .aqua-app-arrow': { transform: 'translate(5px, -5px)' },
-                    }}
-                >
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                        <Box
-                            sx={{
-                                display: 'grid',
-                                placeItems: 'center',
-                                width: { xs: '46px', md: '56px' },
-                                height: { xs: '46px', md: '56px' },
-                                borderRadius: { xs: '13px', md: '16px' },
-                                bgcolor: p.tealFill,
-                                color: '#ffffff',
-                                flexShrink: 0,
-                            }}
-                        >
-                            <AquariumMark style={{ width: '64%', height: 'auto' }} />
-                        </Box>
-                        <Box>
-                            <Box sx={{ ...kickerSx, fontSize: '9px', color: p.faint }}>Приложение</Box>
-                            <Box
-                                sx={{
-                                    mt: '6px',
-                                    fontFamily: inter,
-                                    fontSize: 'clamp(20px, 2.2vw, 28px)',
-                                    fontWeight: 600,
-                                    letterSpacing: '-0.03em',
-                                    lineHeight: 1.1,
-                                }}
-                            >
-                                Аквариум в кармане
-                            </Box>
-                        </Box>
-                    </Box>
-
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                        <Box
-                            component="span"
-                            sx={{
-                                fontFamily: inter,
-                                fontSize: '11px',
-                                fontWeight: 500,
-                                color: p.muted,
-                            }}
-                        >
-                            6 месяцев разработки
-                        </Box>
-                        <ArrowUpRight
-                            className="aqua-app-arrow"
-                            size={24}
-                            weight="light"
-                            aria-hidden="true"
-                            style={{ transition: 'transform .5s cubic-bezier(.22,1,.36,1)' }}
-                        />
-                    </Box>
-                </Box>
-            </Box>
-
-            <Box
                 component="section"
                 aria-labelledby="aquarium-final-title"
                 sx={{
                     maxWidth: '1500px',
                     mx: 'auto',
-                    px: { xs: '20px', md: 'clamp(24px, 3.2vw, 48px)' },
                     py: { xs: 'clamp(48px, 8vw, 64px)', md: 'clamp(64px, 8vw, 100px)' },
                 }}
             >
@@ -1242,9 +1151,6 @@ export default function AquariumProjectPage() {
                     </Box>
 
                     <Box sx={{ position: 'relative', maxWidth: '900px' }}>
-                        <Box sx={{ ...kickerSx, fontSize: '9px', color: 'rgba(234, 250, 248, .5)' }}>
-                            Всё вместе
-                        </Box>
                         <Box
                             component="h2"
                             id="aquarium-final-title"
@@ -1260,7 +1166,7 @@ export default function AquariumProjectPage() {
                                 textWrap: 'balance',
                             }}
                         >
-                            Сообщения, лента и звонки.
+                            Сообщения, лента и звонки
                         </Box>
                         <Box
                             component="p"
@@ -1291,7 +1197,6 @@ export default function AquariumProjectPage() {
                                 }}
                             >
                                 Скачать приложение
-                                <ArrowUpRight size={15} weight="bold" aria-hidden="true" />
                             </Box>
                             <Box
                                 component="a"
@@ -1355,23 +1260,6 @@ export default function AquariumProjectPage() {
                         >
                             О проекте
                             <ArrowUpRight size={13} aria-hidden="true" />
-                        </Box>
-                        <Box
-                            component={Link}
-                            to="/projects"
-                            sx={{
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '7px',
-                                color: p.muted,
-                                fontFamily: inter,
-                                fontSize: '11px',
-                                fontWeight: 500,
-                                textDecoration: 'none',
-                            }}
-                        >
-                            Все проекты
-                            <ArrowRight size={13} aria-hidden="true" />
                         </Box>
                     </Box>
                 </Box>

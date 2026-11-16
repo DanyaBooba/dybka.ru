@@ -117,8 +117,28 @@ body {
     }
 }
 
+.aquarium-hero-phone {
+    /* animation: aquariumPhoneSway 11s ease-in-out infinite; */
+    transform-origin: 50% 68%;
+    will-change: transform;
+}
+
+@keyframes aquariumPhoneSway {
+
+    0%,
+    100% {
+        transform: rotate(-4deg) translate3d(0, 0, 0);
+    }
+
+    50% {
+        transform: rotate(-1.5deg) translate3d(0, -12px, 0);
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
-    .aquarium-feed {
+
+    .aquarium-feed,
+    .aquarium-hero-phone {
         animation: none;
     }
 }
