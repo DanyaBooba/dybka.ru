@@ -30,9 +30,9 @@ export default [
         }
     },
     {
-        title: 'СТАРЫЙ Мессенджер «Аквариум»',
-        slug: 'aquarium-DELETE',
-        categories: ['app', 'web'],
+        title: 'Приложение мессенджера «Аквариум»',
+        slug: 'aquarium-app',
+        categories: ['app'],
         desc: 'Переписывайтесь, звоните и делитесь мыслями в ленте. Всё в одном пространстве.',
         img: 'aquarium-app',
         stack: ['iOS', 'Android', 'Веб'],
@@ -42,9 +42,9 @@ export default [
     {
         title: 'Мессенджер «Аквариум»',
         slug: 'aquarium',
-        categories: ['app', 'web'],
+        categories: ['web'],
         desc: 'Переписывайтесь, звоните и делитесь мыслями в ленте. Всё в одном пространстве.',
-        img: 'aquarium-app',
+        img: 'aquarium',
         stack: ['iOS', 'Android', 'Веб'],
         link: 'https://aquarium.org.ru',
         customPage: 'aquarium',

@@ -91,6 +91,7 @@ export default function CaseBrowser({
                                 ml: '6px',
                                 px: '12px',
                                 borderRadius: '999px',
+                                fontWeight: 500,
                                 bgcolor: scheme.tab,
                                 color: scheme.text,
                                 fontFamily: 'var(--joy-fontFamily-body)',

@@ -203,7 +203,7 @@ export default function PamyatAppProjectPage() {
                             textWrap: 'balance',
                         }}
                     >
-                        Более 20 000 дел <nobr>с ссылками</nobr> <nobr>на источники</nobr> <nobr>и событиями</nobr> <nobr>на карте</nobr>.
+                        Более 20 000 дел <nobr>со ссылками</nobr> <nobr>на источники</nobr> <nobr>и событиями</nobr> <nobr>на карте</nobr>.
                     </Box>
                 </Box>
 

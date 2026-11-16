@@ -1,62 +1,63 @@
 import { useState } from 'react'
 import Box from '@mui/joy/Box'
-import { useColorScheme } from '@mui/joy/styles'
+import { useColorScheme, useTheme } from '@mui/joy/styles'
 import { Link } from 'react-router-dom'
 import {
     ArrowRight,
     ArrowUpRight,
-    Article,
-    ChatCircle,
+    Browser,
     ChatCircleDots,
-    Check,
-    DeviceMobile,
+    ChatsCircleIcon,
+    Checks,
     Devices,
-    FishSimple,
-    GlobeHemisphereWest,
-    Heart,
-    Laptop,
-    Microphone,
-    Paperclip,
+    EnvelopeSimple,
+    GithubLogo,
+    Key,
+    LockKey,
+    MegaphoneIcon,
     PhoneCall,
-    PhoneDisconnect,
+    Prohibit,
+    SealCheck,
     ShieldCheck,
     Shuffle,
-    Smiley,
+    SignIn,
+    Sparkle,
     Sticker,
-    VideoCamera,
 } from '@phosphor-icons/react'
 import AquariumLogo from '../../components/aquarium-logo'
 import AquariumMark from '../../components/aquarium-mark'
 import CaseBrowser from '../../components/case-browser'
-import { Post } from '../../components/aquarium-post'
+import { FeedGroup, Post } from '../../components/aquarium-post'
 import posts from '../../data/aquarium-posts'
 
 const getPalette = (dark) => dark
     ? {
         page: '#121212',
         ink: '#eafaf8',
+        heading: '#ffffff',
         muted: 'rgba(234, 250, 248, .66)',
         faint: 'rgba(234, 250, 248, .42)',
         line: 'rgba(234, 250, 248, .13)',
         card: '#0b2422',
         cardHover: '#0e2c29',
         mint: '#10302d',
+        bubble: '#163a36',
         teal: '#45d9d2',
-        tealDeep: '#7ce8e2',
         tealFill: '#14c4be',
         featureBg: '#121212',
     }
     : {
         page: '#f8fafc',
         ink: '#072b29',
+        heading: '#000000',
         muted: 'rgba(7, 43, 41, .64)',
         faint: 'rgba(7, 43, 41, .43)',
         line: 'rgba(7, 43, 41, .12)',
         card: '#ffffff',
         cardHover: '#f7fefd',
         mint: '#def6f3',
+        bubble: '#def6f3',
         teal: '#087b76',
-        tealDeep: '#065b57',
         tealFill: '#0fbab5',
         featureBg: '#f8fafc',
     }
@@ -88,13 +89,6 @@ const buttonBase = {
     '&:hover': { transform: 'translateY(-2px)' },
 }
 
-const heroPostPalette = {
-    postBackground: '#ffffff',
-    text: '#000000',
-    postMutedText: 'rgba(0, 0, 0, .45)',
-    verifiedColor: '#1d807d',
-}
-
 const heroPhoneWidth = 'clamp(160px, 15vw, 220px)'
 
 function pickRandomPost(currentName) {
@@ -104,7 +98,7 @@ function pickRandomPost(currentName) {
     return pool[Math.floor(Math.random() * pool.length)]
 }
 
-function HeroVisual({ heroPost, dark }) {
+function HeroVisual({ heroPost, dark, postPalette }) {
     const browserImageSx = {
         position: 'absolute',
         inset: 0,
@@ -221,48 +215,35 @@ function HeroVisual({ heroPost, dark }) {
                     filter: 'drop-shadow(0 16px 16px rgba(0, 0, 0, .3))',
                 }}
             >
-                <Post post={heroPost} palette={heroPostPalette} />
+                <Post post={heroPost} palette={postPalette} />
             </Box>
         </Box>
     )
 }
 
-function FeatureCard({ p, icon: Icon, title, text, children, sx }) {
+function FeatureCard({ p, icon: Icon, title, text }) {
     return (
         <Box
-            sx={[
-                {
-                    position: 'relative',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    overflow: 'hidden',
-                    p: { xs: '22px', md: 'clamp(24px, 2.4vw, 32px)' },
-                    borderRadius: { xs: '22px', md: '26px' },
-                    border: '1px solid',
-                    borderColor: p.line,
-                    bgcolor: p.card,
-                    transition: 'transform .35s cubic-bezier(.22,1,.36,1), border-color .3s ease, background-color .3s ease',
-                    '&:hover': {
-                        transform: 'translateY(-4px)',
-                        borderColor: p.teal,
-                        bgcolor: p.cardHover,
-                    },
-                },
-                ...(sx ? (Array.isArray(sx) ? sx : [sx]) : []),
-            ]}
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                p: { xs: '22px', md: 'clamp(24px, 2.4vw, 32px)' },
+                borderRadius: '24px',
+                bgcolor: p.card,
+            }}
         >
             <Box
                 sx={{
                     display: 'grid',
                     placeItems: 'center',
-                    width: '38px',
-                    height: '38px',
+                    width: '52px',
+                    height: '52px',
                     borderRadius: '12px',
                     bgcolor: p.mint,
                     color: p.teal,
                 }}
             >
-                <Icon size={19} weight="regular" aria-hidden="true" />
+                <Icon size={28} weight="fill" aria-hidden="true" />
             </Box>
             <Box
                 component="h3"
@@ -274,7 +255,7 @@ function FeatureCard({ p, icon: Icon, title, text, children, sx }) {
                     fontWeight: 600,
                     lineHeight: 1.15,
                     letterSpacing: '-0.025em',
-                    color: p.ink,
+                    color: p.heading,
                 }}
             >
                 {title}
@@ -293,391 +274,413 @@ function FeatureCard({ p, icon: Icon, title, text, children, sx }) {
             >
                 {text}
             </Box>
-            {children}
         </Box>
     )
 }
 
-function ChatMock({ p }) {
+
+const sectionSx = {
+    px: { xs: '20px', md: 'clamp(24px, 3.2vw, 48px)' },
+    py: { xs: 'clamp(40px, 7vw, 56px)', md: 'clamp(56px, 6.5vw, 96px)' },
+}
+
+const sectionTitleSx = (p) => ({
+    m: 0,
+    fontFamily: inter,
+    fontSize: 'clamp(1.5rem, 4.2vw, 3rem)',
+    fontWeight: 600,
+    lineHeight: 0.98,
+    letterSpacing: '-0.05em',
+    color: p.heading,
+    textWrap: 'balance',
+})
+
+const sectionTextSx = (p) => ({
+    m: 0,
+    mt: '18px',
+    maxWidth: '46ch',
+    fontFamily: inter,
+    fontSize: 'clamp(14.5px, 1.2vw, 16px)',
+    lineHeight: 1.65,
+    color: p.muted,
+})
+
+const chatMessages = [
+    { id: 'm1', fromMe: false, text: 'Привет! Уже видел мессенджер Аквариум?', time: '23:41' },
+    { id: 'm2', fromMe: true, text: 'Да, вчера скачал. Выглядит прикольно', time: '23:42' },
+    { id: 'm3', fromMe: true, text: '😍', time: '23:42' },
+    { id: 'm4', fromMe: false, text: 'Вот-вот! И звонки прямо из чата работают', time: '23:43' },
+    { id: 'm5', fromMe: true, text: 'Давай созвонимся вечером, покажу новые стикеры ❤️', time: '23:44' },
+    { id: 'm6', fromMe: false, text: 'Договорились! 🙌', time: '23:44' },
+]
+
+const startSteps = [
+    {
+        icon: EnvelopeSimple,
+        title: 'Вводите почту',
+        text: 'Никаких длинных анкет, максимально просто.',
+    },
+    {
+        icon: ChatCircleDots,
+        title: 'Получаете код',
+        text: 'Мы отправим одноразовый код на почту.',
+    },
+    {
+        icon: SignIn,
+        title: 'Готово!',
+        text: 'Можно писать, звонить и делиться записями.',
+    },
+]
+
+const cleanAdvantages = [
+    {
+        icon: PhoneCall,
+        title: 'Звонки на наших серверах',
+        text: 'Разговаривайте спокойно, ведь вас никто не прослушивает.',
+    },
+    {
+        icon: Prohibit,
+        title: 'Никакой рекламы',
+        text: 'В ленте только те, на кого вы подписаны: ни рекомендаций, ни баннеров.',
+    },
+    {
+        icon: SealCheck,
+        title: 'Доступен без ограничений',
+        text: 'Без блокировок и обходных решений.',
+    },
+    {
+        icon: Sparkle,
+        title: 'Ничего лишнего',
+        text: 'Один понятный сервис для общения и записей.',
+    },
+]
+
+const securityItems = [
+    {
+        icon: Key,
+        title: 'Вход без пароля',
+        text: 'Вы входите по одноразовому коду из почты или через Яндекс ID.',
+    },
+    {
+        icon: LockKey,
+        title: 'Шифрованное соединение',
+        text: 'Весь трафик между вами и сервером передаётся по защищённому каналу.',
+    },
+    {
+        icon: SealCheck,
+        title: 'Защита сессий',
+        text: 'Доступ работает на токенах с автоматическим обновлением и защитой от подделки запросов.',
+    },
+    {
+        icon: GithubLogo,
+        title: 'Открытый код',
+        text: 'Клиентская часть с открытым исходным кодом. Можно изучить, как всё устроено.',
+    },
+]
+
+const timeline = [
+    {
+        year: '2019–2022',
+        title: 'Первые попытки',
+        text: 'Начинал несколько раз и каждый раз заново: менял подход, структуру и стек, но идея оставалась.',
+    },
+    {
+        year: '2023',
+        title: 'Первая тестовая версия',
+        text: 'Первая версия, в которую можно войти: появились пользователи и сессии.',
+    },
+    {
+        year: '2024',
+        title: 'Записи',
+        text: 'Появились записи: публикации в общей ленте. Проект стал микроблогом.',
+    },
+    {
+        year: '2025',
+        title: 'Сообщения и звонки',
+        text: 'Добавились сообщения и звонки — так Аквариум стал мессенджером.',
+    },
+    {
+        year: '2026',
+        title: 'Приложение',
+        text: 'Мобильное приложение для iOS и Android — та же лента и те же чаты в телефоне.',
+    },
+]
+
+const projectStats = [
+    { value: '311', label: 'человек аудитории' },
+    { value: '217', label: 'опубликованных записей' },
+    { value: '200', label: 'созданных чатов' },
+    { value: '7', label: 'лет с первой попытки' },
+    { value: '4', label: 'версии проекта' },
+]
+
+const projectScreens = [
+    {
+        title: 'Чат',
+        text: 'Личные и групповые переписки, вложения и реакции.',
+    },
+    {
+        title: 'Звонок',
+        text: 'Видео или аудио. Работает прямо из чата.',
+    },
+    {
+        title: 'Профиль',
+        text: 'Аватар, шапка, записи и подписки. Привычная кастомизация.',
+    },
+]
+
+const stack = [
+    {
+        label: 'Клиент',
+        title: 'React и Joy UI',
+        text: 'Интерфейс и роутинг. Редактор записей — TipTap: фото, ссылки и форматирование.',
+    },
+    {
+        label: 'Сервер',
+        title: 'Node.js и Express',
+        text: 'REST API, Sequelize и MySQL 8.0: пользователи, записи, чаты и уведомления.',
+    },
+    {
+        label: 'Реальное время',
+        title: 'WebSocket',
+        text: 'socket.io: сообщения, реакции и прочитанность приходят мгновенно, без перезагрузки.',
+    },
+    {
+        label: 'Звонки',
+        title: 'WebRTC, mediasoup и coturn',
+        text: 'Свой SFU и TURN-сервер: видео один на один и аудиозвонки прямо в браузере.',
+    },
+    {
+        label: 'Файлы',
+        title: 'S3 и медиа',
+        text: 'Фото, видео и вложения живут в MinIO, превью готовят sharp и ffmpeg.',
+    },
+    {
+        label: 'Вход',
+        title: 'JWT и Яндекс ID',
+        text: 'Access и refresh токены, одноразовые коды на почту и OAuth Яндекса.',
+    },
+]
+
+const repositories = [
+    {
+        label: 'Веб-клиент',
+        href: 'https://github.com/DanyaBooba/aquarium-web-client',
+    },
+    {
+        label: 'Мобильное приложение',
+        href: 'https://github.com/DanyaBooba/aquarium-mobile-app',
+    },
+]
+
+const postColumns = {
+    left: posts.filter((_, index) => index % 2 === 0),
+    right: posts.filter((_, index) => index % 2 === 1),
+}
+
+function IconBadge({ p, icon: Icon, bg }) {
     return (
-        <Box sx={{ mt: 'auto', pt: '24px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <Box
+            aria-hidden="true"
+            sx={{
+                display: 'grid',
+                placeItems: 'center',
+                width: '52px',
+                height: '52px',
+                borderRadius: '12px',
+                bgcolor: bg,
+                color: p.teal,
+                flexShrink: 0,
+            }}
+        >
+            <Icon size={28} weight="fill" />
+        </Box>
+    )
+}
+
+function FeedColumn({ groupPosts, className, height, palette }) {
+    return (
+        <Box
+            aria-hidden="true"
+            sx={{
+                width: '100%',
+                maxWidth: '548px',
+                height,
+                mx: 'auto',
+                overflow: 'hidden',
+                maskImage: 'linear-gradient(180deg, transparent 0%, #000 6%, #000 94%, transparent 100%)',
+                WebkitMaskImage: 'linear-gradient(180deg, transparent 0%, #000 6%, #000 94%, transparent 100%)',
+            }}
+        >
+            <Box className={className ? `aquarium-feed ${className}` : 'aquarium-feed'}>
+                <FeedGroup posts={groupPosts} palette={palette} />
+                <FeedGroup posts={groupPosts} hidden palette={palette} />
+            </Box>
+        </Box>
+    )
+}
+
+function ChatPreview({ p }) {
+    return (
+        <Box
+            aria-hidden="true"
+            sx={{
+                width: '100%',
+                maxWidth: '560px',
+                mx: { xs: 'auto', md: 0 },
+                p: { xs: '16px', md: '22px' },
+                borderRadius: '24px',
+                bgcolor: p.card,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '10px',
+            }}
+        >
             <Box
                 sx={{
-                    alignSelf: 'flex-end',
-                    maxWidth: '86%',
-                    px: '13px',
-                    py: '10px',
-                    borderRadius: '16px 16px 4px 16px',
-                    bgcolor: p.tealFill,
-                    color: '#032422',
-                    fontFamily: inter,
-                    fontSize: '12.5px',
-                    fontWeight: 500,
-                    lineHeight: 1.4,
-                }}
-            >
-                Привет! Собрал для чата новые стикеры.
-            </Box>
-            <Box sx={{ display: 'flex', alignItems: 'flex-end', gap: '8px', maxWidth: '88%' }}>
-                <Box
-                    component="img"
-                    src="/img/aquarium/user-sasha.jpg"
-                    alt=""
-                    sx={{ width: '26px', height: '26px', borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }}
-                />
-                <Box
-                    sx={{
-                        px: '13px',
-                        py: '10px',
-                        borderRadius: '4px 16px 16px 16px',
-                        bgcolor: p.mint,
-                        color: p.ink,
-                        fontFamily: inter,
-                        fontSize: '12px',
-                        lineHeight: 1.45,
-                    }}
-                >
-                    Фото и файлы на месте. Уже смотрю.
-                </Box>
-            </Box>
-            <Box
-                sx={{
-                    alignSelf: 'flex-end',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '9px',
-                    maxWidth: '86%',
-                    px: '11px',
-                    py: '9px',
-                    borderRadius: '12px',
-                    border: '1px solid',
+                    gap: '10px',
+                    pb: '12px',
+                    mb: '2px',
+                    borderBottom: '1px solid',
                     borderColor: p.line,
-                    bgcolor: p.card,
                 }}
             >
                 <Box
                     sx={{
                         display: 'grid',
                         placeItems: 'center',
-                        width: '26px',
-                        height: '26px',
-                        borderRadius: '7px',
-                        bgcolor: p.mint,
+                        width: '34px',
+                        height: '34px',
+                        borderRadius: '50%',
+                        bgcolor: p.bubble,
                         color: p.teal,
+                        fontFamily: inter,
+                        fontSize: '13px',
+                        fontWeight: 600,
                         flexShrink: 0,
                     }}
                 >
-                    <Paperclip size={13} />
+                    А
                 </Box>
                 <Box sx={{ minWidth: 0 }}>
                     <Box
                         sx={{
                             fontFamily: inter,
-                            fontSize: '10.5px',
+                            fontSize: '13px',
                             fontWeight: 600,
                             lineHeight: 1.2,
-                            color: p.ink,
+                            color: p.heading,
                         }}
                     >
-                        Aquarium.pdf
+                        Анастасия Морозова
                     </Box>
                     <Box
                         sx={{
-                            fontFamily: inter,
-                            fontSize: '9.5px',
-                            lineHeight: 1.2,
-                            color: p.faint,
-                            mt: '2px',
-                        }}
-                    >
-                        3,6 МБ
-                    </Box>
-                </Box>
-                <Check size={12} weight="bold" color={p.teal} aria-hidden="true" />
-            </Box>
-        </Box>
-    )
-}
-
-function BlogMock({ p }) {
-    return (
-        <Box sx={{ mt: 'auto', pt: '24px' }}>
-            <Box
-                sx={{
-                    borderRadius: '18px',
-                    border: '1px solid',
-                    borderColor: p.line,
-                    bgcolor: p.cardHover,
-                    p: '12px',
-                }}
-            >
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <Box
-                        component="img"
-                        src="/img/aquarium/user-maxim.jpg"
-                        alt=""
-                        sx={{ width: '28px', height: '28px', borderRadius: '50%', objectFit: 'cover' }}
-                    />
-                    <Box>
-                        <Box
-                            sx={{
-                                fontFamily: inter,
-                                fontSize: '10.5px',
-                                fontWeight: 600,
-                                lineHeight: 1.2,
-                                color: p.ink,
-                            }}
-                        >
-                            Максим Ефимцев
-                        </Box>
-                        <Box
-                            sx={{
-                                fontFamily: inter,
-                                fontSize: '9px',
-                                lineHeight: 1.2,
-                                color: p.faint,
-                                mt: '2px',
-                            }}
-                        >
-                            4 дня назад
-                        </Box>
-                    </Box>
-                </Box>
-                <Box
-                    sx={{
-                        mt: '10px',
-                        fontFamily: inter,
-                        fontSize: '11.5px',
-                        lineHeight: 1.4,
-                        color: p.ink,
-                    }}
-                >
-                    Август балует видами
-                </Box>
-                <Box
-                    component="img"
-                    src="/img/aquarium/post-maxim-1.jpg"
-                    alt=""
-                    loading="lazy"
-                    sx={{
-                        display: 'block',
-                        width: '100%',
-                        height: '96px',
-                        mt: '9px',
-                        borderRadius: '10px',
-                        objectFit: 'cover',
-                    }}
-                />
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: '14px', mt: '10px', color: p.faint }}>
-                    <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '10px' }}>
-                        <Heart size={13} />
-                        4
-                    </Box>
-                    <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '10px' }}>
-                        <ChatCircle size={13} />
-                        1
-                    </Box>
-                </Box>
-            </Box>
-        </Box>
-    )
-}
-
-function CallMock({ p }) {
-    return (
-        <Box sx={{ mt: 'auto', pt: '24px' }}>
-            <Box
-                sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '11px',
-                    p: '12px',
-                    borderRadius: '16px',
-                    border: '1px solid',
-                    borderColor: p.line,
-                    bgcolor: p.cardHover,
-                }}
-            >
-                <Box sx={{ position: 'relative', flexShrink: 0 }}>
-                    <Box
-                        component="img"
-                        src="/img/aquarium/user-sasha.jpg"
-                        alt=""
-                        sx={{ width: '38px', height: '38px', borderRadius: '50%', objectFit: 'cover' }}
-                    />
-                    <Box
-                        aria-hidden="true"
-                        sx={{
-                            position: 'absolute',
-                            right: '-1px',
-                            bottom: '-1px',
-                            width: '10px',
-                            height: '10px',
-                            borderRadius: '50%',
-                            bgcolor: p.tealFill,
-                            border: '2px solid',
-                            borderColor: p.cardHover,
-                        }}
-                    />
-                </Box>
-                <Box sx={{ minWidth: 0, flex: 1 }}>
-                    <Box
-                        sx={{
-                            fontFamily: inter,
-                            fontSize: '11.5px',
-                            fontWeight: 600,
-                            color: p.ink,
-                            lineHeight: 1.25,
-                        }}
-                    >
-                        Александра
-                    </Box>
-                    <Box
-                        sx={{
-                            fontFamily: inter,
-                            fontSize: '9.5px',
-                            color: p.faint,
-                            lineHeight: 1.25,
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '5px',
                             mt: '3px',
+                            fontFamily: inter,
+                            fontSize: '10.5px',
+                            lineHeight: 1,
+                            color: p.faint,
                         }}
                     >
-                        Видеозвонок · 12:48
+                        <Box
+                            component="span"
+                            sx={{ width: '5px', height: '5px', borderRadius: '50%', bgcolor: p.tealFill }}
+                        />
+                        в сети
                     </Box>
                 </Box>
+            </Box>
+
+            {chatMessages.map((message) => message.fromMe ? (
                 <Box
-                    sx={{
-                        display: 'grid',
-                        placeItems: 'center',
-                        width: '28px',
-                        height: '28px',
-                        borderRadius: '50%',
-                        bgcolor: p.mint,
-                        color: p.teal,
-                    }}
+                    key={message.id}
+                    sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end', gap: '7px' }}
                 >
-                    <VideoCamera size={14} />
-                </Box>
-            </Box>
-
-            <Box sx={{ display: 'flex', gap: '8px', mt: '10px' }}>
-                {[
-                    { icon: Microphone, label: 'Микрофон' },
-                    { icon: VideoCamera, label: 'Камера' },
-                    { icon: PhoneDisconnect, label: 'Завершить', danger: true },
-                ].map((item) => {
-                    const Icon = item.icon
-                    return (
-                        <Box
-                            key={item.label}
-                            aria-label={item.label}
-                            sx={{
-                                display: 'grid',
-                                placeItems: 'center',
-                                width: '36px',
-                                height: '36px',
-                                borderRadius: '50%',
-                                bgcolor: item.danger ? '#d85555' : p.mint,
-                                color: item.danger ? '#fff' : p.teal,
-                            }}
-                        >
-                            <Icon size={15} />
-                        </Box>
-                    )
-                })}
-            </Box>
-        </Box>
-    )
-}
-
-function StickersMock() {
-    const stickers = [
-        { icon: FishSimple, bg: '#0fbab5', color: '#ffffff', rotate: '-8deg', size: '74px' },
-        { icon: Smiley, bg: '#b9f0ec', color: '#065b57', rotate: '6deg', size: '68px' },
-        { icon: Heart, bg: '#062f2d', color: '#6fe6df', rotate: '-3deg', size: '62px' },
-    ]
-
-    return (
-        <Box
-            sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: { xs: '4px', md: '0px' },
-                flex: 1,
-                minHeight: '110px',
-                mt: '18px',
-                pt: '6px',
-            }}
-        >
-            {stickers.map((item, index) => {
-                const Icon = item.icon
-                return (
                     <Box
-                        key={index}
-                        aria-hidden="true"
+                        sx={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '3px',
+                            mb: '3px',
+                            fontFamily: inter,
+                            fontSize: '10px',
+                            lineHeight: 1,
+                            color: p.faint,
+                        }}
+                    >
+                        {message.time}
+                        <Checks size={12} weight="bold" aria-hidden="true" />
+                    </Box>
+                    <Box
+                        sx={{
+                            maxWidth: '78%',
+                            px: '12px',
+                            py: '8px',
+                            borderRadius: '16px 16px 5px 16px',
+                            bgcolor: p.tealFill,
+                            color: '#032422',
+                        }}
+                    >
+                        <Box component="span" sx={{ fontFamily: inter, fontSize: '13.5px', lineHeight: 1.45 }}>
+                            {message.text}
+                        </Box>
+                    </Box>
+                </Box>
+            ) : (
+                <Box
+                    key={message.id}
+                    sx={{ display: 'flex', alignItems: 'flex-end', gap: '7px' }}
+                >
+                    <Box
                         sx={{
                             display: 'grid',
                             placeItems: 'center',
-                            width: item.size,
-                            height: item.size,
-                            ml: index === 0 ? 0 : { xs: '-8px', md: '-12px' },
-                            borderRadius: '26px',
-                            bgcolor: item.bg,
-                            color: item.color,
-                            transform: `rotate(${item.rotate})`,
-                            boxShadow: '0 14px 30px rgba(4, 40, 38, .12)',
-                            transition: 'transform .35s cubic-bezier(.22,1,.36,1)',
-                            '&:hover': { transform: `rotate(${item.rotate}) translateY(-6px) scale(1.04)` },
-                        }}
-                    >
-                        <Icon size={34} weight="fill" />
-                    </Box>
-                )
-            })}
-        </Box>
-    )
-}
-
-function SecurityMock({ p }) {
-    return (
-        <Box sx={{ mt: 'auto', pt: '18px' }}>
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                {['Шифрование', 'Модерация', 'Минимум данных'].map((label) => (
-                    <Box
-                        key={label}
-                        component="span"
-                        sx={{
-                            px: '9px',
-                            py: '5px',
-                            borderRadius: '999px',
-                            bgcolor: p.mint,
-                            color: p.tealDeep,
+                            width: '24px',
+                            height: '24px',
+                            borderRadius: '50%',
+                            bgcolor: p.bubble,
+                            color: p.teal,
                             fontFamily: inter,
-                            fontSize: '9px',
+                            fontSize: '10px',
                             fontWeight: 600,
-                            lineHeight: 1.2,
-                            whiteSpace: 'nowrap',
+                            flexShrink: 0,
                         }}
                     >
-                        {label}
+                        А
                     </Box>
-                ))}
-            </Box>
-            <Box
-                sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    mt: '14px',
-                    color: p.teal,
-                    fontFamily: inter,
-                    fontSize: '11px',
-                    fontWeight: 500,
-                }}
-            >
-                <ShieldCheck size={17} weight="fill" aria-hidden="true" />
-                Спокойствие по умолчанию
-            </Box>
+                    <Box
+                        sx={{
+                            maxWidth: '78%',
+                            px: '12px',
+                            py: '8px',
+                            borderRadius: '16px 16px 16px 5px',
+                            bgcolor: p.bubble,
+                            color: p.ink,
+                        }}
+                    >
+                        <Box component="span" sx={{ fontFamily: inter, fontSize: '13.5px', lineHeight: 1.45 }}>
+                            {message.text}
+                        </Box>
+                    </Box>
+                    <Box
+                        sx={{
+                            mb: '3px',
+                            fontFamily: inter,
+                            fontSize: '10px',
+                            lineHeight: 1,
+                            color: p.faint,
+                        }}
+                    >
+                        {message.time}
+                    </Box>
+                </Box>
+            ))}
         </Box>
     )
 }
@@ -685,7 +688,9 @@ function SecurityMock({ p }) {
 export default function AquariumProjectPage() {
     const { mode, systemMode } = useColorScheme()
     const dark = mode === 'dark' || (mode === 'system' && systemMode === 'dark')
+    const theme = useTheme()
     const p = getPalette(dark)
+    const postPalette = theme.vars.palette.aquarium
     const [heroPost, setHeroPost] = useState(() => pickRandomPost())
 
     const shuffleHeroPost = () => {
@@ -787,7 +792,7 @@ export default function AquariumProjectPage() {
                                 fontWeight: 600,
                                 lineHeight: 1.06,
                                 letterSpacing: '-0.045em',
-                                color: '#f2fdfc',
+                                color: '#ffffff',
                                 textWrap: 'balance',
                             }}
                         >
@@ -877,7 +882,154 @@ export default function AquariumProjectPage() {
                         </Box>
                     </Box>
 
-                    <HeroVisual heroPost={heroPost} dark={dark} />
+                    <HeroVisual heroPost={heroPost} dark={dark} postPalette={postPalette} />
+                </Box>
+            </Box>
+
+            <Box
+                component="section"
+                aria-labelledby="aquarium-story-title"
+                sx={{
+                    px: { xs: '20px', md: 'clamp(24px, 3.2vw, 48px)' },
+                    pt: { xs: 'clamp(48px, 8vw, 64px)', md: 'clamp(72px, 8vw, 120px)' },
+                    pb: { xs: 'clamp(44px, 7vw, 60px)', md: 'clamp(56px, 6.5vw, 96px)' },
+                }}
+            >
+                <Box sx={{ maxWidth: '1500px', mx: 'auto' }}>
+                    <Box
+                        sx={{
+                            display: 'grid',
+                            gridTemplateColumns: { xs: '1fr', lg: 'minmax(0, .78fr) minmax(0, 1.22fr)' },
+                            gap: { xs: '34px', lg: 'clamp(40px, 7vw, 110px)' },
+                            alignItems: 'start',
+                        }}
+                    >
+                        <Box sx={{ position: { lg: 'sticky' }, top: { lg: '120px' } }}>
+                            <Box
+                                component="h2"
+                                id="aquarium-story-title"
+                                sx={{ ...sectionTitleSx(p), mt: '12px', maxWidth: '12ch' }}
+                            >
+                                Безопасное пространство с 2019 года
+                            </Box>
+                            <Box component="p" sx={{ ...sectionTextSx(p), maxWidth: '38ch' }}>
+                                Аквариум — это водное пространство, где рыбки живут
+                                в безопасности. Рыбки — пользователи, среда — сам
+                                Аквариум. Отсюда и название: закрытая среда без
+                                хищников, где можно спокойно общаться.
+                            </Box>
+                            <Box component="p" sx={{ ...sectionTextSx(p), maxWidth: '38ch' }}>
+                                Делаю проект один — от макета и вёрстки до сервера
+                                и мобильного приложения. Веб-версия — основа:
+                                приложение продолжает её в телефоне.
+                            </Box>
+                        </Box>
+
+                        <Box>
+                            {timeline.map((item, index) => (
+                                <Box
+                                    key={item.year}
+                                    sx={{
+                                        display: 'grid',
+                                        gridTemplateColumns: {
+                                            xs: '96px minmax(0, 1fr)',
+                                            sm: '104px minmax(0, 1fr)',
+                                        },
+                                        gap: { xs: '14px', md: '20px' },
+                                        py: { xs: '20px', md: '24px' },
+                                        borderTop: index === 0 ? 'none' : '1px solid',
+                                        borderColor: p.line,
+                                    }}
+                                >
+                                    <Box
+                                        sx={{
+                                            fontFamily: inter,
+                                            fontSize: 'clamp(16px, 1.5vw, 20px)',
+                                            fontWeight: 600,
+                                            lineHeight: 1.2,
+                                            letterSpacing: '-0.02em',
+                                            color: p.teal,
+                                            whiteSpace: 'nowrap',
+                                        }}
+                                    >
+                                        {item.year}
+                                    </Box>
+                                    <Box>
+                                        <Box
+                                            component="h3"
+                                            sx={{
+                                                m: 0,
+                                                fontFamily: inter,
+                                                fontSize: 'clamp(16px, 1.4vw, 18px)',
+                                                fontWeight: 600,
+                                                lineHeight: 1.25,
+                                                letterSpacing: '-0.02em',
+                                                color: p.heading,
+                                            }}
+                                        >
+                                            {item.title}
+                                        </Box>
+                                        <Box
+                                            component="p"
+                                            sx={{
+                                                m: 0,
+                                                mt: '6px',
+                                                maxWidth: '46ch',
+                                                fontFamily: inter,
+                                                fontSize: '13.5px',
+                                                lineHeight: 1.55,
+                                                color: p.muted,
+                                            }}
+                                        >
+                                            {item.text}
+                                        </Box>
+                                    </Box>
+                                </Box>
+                            ))}
+                        </Box>
+                    </Box>
+
+                    <Box
+                        sx={{
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
+                            gap: { xs: '18px 14px', md: 'clamp(24px, 5vw, 72px)' },
+                            mt: { xs: 'clamp(30px, 6vw, 44px)', md: 'clamp(44px, 6vw, 72px)' },
+                            py: { xs: '26px', md: 'clamp(28px, 3vw, 40px)' },
+                            borderTop: '1px solid',
+                            borderBottom: '1px solid',
+                            borderColor: p.line,
+                        }}
+                    >
+                        {projectStats.map((stat) => (
+                            <Box key={stat.label}>
+                                <Box
+                                    sx={{
+                                        fontFamily: inter,
+                                        fontSize: 'clamp(2.1rem, 5.4vw, 4.8rem)',
+                                        fontWeight: 600,
+                                        lineHeight: 0.9,
+                                        letterSpacing: '-0.06em',
+                                        color: p.heading,
+                                    }}
+                                >
+                                    {stat.value}
+                                </Box>
+                                <Box
+                                    sx={{
+                                        mt: '10px',
+                                        maxWidth: '16ch',
+                                        fontFamily: inter,
+                                        fontSize: 'clamp(11.5px, 1vw, 13px)',
+                                        lineHeight: 1.5,
+                                        color: p.muted,
+                                    }}
+                                >
+                                    {stat.label}
+                                </Box>
+                            </Box>
+                        ))}
+                    </Box>
                 </Box>
             </Box>
 
@@ -914,7 +1066,7 @@ export default function AquariumProjectPage() {
                                     fontWeight: 600,
                                     lineHeight: 0.95,
                                     letterSpacing: '-0.055em',
-                                    color: p.ink,
+                                    color: p.heading,
                                     textWrap: 'balance',
                                 }}
                             >
@@ -933,7 +1085,7 @@ export default function AquariumProjectPage() {
                                 color: p.muted,
                             }}
                         >
-                            Один мессенджер вместо десятка других: сообщения, лента, звонки и профиль — всё в одном пространстве.
+                            Один мессенджер вместо десятка других: сообщения, лента, звонки и профиль – всё в одном пространстве.
                         </Box>
                     </Box>
 
@@ -943,172 +1095,724 @@ export default function AquariumProjectPage() {
                             gridTemplateColumns: {
                                 xs: 'minmax(0, 1fr)',
                                 md: 'repeat(2, minmax(0, 1fr))',
-                                lg: 'repeat(12, minmax(0, 1fr))',
+                                lg: 'repeat(3, minmax(0, 1fr))',
                             },
+                            gridAutoRows: '1fr',
                             gap: { xs: '12px', md: '16px' },
                         }}
                     >
                         <FeatureCard
                             p={p}
-                            icon={ChatCircleDots}
+                            icon={ChatsCircleIcon}
                             title="Сообщения"
                             text="Личные и групповые чаты с фото и файлами. Быстро и привычно."
-                            sx={{
-                                gridColumn: { xs: 'auto', md: 'span 2', lg: 'span 7' },
-                                minHeight: { xs: '340px', md: '360px' },
-                            }}
-                        >
-                            <ChatMock p={p} />
-                        </FeatureCard>
+                        />
 
                         <FeatureCard
                             p={p}
-                            icon={Article}
+                            icon={MegaphoneIcon}
                             title="Микроблог"
                             text="Делитесь записями в общей ленте: тексты, фотографии, лайки и комментарии."
-                            sx={{
-                                gridColumn: { xs: 'auto', md: 'span 1', lg: 'span 5' },
-                                minHeight: { xs: '360px', md: '360px' },
-                            }}
-                        >
-                            <BlogMock p={p} />
-                        </FeatureCard>
+                        />
 
                         <FeatureCard
                             p={p}
                             icon={PhoneCall}
                             title="Звонки"
                             text="Аудио- и видеозвонки прямо из чата. Когда переписки уже мало."
-                            sx={{
-                                gridColumn: { xs: 'auto', md: 'span 1', lg: 'span 4' },
-                                minHeight: { xs: '280px', md: '300px' },
-                            }}
-                        >
-                            <CallMock p={p} />
-                        </FeatureCard>
+                        />
 
                         <FeatureCard
                             p={p}
                             icon={Sticker}
                             title="Стикеры"
                             text="Фирменные наборы стикеров. Немного иронии и эмоций для ваших чатов."
-                            sx={{
-                                gridColumn: { xs: 'auto', md: 'span 1', lg: 'span 4' },
-                                minHeight: { xs: '280px', md: '300px' },
-                            }}
-                        >
-                            <StickersMock />
-                        </FeatureCard>
+                        />
+
+                        <FeatureCard
+                            p={p}
+                            icon={Devices}
+                            title="Все платформы"
+                            text="Веб-версия, iOS и Android. Начните на телефоне — продолжите за компьютером."
+                        />
 
                         <FeatureCard
                             p={p}
                             icon={ShieldCheck}
                             title="Безопасность"
                             text="Защита данных, модерация контента, минимум персональных данных."
-                            sx={{
-                                gridColumn: { xs: 'auto', md: 'span 1', lg: 'span 4' },
-                                minHeight: { xs: '270px', md: '300px' },
-                            }}
-                        >
-                            <SecurityMock p={p} />
-                        </FeatureCard>
+                        />
+                    </Box>
+                </Box>
+            </Box>
+
+            <Box
+                component="section"
+                aria-labelledby="aquarium-microblog-title"
+                sx={{
+                    ...sectionSx,
+                    pt: 0,
+                }}
+            >
+                <Box sx={{ maxWidth: '1500px', mx: 'auto' }}>
+                    <Box
+                        sx={{
+                            display: 'grid',
+                            gridTemplateColumns: { xs: 'minmax(0, 1fr)', lg: 'minmax(0, .78fr) minmax(0, 1.22fr)' },
+                            gap: { xs: 'clamp(28px, 6vw, 44px)', lg: 'clamp(40px, 5vw, 90px)' },
+                            alignItems: 'center',
+                        }}
+                    >
+                        <Box>
+                            <Box
+                                component="h2"
+                                id="aquarium-microblog-title"
+                                sx={{ ...sectionTitleSx(p), maxWidth: '20ch' }}
+                            >
+                                Лента, в которой приятно находиться
+                            </Box>
+                            <Box component="p" sx={sectionTextSx(p)}>
+                                Записи друзей и любимых авторов, без алгоритмов и рекламы.
+                                Публикуйте мысли и фотографии, собирайте лайки и обсуждайте
+                                в комментариях.
+                            </Box>
+                        </Box>
 
                         <Box
                             sx={{
-                                gridColumn: { xs: 'auto', md: 'span 2', lg: 'span 12' },
                                 display: 'grid',
-                                gridTemplateColumns: { xs: '1fr', sm: 'minmax(0, 1fr) auto' },
-                                gap: '20px 32px',
-                                alignItems: 'center',
-                                p: { xs: '22px', md: 'clamp(24px, 2.4vw, 32px)' },
-                                borderRadius: '26px',
-                                border: '1px solid',
-                                borderColor: p.line,
-                                bgcolor: p.card,
+                                gridTemplateColumns: { xs: 'minmax(0, 1fr)', lg: 'repeat(2, minmax(0, 1fr))' },
+                                gap: '12px',
+                                width: '100%',
+                                justifySelf: { lg: 'end' },
                             }}
                         >
-                            <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
+                            <FeedColumn
+                                groupPosts={postColumns.left}
+                                height={{ xs: '420px', md: '620px' }}
+                                palette={postPalette}
+                            />
+                            <Box sx={{ display: { xs: 'none', lg: 'block' } }}>
+                                <FeedColumn
+                                    groupPosts={postColumns.right}
+                                    className="aquarium-feed--right"
+                                    height={{ xs: '420px', md: '620px' }}
+                                    palette={postPalette}
+                                />
+                            </Box>
+                        </Box>
+                    </Box>
+                </Box>
+            </Box>
+
+            <Box
+                component="section"
+                aria-labelledby="aquarium-messenger-title"
+                sx={sectionSx}
+            >
+                <Box sx={{ maxWidth: '1500px', mx: 'auto' }}>
+                    <Box
+                        sx={{
+                            display: 'grid',
+                            gridTemplateColumns: { xs: 'minmax(0, 1fr)', md: 'repeat(2, minmax(0, 1fr))' },
+                            gap: { xs: 'clamp(28px, 6vw, 44px)', md: 'clamp(32px, 5vw, 80px)' },
+                            alignItems: 'center',
+                        }}
+                    >
+                        <Box sx={{ order: { xs: 2, md: 1 } }}>
+                            <ChatPreview p={p} />
+                        </Box>
+                        <Box sx={{ order: { xs: 1, md: 2 } }}>
+                            <Box
+                                component="h2"
+                                id="aquarium-messenger-title"
+                                sx={{ ...sectionTitleSx(p), maxWidth: '16ch' }}
+                            >
+                                Общение без границ между устройствами
+                            </Box>
+                            <Box component="p" sx={sectionTextSx(p)}>
+                                Чаты синхронизируются между веб-версией и мобильным приложением.
+                                Стикеры, вложения и звонки работают везде одинаково. Просто
+                                продолжайте разговор там, где вам удобно.
+                            </Box>
+                        </Box>
+                    </Box>
+                </Box>
+            </Box>
+
+            <Box
+                component="section"
+                aria-labelledby="aquarium-screens-title"
+                sx={sectionSx}
+            >
+                <Box sx={{ maxWidth: '1500px', mx: 'auto' }}>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexWrap: 'wrap',
+                            alignItems: 'flex-end',
+                            justifyContent: 'space-between',
+                            gap: '16px 40px',
+                            mb: { xs: '28px', md: 'clamp(36px, 4vw, 52px)' },
+                        }}
+                    >
+                        <Box>
+                            <Box
+                                component="h2"
+                                id="aquarium-screens-title"
+                                sx={{ ...sectionTitleSx(p), mt: '12px', maxWidth: '12ch' }}
+                            >
+                                Веб-версия вживую
+                            </Box>
+                        </Box>
+                        <Box
+                            component="p"
+                            sx={{
+                                m: 0,
+                                maxWidth: '32ch',
+                                fontFamily: inter,
+                                fontSize: '14px',
+                                lineHeight: 1.6,
+                                color: p.muted,
+                            }}
+                        >
+                            Чат, звонок и профиль — то, что открывают каждый день.
+                        </Box>
+                    </Box>
+
+                    <Box
+                        sx={{
+                            display: 'grid',
+                            gridTemplateColumns: {
+                                xs: 'minmax(0, 1fr)',
+                                sm: 'repeat(2, minmax(0, 1fr))',
+                                lg: 'repeat(3, minmax(0, 1fr))',
+                            },
+                            gap: '12px',
+                        }}
+                    >
+                        {projectScreens.map((screen) => (
+                            <Box key={screen.title}>
                                 <Box
                                     sx={{
+                                        position: 'relative',
                                         display: 'grid',
                                         placeItems: 'center',
-                                        width: '38px',
-                                        height: '38px',
-                                        borderRadius: '12px',
-                                        bgcolor: p.mint,
-                                        color: p.teal,
-                                        flexShrink: 0,
+                                        aspectRatio: '16 / 10',
+                                        overflow: 'hidden',
+                                        borderRadius: '20px',
+                                        border: '1px dashed',
+                                        borderColor: p.line,
+                                        bgcolor: p.card,
                                     }}
                                 >
-                                    <Devices size={19} aria-hidden="true" />
+                                    {screen.src ? (
+                                        <Box
+                                            component="img"
+                                            src={screen.src}
+                                            alt={screen.alt ?? screen.title}
+                                            loading="lazy"
+                                            decoding="async"
+                                            sx={{
+                                                position: 'absolute',
+                                                inset: 0,
+                                                display: 'block',
+                                                width: '100%',
+                                                height: '100%',
+                                                objectFit: 'cover',
+                                                objectPosition: 'top center',
+                                            }}
+                                        />
+                                    ) : (
+                                        <Box
+                                            sx={{
+                                                display: 'flex',
+                                                flexDirection: 'column',
+                                                alignItems: 'center',
+                                                gap: '10px',
+                                                color: p.faint,
+                                            }}
+                                        >
+                                            <Browser size={22} aria-hidden="true" />
+                                            <Box sx={{ ...kickerSx, fontSize: '9px' }}>
+                                                Скриншот
+                                            </Box>
+                                        </Box>
+                                    )}
                                 </Box>
-                                <Box>
+                                <Box
+                                    component="h3"
+                                    sx={{
+                                        m: 0,
+                                        mt: '14px',
+                                        fontFamily: inter,
+                                        fontSize: '15px',
+                                        fontWeight: 600,
+                                        lineHeight: 1.25,
+                                        letterSpacing: '-0.015em',
+                                        color: p.heading,
+                                    }}
+                                >
+                                    {screen.title}
+                                </Box>
+                                <Box
+                                    component="p"
+                                    sx={{
+                                        m: 0,
+                                        mt: '5px',
+                                        maxWidth: '30ch',
+                                        fontFamily: inter,
+                                        fontSize: '13px',
+                                        lineHeight: 1.5,
+                                        color: p.muted,
+                                    }}
+                                >
+                                    {screen.text}
+                                </Box>
+                            </Box>
+                        ))}
+                    </Box>
+                </Box>
+            </Box>
+
+            <Box
+                component="section"
+                aria-labelledby="aquarium-stack-title"
+                sx={sectionSx}
+            >
+                <Box sx={{ maxWidth: '1500px', mx: 'auto' }}>
+                    <Box
+                        sx={{
+                            display: 'grid',
+                            gridTemplateColumns: { xs: '1fr', lg: 'minmax(0, .8fr) minmax(0, 1.2fr)' },
+                            gap: { xs: '34px', lg: 'clamp(40px, 7vw, 110px)' },
+                            alignItems: 'start',
+                        }}
+                    >
+                        <Box sx={{ position: { lg: 'sticky' }, top: { lg: '120px' } }}>
+                            <Box sx={{ ...kickerSx, color: p.teal }}>Под капотом</Box>
+                            <Box
+                                component="h2"
+                                id="aquarium-stack-title"
+                                sx={{ ...sectionTitleSx(p), mt: '12px', maxWidth: '12ch' }}
+                            >
+                                Как устроено
+                            </Box>
+                            <Box component="p" sx={{ ...sectionTextSx(p), maxWidth: '36ch' }}>
+                                Веб-версия — это React на клиенте и Node на сервере.
+                                Вот из чего она собрана.
+                            </Box>
+                            <Box
+                                sx={{
+                                    mt: { xs: '26px', md: '34px' },
+                                    pt: '20px',
+                                    borderTop: '1px solid',
+                                    borderColor: p.line,
+                                }}
+                            >
+                                <Box sx={{ ...kickerSx, color: '#0fbab5' }}>
+                                    Чем горжусь
+                                </Box>
+                                <Box
+                                    component="p"
+                                    sx={{
+                                        m: 0,
+                                        mt: '10px',
+                                        maxWidth: '32ch',
+                                        fontFamily: inter,
+                                        fontSize: 'clamp(15px, 1.3vw, 17px)',
+                                        lineHeight: 1.55,
+                                        color: p.ink,
+                                    }}
+                                >
+                                    Больше всего — звонками. WebRTC, mediasoup
+                                    и собственный coturn: самая сложная часть
+                                    проекта, которая работает прямо в браузере.
+                                </Box>
+                            </Box>
+                        </Box>
+
+                        <Box>
+                            {stack.map((item) => (
+                                <Box
+                                    key={item.title}
+                                    sx={{
+                                        py: { xs: '20px', md: '24px' },
+                                        borderTop: '1px solid',
+                                        borderColor: p.line,
+                                    }}
+                                >
+                                    <Box sx={{ ...kickerSx, fontSize: '9px', color: p.teal }}>
+                                        {item.label}
+                                    </Box>
                                     <Box
                                         component="h3"
                                         sx={{
                                             m: 0,
+                                            mt: '9px',
                                             fontFamily: inter,
-                                            fontSize: 'clamp(18px, 1.6vw, 21px)',
+                                            fontSize: 'clamp(16px, 1.4vw, 18px)',
                                             fontWeight: 600,
-                                            lineHeight: 1.15,
-                                            letterSpacing: '-0.025em',
-                                            color: p.ink,
+                                            lineHeight: 1.25,
+                                            letterSpacing: '-0.02em',
+                                            color: p.heading,
                                         }}
                                     >
-                                        Все платформы
+                                        {item.title}
                                     </Box>
                                     <Box
                                         component="p"
                                         sx={{
                                             m: 0,
-                                            mt: '7px',
-                                            maxWidth: '58ch',
+                                            mt: '6px',
+                                            maxWidth: '46ch',
                                             fontFamily: inter,
                                             fontSize: '13.5px',
                                             lineHeight: 1.55,
                                             color: p.muted,
                                         }}
                                     >
-                                        Веб-версия, iOS и Android. Начните на телефоне —
-                                        продолжите за компьютером.
+                                        {item.text}
                                     </Box>
                                 </Box>
-                            </Box>
+                            ))}
+                        </Box>
+                    </Box>
 
-                            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                                {[
-                                    { icon: Laptop, label: 'Веб' },
-                                    { icon: DeviceMobile, label: 'iOS' },
-                                    { icon: GlobeHemisphereWest, label: 'Android' },
-                                ].map((item) => {
-                                    const Icon = item.icon
-                                    return (
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexWrap: 'wrap',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            gap: '16px 32px',
+                            mt: { xs: 'clamp(32px, 6vw, 44px)', md: 'clamp(44px, 6vw, 72px)' },
+                            pt: '22px',
+                            borderTop: '1px solid',
+                            borderColor: p.line,
+                        }}
+                    >
+                        <Box>
+                            <Box sx={{ ...kickerSx, fontSize: '9px', color: p.teal }}>
+                                Открытый код
+                            </Box>
+                            <Box
+                                component="p"
+                                sx={{
+                                    m: 0,
+                                    mt: '8px',
+                                    maxWidth: '44ch',
+                                    fontFamily: inter,
+                                    fontSize: '13.5px',
+                                    lineHeight: 1.55,
+                                    color: p.muted,
+                                }}
+                            >
+                                Веб-клиент и мобильное приложение — на GitHub
+                                под GPL-3.0. Можно посмотреть, как всё устроено,
+                                или собрать свою версию.
+                            </Box>
+                        </Box>
+                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                            {repositories.map((repo) => (
+                                <Box
+                                    key={repo.label}
+                                    component="a"
+                                    href={repo.href}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    sx={{
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        gap: '9px',
+                                        px: '14px',
+                                        py: '11px',
+                                        borderRadius: '999px',
+                                        border: '1px solid',
+                                        borderColor: p.line,
+                                        color: p.ink,
+                                        fontFamily: inter,
+                                        fontSize: '11px',
+                                        fontWeight: 600,
+                                        textDecoration: 'none',
+                                        transition: 'border-color .2s ease, background-color .2s ease',
+                                        '&:hover': { borderColor: p.teal, bgcolor: p.card },
+                                    }}
+                                >
+                                    <GithubLogo size={15} aria-hidden="true" />
+                                    {repo.label}
+                                    <ArrowUpRight size={13} aria-hidden="true" />
+                                </Box>
+                            ))}
+                        </Box>
+                    </Box>
+                </Box>
+            </Box>
+
+            <Box
+                component="section"
+                aria-labelledby="aquarium-start-title"
+                sx={sectionSx}
+            >
+                <Box sx={{ maxWidth: '1500px', mx: 'auto' }}>
+                    <Box
+                        component="h2"
+                        id="aquarium-start-title"
+                        sx={{ ...sectionTitleSx(p), textAlign: 'center' }}
+                    >
+                        Можно начать за минуту
+                    </Box>
+                    <Box
+                        component="p"
+                        sx={{ ...sectionTextSx(p), mt: '14px', mx: 'auto', maxWidth: '38ch', textAlign: 'center' }}
+                    >
+                        Без паролей и сложной регистрации.
+                    </Box>
+
+                    <Box
+                        sx={{
+                            display: 'grid',
+                            gridTemplateColumns: { xs: 'minmax(0, 1fr)', md: 'repeat(3, minmax(0, 1fr))' },
+                            gridAutoRows: { xs: 'auto', md: '1fr' },
+                            gap: { xs: '12px', md: '16px' },
+                            mt: { xs: '28px', md: 'clamp(32px, 4vw, 48px)' },
+                        }}
+                    >
+                        {startSteps.map((step, index) => {
+                            const Icon = step.icon
+                            return (
+                                <Box
+                                    key={step.title}
+                                    sx={{
+                                        position: 'relative',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        p: { xs: '22px', md: 'clamp(24px, 2.4vw, 32px)' },
+                                        borderRadius: '24px',
+                                        bgcolor: p.card,
+                                    }}
+                                >
+                                    <Box
+                                        aria-hidden="true"
+                                        sx={{
+                                            position: 'absolute',
+                                            top: '16px',
+                                            right: '22px',
+                                            fontFamily: inter,
+                                            fontSize: 'clamp(30px, 3.2vw, 40px)',
+                                            fontWeight: 700,
+                                            lineHeight: 0.8,
+                                            letterSpacing: '-0.06em',
+                                            color: p.teal,
+                                            opacity: 0.24,
+                                        }}
+                                    >
+                                        0{index + 1}
+                                    </Box>
+                                    <IconBadge p={p} icon={Icon} bg={p.mint} />
+                                    <Box
+                                        component="h3"
+                                        sx={{
+                                            m: 0,
+                                            mt: '18px',
+                                            fontFamily: inter,
+                                            fontSize: 'clamp(17px, 1.5vw, 19px)',
+                                            fontWeight: 600,
+                                            lineHeight: 1.2,
+                                            letterSpacing: '-0.02em',
+                                            color: p.heading,
+                                        }}
+                                    >
+                                        {step.title}
+                                    </Box>
+                                    <Box
+                                        component="p"
+                                        sx={{
+                                            m: 0,
+                                            mt: '7px',
+                                            maxWidth: '32ch',
+                                            fontFamily: inter,
+                                            fontSize: '13.5px',
+                                            lineHeight: 1.55,
+                                            color: p.muted,
+                                        }}
+                                    >
+                                        {step.text}
+                                    </Box>
+                                </Box>
+                            )
+                        })}
+                    </Box>
+                </Box>
+            </Box>
+
+            <Box
+                component="section"
+                aria-labelledby="aquarium-clean-title"
+                sx={sectionSx}
+            >
+                <Box sx={{ maxWidth: '1500px', mx: 'auto' }}>
+                    <Box
+                        sx={{
+                            display: 'grid',
+                            gridTemplateColumns: { xs: 'minmax(0, 1fr)', lg: 'minmax(0, .85fr) minmax(0, 1.15fr)' },
+                            gap: { xs: 'clamp(24px, 5vw, 36px)', lg: 'clamp(40px, 6vw, 100px)' },
+                            alignItems: 'center',
+                        }}
+                    >
+                        <Box>
+                            <Box
+                                component="h2"
+                                id="aquarium-clean-title"
+                                sx={{ ...sectionTitleSx(p), maxWidth: '12ch' }}
+                            >
+                                Чистая среда для общения
+                            </Box>
+                            <Box component="p" sx={sectionTextSx(p)}>
+                                Мы выбрали другой путь: спокойный мессенджер и микроблог
+                                только с самым необходимым.
+                            </Box>
+                        </Box>
+
+                        <Box>
+                            {cleanAdvantages.map((item, index) => {
+                                const Icon = item.icon
+                                return (
+                                    <Box
+                                        key={item.title}
+                                        sx={{
+                                            display: 'flex',
+                                            alignItems: 'flex-start',
+                                            gap: { xs: '16px', md: '20px' },
+                                            py: { xs: '20px', md: '24px' },
+                                            borderTop: index === 0 ? 'none' : '1px solid',
+                                            borderColor: p.line,
+                                        }}
+                                    >
+                                        <IconBadge p={p} icon={Icon} bg={p.mint} />
+                                        <Box>
+                                            <Box
+                                                component="h3"
+                                                sx={{
+                                                    m: 0,
+                                                    fontFamily: inter,
+                                                    fontSize: 'clamp(16px, 1.4vw, 18px)',
+                                                    fontWeight: 600,
+                                                    lineHeight: 1.25,
+                                                    letterSpacing: '-0.02em',
+                                                    color: p.heading,
+                                                }}
+                                            >
+                                                {item.title}
+                                            </Box>
+                                            <Box
+                                                component="p"
+                                                sx={{
+                                                    m: 0,
+                                                    mt: '6px',
+                                                    maxWidth: '44ch',
+                                                    fontFamily: inter,
+                                                    fontSize: '13.5px',
+                                                    lineHeight: 1.55,
+                                                    color: p.muted,
+                                                }}
+                                            >
+                                                {item.text}
+                                            </Box>
+                                        </Box>
+                                    </Box>
+                                )
+                            })}
+                        </Box>
+                    </Box>
+                </Box>
+            </Box>
+
+            <Box
+                component="section"
+                aria-labelledby="aquarium-security-title"
+                sx={sectionSx}
+            >
+                <Box sx={{ maxWidth: '1500px', mx: 'auto' }}>
+                    <Box
+                        sx={{
+                            bgcolor: p.mint,
+                            borderRadius: { xs: '24px', md: '32px' },
+                            px: { xs: '24px', md: 'clamp(34px, 4vw, 64px)' },
+                            py: { xs: '32px', md: 'clamp(40px, 5vw, 64px)' },
+                        }}
+                    >
+                        <Box sx={{ maxWidth: '640px', mx: 'auto', textAlign: 'center' }}>
+                            <Box
+                                aria-hidden="true"
+                                sx={{ display: 'flex', justifyContent: 'center', mb: '16px', color: p.teal }}
+                            >
+                                <ShieldCheck size={48} weight="fill" />
+                            </Box>
+                            <Box
+                                component="h2"
+                                id="aquarium-security-title"
+                                sx={{ ...sectionTitleSx(p), textAlign: 'center' }}
+                            >
+                                Безопасность по умолчанию
+                            </Box>
+                            <Box
+                                component="p"
+                                sx={{ ...sectionTextSx(p), mx: 'auto', maxWidth: '52ch', textAlign: 'center' }}
+                            >
+                                Мы собираем минимум информации, чтобы не создавать рисков.
+                                Есть модерация контента, жалобы и блокировки.
+                            </Box>
+                        </Box>
+
+                        <Box
+                            sx={{
+                                display: 'grid',
+                                gridTemplateColumns: {
+                                    xs: 'minmax(0, 1fr)',
+                                    sm: 'repeat(2, minmax(0, 1fr))',
+                                    lg: 'repeat(4, minmax(0, 1fr))',
+                                },
+                                gap: { xs: '24px', md: '28px' },
+                                mt: { xs: '28px', md: 'clamp(32px, 4vw, 44px)' },
+                            }}
+                        >
+                            {securityItems.map((item) => {
+                                const Icon = item.icon
+                                return (
+                                    <Box key={item.title}>
+                                        <IconBadge p={p} icon={Icon} bg={p.card} />
                                         <Box
-                                            component="span"
-                                            key={item.label}
+                                            component="h3"
                                             sx={{
-                                                display: 'inline-flex',
-                                                alignItems: 'center',
-                                                gap: '7px',
-                                                px: '12px',
-                                                py: '9px',
-                                                borderRadius: '999px',
-                                                border: '1px solid',
-                                                borderColor: p.line,
-                                                bgcolor: p.featureBg,
-                                                color: p.ink,
+                                                m: 0,
+                                                mt: '16px',
                                                 fontFamily: inter,
-                                                fontSize: '11px',
+                                                fontSize: '15.5px',
                                                 fontWeight: 600,
-                                                lineHeight: 1,
+                                                lineHeight: 1.25,
+                                                letterSpacing: '-0.015em',
+                                                color: p.heading,
                                             }}
                                         >
-                                            <Icon size={13} aria-hidden="true" />
-                                            {item.label}
+                                            {item.title}
                                         </Box>
-                                    )
-                                })}
-                            </Box>
+                                        <Box
+                                            component="p"
+                                            sx={{
+                                                m: 0,
+                                                mt: '6px',
+                                                fontFamily: inter,
+                                                fontSize: '12.5px',
+                                                lineHeight: 1.55,
+                                                color: p.muted,
+                                            }}
+                                        >
+                                            {item.text}
+                                        </Box>
+                                    </Box>
+                                )
+                            })}
                         </Box>
                     </Box>
                 </Box>
@@ -1118,9 +1822,8 @@ export default function AquariumProjectPage() {
                 component="section"
                 aria-labelledby="aquarium-final-title"
                 sx={{
-                    maxWidth: '1500px',
-                    mx: 'auto',
                     py: { xs: 'clamp(48px, 8vw, 64px)', md: 'clamp(64px, 8vw, 100px)' },
+                    px: { xs: '20px', md: 'clamp(24px, 3.2vw, 48px)' },
                 }}
             >
                 <Box
@@ -1134,6 +1837,8 @@ export default function AquariumProjectPage() {
                             'radial-gradient(700px 420px at 92% 20%, rgba(15, 186, 181, .32), transparent 62%), linear-gradient(120deg, #04211f 0%, #062b28 100%)',
                         px: { xs: '24px', md: 'clamp(34px, 5vw, 72px)' },
                         py: { xs: 'clamp(30px, 6vw, 48px)', md: 'clamp(48px, 7vw, 86px)' },
+                        mx: 'auto',
+                        maxWidth: '1500px'
                     }}
                 >
                     <Box
@@ -1162,7 +1867,7 @@ export default function AquariumProjectPage() {
                                 fontWeight: 600,
                                 lineHeight: 0.98,
                                 letterSpacing: '-0.055em',
-                                color: '#f4fefd',
+                                color: '#ffffff',
                                 textWrap: 'balance',
                             }}
                         >
@@ -1186,7 +1891,7 @@ export default function AquariumProjectPage() {
                         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '10px', mt: '26px' }}>
                             <Box
                                 component="a"
-                                href="https://aquarium.org.ru/apps"
+                                href="https://aquarium.org.ru"
                                 target="_blank"
                                 rel="noreferrer"
                                 sx={{
@@ -1196,11 +1901,11 @@ export default function AquariumProjectPage() {
                                     '&:hover': { bgcolor: '#2ed0ca' },
                                 }}
                             >
-                                Скачать приложение
+                                Открыть веб-версию
                             </Box>
                             <Box
                                 component="a"
-                                href="https://aquarium.org.ru"
+                                href="https://aquarium.org.ru/apps"
                                 target="_blank"
                                 rel="noreferrer"
                                 sx={{
@@ -1211,7 +1916,7 @@ export default function AquariumProjectPage() {
                                     '&:hover': { borderColor: 'rgba(234, 250, 248, .5)' },
                                 }}
                             >
-                                Открыть веб-версию
+                                Скачать приложение
                             </Box>
                         </Box>
                     </Box>
