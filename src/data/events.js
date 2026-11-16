@@ -14,13 +14,15 @@ export default [
             tablet: '30% 36%',
             desktop: '50% 38%',
         },
+        previewPosition: '18% 30%',
     },
     {
         imageCap: '2026/studvesna/cap.jpg',
         title: 'Студенческая весна',
         desc: 'Конференция в МГТУ им. Н.Э. Баумана, кафедры ИУ-9.',
         date: '20 апреля 2026 г.',
-        link: 'bmstu-student-spring-2'
+        link: 'bmstu-student-spring-2',
+        previewPosition: '92% 30%',
     },
     {
         imageCap: '2025/pstgu/cap.jpg',
@@ -53,16 +55,16 @@ export default [
         date: '9-11 апреля 2025 г.',
         link: 'saintp-2025'
     },
-    {
-        imageCap: '2025/1с/cap.jpg',
-        title: '1С Стажировка',
-        desc: 'Стажировка в отеле «Космос».',
-        date: '5 февраля 2025 г.',
-        link: '1c-2025'
-    },
+    // {
+    //     imageCap: '2025/1с/cap.jpg',
+    //     title: '1С Стажировка',
+    //     desc: 'Стажировка в отеле «Космос».',
+    //     date: '5 февраля 2025 г.',
+    //     link: '1c-2025'
+    // },
     {
         imageCap: '2024/izob-kids/cap.jpg',
-        title: 'Изобретариум',
+        title: 'Изобит-2024',
         desc: 'Конференция, проводимая в технопарке Изобретариум. Участие принимают мои ученики: Замилацкова Арина и Зимин Ильяс.',
         date: '28 декабря 2024 г.',
         link: 'izob-kids-2024'
@@ -111,7 +113,8 @@ export default [
         title: 'Русский Инженер',
         desc: 'Конференция в МГТУ им. Н.Э. Баумана.',
         date: '1 ноября 2023 г.',
-        link: 'bmstu-russian-engineer'
+        link: 'bmstu-russian-engineer',
+        previewPosition: '0% 38%'
     },
     {
         imageCap: '2023/gosduma/cap.jpg',
@@ -125,7 +128,8 @@ export default [
         title: 'Радио-Поиск',
         desc: 'Конкурс радиолюбителей, г. Москва.',
         date: '22 апреля 2023 г.',
-        link: 'radio-search'
+        link: 'radio-search',
+        previewPosition: '75% 30%',
     },
     {
         imageCap: '2023/futurerussia/cap.jpg',
@@ -139,7 +143,8 @@ export default [
         title: 'Шаг в будущее',
         desc: 'Олимпиада от МГТУ им. Н.Э. Баумана.',
         date: '23 марта 2023 г.',
-        link: 'bmstu-step-into-the-future'
+        link: 'bmstu-step-into-the-future',
+        previewPosition: '70% 30%',
     },
     {
         imageCap: '2023/mai3/cap.jpg',
@@ -163,13 +168,15 @@ export default [
             tablet: '50% 36%',
             desktop: '50% 38%',
         },
+        previewPosition: '88% 38%',
     },
     {
         imageCap: '2022/bionika/cap.jpg',
         title: 'Бионика-2022',
         desc: 'Конференция от МГТУ им. Н.Э. Баумана.',
         date: '25 декабря 2022 г.',
-        link: 'bmstu-bionics'
+        link: 'bmstu-bionics',
+        previewPosition: '21% 30%',
     },
     {
         imageCap: '2022/mai2/cap.jpg',
@@ -179,21 +186,24 @@ export default [
             'Конкурс, который проводится в рамках Всероссийского форума «Научно-техническое развитие и задачи глобального лидерства».'
         ],
         date: '11 ноября 2022 г.',
-        link: 'mai-i-am-the-designer-of-the-future'
+        link: 'mai-i-am-the-designer-of-the-future',
+        previewPosition: '50% 30%',
     },
     {
         imageCap: '2022/mgy/cap.jpg',
         title: 'Ученые будущего',
         desc: 'Конкурс от Московского Государственного Университета.',
         date: '8 октября 2022 г.',
-        link: 'mgu-scientists-of-the-future'
+        link: 'mgu-scientists-of-the-future',
+        previewPosition: '40% 30%',
     },
     {
         imageCap: '2022/skolkovo/cap.jpg',
         title: 'Разведка боем',
         desc: 'Стартап программа в Сколково.',
         date: '10 августа 2022 г.',
-        link: 'skolkovo-combat-reconnaissance'
+        link: 'skolkovo-combat-reconnaissance',
+        previewPosition: '0% 30%',
     },
     {
         imageCap: '2022/innopolis/cap.jpg',
@@ -204,14 +214,16 @@ export default [
             'Несколько дней акселератора превратились в непрерывный поток знаний, окруженными менторством от профессионалов.'
         ],
         date: '25-28 мая 2022 г.',
-        link: 'innopolis-startup-house-universities'
+        link: 'innopolis-startup-house-universities',
+        previewPosition: '50% 30%',
     },
     {
         imageCap: '2022/1c/cap.jpg',
         title: 'НТИ Олимпиада',
         desc: 'Награждение финалистов в офисе 1C.',
         date: '19 апреля 2022 г.',
-        link: 'nti-olympiad'
+        link: 'nti-olympiad',
+        previewPosition: '0% 30%',
     },
     {
         imageCap: '2022/mai/cap.jpg',

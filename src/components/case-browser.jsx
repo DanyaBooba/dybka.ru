@@ -1,14 +1,4 @@
 import Box from '@mui/joy/Box'
-import {
-    ArrowClockwise,
-    ArrowLeft,
-    ArrowRight,
-    Lock,
-    Plus,
-    ShareNetwork,
-    Star,
-    X,
-} from '@phosphor-icons/react'
 
 const schemes = {
     light: {
@@ -25,27 +15,20 @@ const schemes = {
     },
     dark: {
         border: 'rgba(255, 255, 255, .14)',
-        shell: '#121614',
-        chrome: '#191d1a',
-        tab: '#232823',
-        toolbar: '#232823',
-        address: '#101311',
-        text: 'rgba(244, 248, 243, .76)',
-        icon: 'rgba(244, 248, 243, .46)',
+        shell: '#121212',
+        chrome: '#1a1a1a',
+        tab: '#242424',
+        toolbar: '#242424',
+        address: '#0f0f0f',
+        text: 'rgba(244, 244, 244, .76)',
+        icon: 'rgba(244, 244, 244, .46)',
         divider: 'rgba(255, 255, 255, .09)',
         shadow: '0 30px 90px rgba(0, 0, 0, .42)',
     },
 }
 
-const iconStyle = {
-    display: 'inline-flex',
-    flexShrink: 0,
-}
-
 export default function CaseBrowser({
-    url = 'example.com',
     title = 'Новая вкладка',
-    favicon,
     dark = false,
     shadow = true,
     children,

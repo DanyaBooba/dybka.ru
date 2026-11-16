@@ -32,17 +32,6 @@ const kickerSx = {
     textTransform: 'uppercase',
 }
 
-const plural = (count, one, few, many) => {
-    const mod10 = count % 10
-    const mod100 = count % 100
-
-    if (mod10 === 1 && mod100 !== 11) return one
-    if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return few
-    return many
-}
-
-const eventsWord = (count) => plural(count, 'событие', 'события', 'событий')
-
 const formatEventDate = (date) => date
     .replace(/\s+\d{4}\s*г\.?$/, '')
     .replace(/\s*г\.$/, '')
@@ -61,6 +50,10 @@ const monthIndex = (date) => {
     return year * 12 + month
 }
 
+const getPreviewPosition = (event) => (
+    event.previewPosition ?? imagePositionSx(event.position).md
+)
+
 const getEventGap = (event, previous) => {
     if (!previous) return { xs: '0px', md: '0px' }
 
@@ -72,7 +65,7 @@ const getEventGap = (event, previous) => {
     }
 }
 
-function YearHeading({ year, count, first, palette }) {
+function YearHeading({ year, first, palette }) {
     return (
         <Box
             sx={{
@@ -108,12 +101,10 @@ function YearHeading({ year, count, first, palette }) {
                         lineHeight: 0.9,
                         letterSpacing: '-0.05em',
                         color: palette.about.titleColor,
+                        ml: 'auto'
                     }}
                 >
                     {year}
-                </Box>
-                <Box sx={{ ...kickerSx, fontSize: '9px', color: palette.text.tertiary, textAlign: 'right' }}>
-                    {count} {eventsWord(count)}
                 </Box>
             </Box>
         </Box>
@@ -277,8 +268,7 @@ function EventRow({ event, index, gap, active, onActivate, palette, showInlineIm
                                     aspectRatio: '4 / 3',
                                     objectFit: 'cover',
                                     objectPosition: imagePositionSx(event.position),
-                                    border: '1px solid',
-                                    borderColor: palette.divider,
+                                    borderRadius: '12px'
                                 }}
                             />
                         </Box>
@@ -360,19 +350,27 @@ export default function PageEvents() {
             if (!timeline) return
 
             const timelineRect = timeline.getBoundingClientRect()
-            const anchor = window.innerHeight * 0.42
-            let nearestLink = null
+            const anchor = window.innerHeight * 0.65
+            const atTop = window.scrollY <= 2
+            const atBottom = window.scrollY >= document.documentElement.scrollHeight - window.innerHeight - 2
+            let nearestLink = atTop
+                ? events[0].link
+                : atBottom
+                    ? events[events.length - 1].link
+                    : null
             let nearestDistance = Infinity
 
-            timeline.querySelectorAll('[data-event-link]').forEach((node) => {
-                const rect = node.getBoundingClientRect()
-                const distance = Math.abs(rect.top - anchor)
+            if (!atTop && !atBottom) {
+                timeline.querySelectorAll('[data-event-link]').forEach((node) => {
+                    const rect = node.getBoundingClientRect()
+                    const distance = Math.abs(rect.top - anchor)
 
-                if (distance < nearestDistance) {
-                    nearestDistance = distance
-                    nearestLink = node.dataset.eventLink
-                }
-            })
+                    if (distance < nearestDistance) {
+                        nearestDistance = distance
+                        nearestLink = node.dataset.eventLink
+                    }
+                })
+            }
 
             if (nearestLink) {
                 const next = events.find((event) => event.link === nearestLink)
@@ -409,7 +407,6 @@ export default function PageEvents() {
         }
     }, [])
 
-    const total = events.length
     let eventIndex = 0
     let previousEvent = null
 
@@ -451,78 +448,26 @@ export default function PageEvents() {
                     position: 'relative',
                     zIndex: 1,
                     px: { xs: '20px', md: 'clamp(24px, 3.2vw, 48px)' },
+                    pt: 'clamp(120px, 16vw, 200px)',
                 }}
             >
                 <Box sx={{ maxWidth: '1500px', mx: 'auto' }}>
                     <Box
+                        component="h1"
                         sx={{
-                            pt: {
-                                xs: 'clamp(104px, 14vw, 140px)',
-                                md: 'clamp(140px, 12vw, 200px)',
-                            },
+                            position: 'absolute',
+                            width: '1px',
+                            height: '1px',
+                            p: 0,
+                            m: '-1px',
+                            overflow: 'hidden',
+                            clip: 'rect(0, 0, 0, 0)',
+                            whiteSpace: 'nowrap',
+                            border: 0,
                         }}
                     >
-                        <Box sx={{ maxWidth: '980px' }}>
-                            <Box
-                                sx={{
-                                    ...kickerSx,
-                                    color: palette.text.tertiary,
-                                }}
-                            >
-                                Хроника 2022—2026
-                            </Box>
-                            <Box
-                                component="h1"
-                                sx={{
-                                    m: 0,
-                                    mt: '16px',
-                                    fontFamily: 'var(--joy-fontFamily-display)',
-                                    fontSize: 'clamp(2.8rem, 7vw, 6.4rem)',
-                                    fontWeight: 400,
-                                    lineHeight: 0.9,
-                                    letterSpacing: '-0.05em',
-                                    color: palette.about.titleColor,
-                                }}
-                            >
-                                Мероприятия
-                            </Box>
-                            <Box
-                                component="p"
-                                sx={{
-                                    m: 0,
-                                    mt: '24px',
-                                    maxWidth: '56ch',
-                                    fontFamily: 'var(--joy-fontFamily-body)',
-                                    fontSize: { xs: '15px', md: '18px' },
-                                    lineHeight: 1.6,
-                                    color: palette.text.secondary,
-                                }}
-                            >
-                                Конференции, олимпиады, стажировки и награды — {total} {eventsWord(total)} с 2022 по 2026 год.
-                            </Box>
-                        </Box>
-
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                alignItems: 'flex-end',
-                                gap: '24px',
-                                mt: '48px',
-                                pb: '24px',
-                                borderBottom: '1px solid',
-                                borderColor: palette.divider,
-                            }}
-                        >
-                            <Box sx={{ ...kickerSx, fontSize: '9px', color: palette.text.tertiary }}>
-                                {total} {eventsWord(total)} · {groups.length} лет
-                            </Box>
-                            <Box sx={{ ...kickerSx, fontSize: '9px', color: palette.text.tertiary }}>
-                                2022—2026
-                            </Box>
-                        </Box>
+                        Мероприятия
                     </Box>
-
                     <Box
                         sx={{
                             display: 'grid',
@@ -579,7 +524,6 @@ export default function PageEvents() {
                                 <Box key={group.year}>
                                     <YearHeading
                                         year={group.year}
-                                        count={group.events.length}
                                         first={groupIndex === 0}
                                         palette={palette}
                                     />
@@ -621,105 +565,104 @@ export default function PageEvents() {
                         </Box>
 
                         {showPreview ? (
-                        <Box
-                            sx={{
-                                position: 'sticky',
-                                top: '120px',
-                                alignSelf: 'start',
-                            }}
-                        >
                             <Box
-                                component={Link}
-                                to={`/events/${active.link}`}
                                 sx={{
-                                    display: 'block',
-                                    color: 'inherit',
-                                    textDecoration: 'none',
-                                    '&:hover .preview-title': {
-                                        opacity: 0.6,
-                                    },
-                                    '&:focus-visible': {
-                                        outline: '1px solid',
-                                        outlineColor: palette.text.primary,
-                                        outlineOffset: '6px',
-                                    },
+                                    position: 'sticky',
+                                    top: '120px',
+                                    alignSelf: 'start',
                                 }}
                             >
                                 <Box
+                                    component={Link}
+                                    to={`/events/${active.link}`}
                                     sx={{
-                                        position: 'relative',
-                                        aspectRatio: '4 / 5',
-                                        maxHeight: 'calc(100svh - 220px)',
-                                        overflow: 'hidden',
-                                        bgcolor: 'rgba(128, 128, 128, .12)',
-                                        border: '1px solid',
-                                        borderColor: palette.divider,
+                                        display: 'block',
+                                        color: 'inherit',
+                                        textDecoration: 'none',
+                                        '&:hover .preview-title': {
+                                            opacity: 0.6,
+                                        },
+                                        '&:focus-visible': {
+                                            outline: '1px solid',
+                                            outlineColor: palette.text.primary,
+                                            outlineOffset: '6px',
+                                        },
                                     }}
                                 >
                                     <Box
-                                        key={active.link}
-                                        component="img"
-                                        className="event-preview-image"
-                                        src={`/img/contests/${active.imageCap}`}
-                                        alt={active.title}
-                                        loading="eager"
-                                        fetchPriority="high"
-                                        decoding="async"
                                         sx={{
-                                            position: 'absolute',
-                                            inset: 0,
-                                            display: 'block',
-                                            width: '100%',
-                                            height: '100%',
-                                            objectFit: 'cover',
-                                            objectPosition: imagePositionSx(active.position),
+                                            position: 'relative',
+                                            aspectRatio: '4 / 5',
+                                            maxHeight: 'calc(100svh - 220px)',
+                                            overflow: 'hidden',
+                                            bgcolor: 'rgba(128, 128, 128, .12)',
+                                            borderRadius: '12px'
                                         }}
-                                    />
-                                </Box>
-
-                                <Box
-                                    sx={{
-                                        display: 'flex',
-                                        justifyContent: 'space-between',
-                                        alignItems: 'flex-start',
-                                        gap: '18px',
-                                        mt: '16px',
-                                    }}
-                                >
-                                    <Box>
+                                    >
                                         <Box
+                                            key={active.link}
+                                            component="img"
+                                            className="event-preview-image"
+                                            src={`/img/contests/${active.imageCap}`}
+                                            alt={active.title}
+                                            loading="eager"
+                                            fetchPriority="high"
+                                            decoding="async"
                                             sx={{
-                                                ...kickerSx,
-                                                fontSize: '9px',
-                                                color: palette.text.tertiary,
+                                                position: 'absolute',
+                                                inset: 0,
+                                                display: 'block',
+                                                width: '100%',
+                                                height: '100%',
+                                                objectFit: 'cover',
+                                                objectPosition: getPreviewPosition(active),
                                             }}
-                                        >
-                                            {active.date}
-                                        </Box>
-                                        <Box
-                                            className="preview-title"
-                                            sx={{
-                                                mt: '6px',
-                                                fontFamily: 'var(--joy-fontFamily-display)',
-                                                fontSize: '20px',
-                                                lineHeight: 1.12,
-                                                letterSpacing: '-0.025em',
-                                                color: palette.about.titleColor,
-                                                transition: 'opacity .2s ease',
-                                            }}
-                                        >
-                                            {active.title}
-                                        </Box>
+                                        />
                                     </Box>
-                                    <ArrowUpRight
-                                        size={18}
-                                        weight="light"
-                                        aria-hidden="true"
-                                        style={{ flexShrink: 0, marginTop: '2px' }}
-                                    />
+
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            alignItems: 'flex-start',
+                                            gap: '18px',
+                                            mt: '16px',
+                                        }}
+                                    >
+                                        <Box>
+                                            <Box
+                                                sx={{
+                                                    ...kickerSx,
+                                                    fontSize: '9px',
+                                                    color: palette.text.tertiary,
+                                                }}
+                                            >
+                                                {active.date}
+                                            </Box>
+                                            <Box
+                                                className="preview-title"
+                                                sx={{
+                                                    mt: '6px',
+                                                    fontFamily: 'var(--joy-fontFamily-display)',
+                                                    fontSize: '20px',
+                                                    lineHeight: 1.12,
+                                                    letterSpacing: '-0.025em',
+                                                    color: palette.about.titleColor,
+                                                    transition: 'opacity .2s ease',
+                                                }}
+                                            >
+                                                {active.title}
+                                            </Box>
+                                        </Box>
+                                        <ArrowUpRight
+                                            size={18}
+                                            weight="light"
+                                            aria-hidden="true"
+                                            style={{ flexShrink: 0, marginTop: '2px' }}
+                                        />
+                                    </Box>
                                 </Box>
                             </Box>
-                        </Box>
                         ) : null}
                     </Box>
                 </Box>
