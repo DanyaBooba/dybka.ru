@@ -413,7 +413,7 @@ const timeline = [
 
 const projectStats = [
     { value: '300+', label: 'человек аудитории' },
-    { value: '215', label: 'опубликованных записей' },
+    { value: '215', label: 'записей в ленте' },
     { value: '200', label: 'созданных чатов' },
 ]
 
@@ -767,7 +767,7 @@ export default function AquariumProjectPage() {
                                 textWrap: 'balance',
                             }}
                         >
-                            Мессенджер и микроблог в одном приложении
+                            Мессенджер и микроблог вместе
                         </Box>
 
                         <Box

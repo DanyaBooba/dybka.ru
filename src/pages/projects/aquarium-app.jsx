@@ -2,7 +2,6 @@ import Box from '@mui/joy/Box'
 import { useColorScheme } from '@mui/joy/styles'
 import { Link } from 'react-router-dom'
 import {
-    ArrowRight,
     ArrowUpRight,
     Bell,
     Image as ImageIcon,
@@ -99,42 +98,52 @@ const milestones = [
         text: 'Структура экранов, навигация и дизайн-система будущего приложения.',
     },
     {
-        period: 'Месяцы 2–3',
-        title: 'Ядро',
-        text: 'Чаты, лента, авторизация и синхронизация с веб-версией.',
+        period: 'Месяц 2',
+        title: 'Модуль авторизации',
+        text: 'Реализовал авторизацию с безопасным хранением токенов. Подключил основные страницы приложения к серверному API.',
     },
     {
-        period: 'Месяцы 4–5',
-        title: 'Звонки и медиа',
-        text: 'Аудио- и видеозвонки, файлы, стикеры и уведомления.',
+        period: 'Месяц 3',
+        title: 'Переработка интерфейса',
+        text: 'Отказался от Tailwind и Reusables. Переработал подход к разработке интерфейса и адаптации под разные платформы.',
+    },
+    {
+        period: 'Месяц 4',
+        title: 'Разработка функционала',
+        text: 'Реализовал основную функциональность ленты, профилей и поиска. Начал разработку мессенджера и системы публикаций записей.',
+    },
+    {
+        period: 'Месяц 5',
+        title: 'Развитие мессенджера',
+        text: 'Продолжил работу над чатами, сообщениями и прикреплением медиафайлов. Интеграция с системными уведомлениями.'
     },
     {
         period: 'Месяц 6',
-        title: 'Релиз',
-        text: 'Тестирование, исправления и публикация в маркетах.',
+        title: 'Публикация приложения',
+        text: 'Завершил разработку звонков. Подготовил приложение к публикации в App Store и Google Play.',
     },
 ]
 
 const appFeatures = [
     {
         icon: PlugsConnected,
-        title: 'Синхронизация',
-        text: 'Начните в браузере, продолжите на телефоне — чаты, лента и вложения всегда рядом.',
+        title: 'Удобство',
+        text: 'На телефоне проще открыть приложение, чем заходить в браузер.',
     },
     {
         icon: PhoneCall,
         title: 'Звонки',
-        text: 'Аудио- и видеозвонки прямо из чата, без переключения между приложениями.',
+        text: 'Аудио- и видеозвонки даже с выключенным телефоном.',
     },
     {
         icon: Bell,
         title: 'Уведомления',
-        text: 'Пуши о новых сообщениях и звонках, чтобы не держать приложение открытым.',
+        text: 'Пуши о новых сообщениях и звонках в любой момент.',
     },
     {
         icon: ImageIcon,
-        title: 'Медиа',
-        text: 'Фотографии, файлы и стикеры в одном разговоре — ничего не теряется.',
+        title: 'Офлайн-доступ',
+        text: 'Сообщения, фотографии и файлы доступны даже без интернета.',
     },
 ]
 
@@ -340,9 +349,31 @@ function HeroVisual({ dark }) {
                 sx={{
                     position: 'relative',
                     zIndex: 2,
-                    width: { xs: 'min(248px, 62vw)', md: 'clamp(262px, 22vw, 330px)' },
+                    width: { xs: 'clamp(180px, 48vw, 272px)', md: 'clamp(300px, 24vw, 352px)' },
+                    transform: 'translateX(-33%)',
                 }}
             >
+                <Box
+                    component="img"
+                    src="/img/pages/aquarium/android.png"
+                    alt="Видеозвонок в приложении «Аквариум» на Android"
+                    width={841}
+                    height={1748}
+                    loading="lazy"
+                    decoding="async"
+                    sx={{
+                        position: 'absolute',
+                        zIndex: 1,
+                        top: '50%',
+                        left: '75%',
+                        display: 'block',
+                        width: '90%',
+                        height: 'auto',
+                        transform: 'translateY(-50%) rotate(4deg)',
+                        filter: phoneShadow,
+                    }}
+                />
+
                 <Box
                     component="img"
                     src="/img/pages/aquarium/iphone.png"
@@ -353,55 +384,15 @@ function HeroVisual({ dark }) {
                     fetchPriority="high"
                     decoding="async"
                     sx={{
+                        position: 'relative',
+                        zIndex: 2,
                         display: 'block',
                         width: '100%',
                         height: 'auto',
-                        transform: 'rotate(-2.5deg)',
                         filter: phoneShadow,
                     }}
                 />
-
-                <Box
-                    aria-hidden="true"
-                    sx={{
-                        position: 'absolute',
-                        left: { xs: '-26px', md: '-44px' },
-                        bottom: { xs: '44px', md: '64px' },
-                        display: 'grid',
-                        placeItems: 'center',
-                        width: { xs: '48px', md: '68px' },
-                        height: { xs: '48px', md: '68px' },
-                        borderRadius: { xs: '14px', md: '19px' },
-                        bgcolor: '#0fbab5',
-                        color: '#ffffff',
-                        boxShadow: '0 20px 50px rgba(4, 58, 55, .3)',
-                        transform: 'rotate(-8deg)',
-                    }}
-                >
-                    <AquariumMark style={{ width: '62%', height: 'auto' }} />
-                </Box>
             </Box>
-
-            <Box
-                component="img"
-                src="/img/pages/aquarium/android.png"
-                alt="Видеозвонок в приложении «Аквариум» на Android"
-                width={841}
-                height={1748}
-                loading="lazy"
-                decoding="async"
-                sx={{
-                    position: 'absolute',
-                    zIndex: 3,
-                    right: { xs: '1%', md: '1%' },
-                    bottom: { xs: '2%', md: '7%' },
-                    display: 'block',
-                    width: { xs: 'min(136px, 34vw)', md: 'clamp(148px, 13vw, 198px)' },
-                    height: 'auto',
-                    transform: 'rotate(4deg)',
-                    filter: phoneShadow,
-                }}
-            />
 
         </Box>
     )
@@ -437,10 +428,10 @@ export default function AquariumAppProjectPage() {
                     alignItems: 'center',
                     minHeight: '100svh',
                     overflow: 'hidden',
-                    bgcolor: '#04211f',
+                    bgcolor: '#041f22',
                     color: '#eafaf8',
                     backgroundImage:
-                        'radial-gradient(900px 540px at 80% 10%, rgba(15, 186, 181, .3), transparent 62%), radial-gradient(620px 460px at 4% 98%, rgba(15, 186, 181, .14), transparent 64%)',
+                        'radial-gradient(1000px 620px at 88% 0%, rgba(15, 186, 181, .30), transparent 60%), radial-gradient(760px 520px at 0% 100%, rgba(14, 110, 128, .34), transparent 66%), linear-gradient(165deg, #05262a 0%, #041c1f 58%, #03181a 100%)',
                     pt: { xs: 'clamp(96px, 14vw, 124px)', md: 'clamp(104px, 12vh, 148px)' },
                     pb: { xs: 'clamp(48px, 9vw, 72px)', md: 'clamp(56px, 9vh, 100px)' },
                 }}
@@ -449,16 +440,27 @@ export default function AquariumAppProjectPage() {
                     aria-hidden="true"
                     sx={{
                         position: 'absolute',
-                        right: '-11%',
-                        top: '13%',
-                        width: 'min(720px, 68vw)',
+                        right: '-12%',
+                        top: '6%',
+                        width: { xs: 'min(440px, 72vw)', md: 'min(880px, 62vw)' },
                         color: '#0fbab5',
-                        opacity: 0.055,
+                        opacity: { xs: 0.07, md: 0.09 },
                         pointerEvents: 'none',
                     }}
                 >
                     <AquariumMark style={{ width: '100%', height: 'auto' }} />
                 </Box>
+                <Box
+                    aria-hidden="true"
+                    sx={{
+                        position: 'absolute',
+                        inset: 0,
+                        opacity: 0.1,
+                        pointerEvents: 'none',
+                        backgroundImage: 'var(--noise-texture)',
+                        backgroundSize: '180px 180px',
+                    }}
+                />
 
                 <Box
                     sx={{
@@ -474,20 +476,20 @@ export default function AquariumAppProjectPage() {
                     }}
                 >
                     <Box>
+
                         <Box
+                            component="h1"
+                            id="aquarium-page-title"
+                            aria-label="Аквариум"
                             sx={{
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '9px',
-                                color: '#7ce8e2',
-                                ...kickerSx,
+                                m: 0,
+                                mt: { xs: '24px', md: '34px' },
+                                width: { xs: 'clamp(190px, 58vw, 250px)', md: 'clamp(230px, 22vw, 330px)' },
+                                color: '#ffffff',
+                                lineHeight: 0,
                             }}
                         >
-                            <Box
-                                aria-hidden="true"
-                                sx={{ width: '6px', height: '6px', borderRadius: '50%', bgcolor: '#0fbab5' }}
-                            />
-                            Приложение · iOS и Android
+                            <AquariumLogo style={{ display: 'block', width: '100%', height: 'auto' }} />
                         </Box>
 
                         <Box
@@ -495,18 +497,18 @@ export default function AquariumAppProjectPage() {
                             id="aquarium-app-title"
                             sx={{
                                 m: 0,
-                                mt: '22px',
-                                maxWidth: '10ch',
+                                mt: { xs: '26px', md: '34px' },
+                                maxWidth: '18ch',
                                 fontFamily: inter,
-                                fontSize: 'clamp(2.6rem, 5.6vw, 5.2rem)',
+                                fontSize: 'clamp(22px, 3.6vw, 36px)',
                                 fontWeight: 600,
-                                lineHeight: 0.94,
-                                letterSpacing: '-0.055em',
+                                lineHeight: 1.06,
+                                letterSpacing: '-0.045em',
                                 color: '#ffffff',
                                 textWrap: 'balance',
                             }}
                         >
-                            Аквариум всегда под рукой
+                            Общайтесь <nobr>с друзьями</nobr> <nobr>в удобном</nobr> формате
                         </Box>
 
                         <Box
@@ -521,9 +523,7 @@ export default function AquariumAppProjectPage() {
                                 color: 'rgba(234, 250, 248, .68)',
                             }}
                         >
-                            Мессенджер, микроблог и звонки в приложении для iOS и Android.
-                            Та же лента и те же чаты, но в телефоне — с уведомлениями
-                            и звонками в один тап.
+                            Мессенджер и микроблог в одном приложении. Доступно для iOS и Android.
                         </Box>
 
                         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '10px', mt: { xs: '26px', md: '30px' } }}>
@@ -560,48 +560,7 @@ export default function AquariumAppProjectPage() {
                                 }}
                             >
                                 О мессенджере
-                                <ArrowRight size={15} weight="bold" aria-hidden="true" />
                             </Box>
-                        </Box>
-
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                flexWrap: 'wrap',
-                                gap: '8px',
-                                mt: { xs: '26px', md: '32px' },
-                                pt: '18px',
-                                borderTop: '1px solid',
-                                borderColor: 'rgba(234, 250, 248, .13)',
-                            }}
-                        >
-                            {['iOS 15.1+', 'Android', 'React Native'].map((label) => (
-                                <Box
-                                    component="span"
-                                    key={label}
-                                    sx={{
-                                        display: 'inline-flex',
-                                        alignItems: 'center',
-                                        gap: '7px',
-                                        px: '11px',
-                                        py: '7px',
-                                        borderRadius: '999px',
-                                        border: '1px solid',
-                                        borderColor: 'rgba(234, 250, 248, .16)',
-                                        color: 'rgba(234, 250, 248, .74)',
-                                        fontFamily: inter,
-                                        fontSize: '10px',
-                                        fontWeight: 600,
-                                        lineHeight: 1,
-                                    }}
-                                >
-                                    <Box
-                                        aria-hidden="true"
-                                        sx={{ width: '4px', height: '4px', borderRadius: '50%', bgcolor: '#0fbab5' }}
-                                    />
-                                    {label}
-                                </Box>
-                            ))}
                         </Box>
                     </Box>
 
@@ -627,61 +586,36 @@ export default function AquariumAppProjectPage() {
                         }}
                     >
                         <Box sx={{ position: { lg: 'sticky' }, top: { lg: '120px' } }}>
-                            <Box sx={{ ...kickerSx, color: p.teal }}>История</Box>
-                            <Box sx={{ display: 'flex', alignItems: 'flex-end', gap: '12px', mt: '10px' }}>
-                                <Box
-                                    sx={{
-                                        fontFamily: inter,
-                                        fontSize: 'clamp(5.6rem, 13vw, 11rem)',
-                                        fontWeight: 700,
-                                        lineHeight: 0.72,
-                                        letterSpacing: '-0.09em',
-                                        color: p.tealFill,
-                                    }}
-                                >
-                                    6
-                                </Box>
-                                <Box sx={{ pb: '8px' }}>
-                                    <Box
-                                        sx={{
-                                            fontFamily: inter,
-                                            fontSize: 'clamp(17px, 1.7vw, 21px)',
-                                            fontWeight: 600,
-                                            lineHeight: 1.1,
-                                            letterSpacing: '-0.02em',
-                                            color: p.heading,
-                                        }}
-                                    >
-                                        месяцев
-                                    </Box>
-                                    <Box
-                                        sx={{
-                                            mt: '4px',
-                                            fontFamily: inter,
-                                            fontSize: '11px',
-                                            lineHeight: 1.3,
-                                            color: p.faint,
-                                        }}
-                                    >
-                                        от задачи
-                                        <br />
-                                        до релиза
-                                    </Box>
-                                </Box>
+                            <Box
+                                component="p"
+                                sx={{
+                                    m: 0,
+                                    mt: '14px',
+                                    maxWidth: '22ch',
+                                    fontFamily: inter,
+                                    fontSize: 'clamp(20px, 2.2vw, 28px)',
+                                    fontWeight: 600,
+                                    lineHeight: 1.15,
+                                    letterSpacing: '-0.03em',
+                                    color: p.teal,
+                                    textWrap: 'balance',
+                                }}
+                            >
+                                6 месяцев <nobr>от задачи</nobr> <nobr>до релиза</nobr>
                             </Box>
                             <Box
+                                component="p"
                                 sx={{
-                                    mt: '26px',
-                                    maxWidth: '30ch',
+                                    m: 0,
+                                    mt: '12px',
+                                    maxWidth: '34ch',
                                     fontFamily: inter,
-                                    fontSize: '13px',
+                                    fontSize: '13.5px',
                                     lineHeight: 1.6,
                                     color: p.muted,
                                 }}
                             >
-                                Веб-версия уже работала. Оставалось сделать так, чтобы
-                                Аквариум удобно жил в телефоне — с той же лентой,
-                                чатами и звонками.
+                                Необходимо разработать мобильное приложение для мессенджера «Аквариум» с функциональностью хранение сессиии, кэширования запросов и системными уведомлениями.
                             </Box>
                         </Box>
 
@@ -691,13 +625,11 @@ export default function AquariumAppProjectPage() {
                                 id="aquarium-app-story"
                                 sx={{ ...sectionTitleSx(p), maxWidth: '17ch' }}
                             >
-                                Веб-версия уже была. Не хватало телефона
+                                <span style={{ opacity: 1 }}>Веб-версия уже была.</span><br />
+                                <span>Не хватало приложения</span>
                             </Box>
                             <Box component="p" sx={{ ...sectionTextSx(p), maxWidth: '52ch' }}>
-                                Нужно было сохранить знакомый интерфейс и добавить то,
-                                чего не даёт браузер: быстрый отклик, уведомления
-                                и звонки в один тап. Реализовал за 6 месяцев —
-                                от проектирования экранов до публикации в маркетах.
+                                Нужно было сохранить знакомый интерфейс и добавить то, чего не дает браузер: кэширование, уведомления и системные звонки. Реализация проекта заняла 6 месяцев.
                             </Box>
 
                             <Box
@@ -803,13 +735,12 @@ export default function AquariumAppProjectPage() {
                         }}
                     >
                         <Box>
-                            <Box sx={{ ...kickerSx, color: p.teal }}>Возможности</Box>
                             <Box
                                 component="h2"
                                 id="aquarium-app-features"
                                 sx={{ ...sectionTitleSx(p), mt: '12px', maxWidth: '14ch' }}
                             >
-                                То, чего не хватало в браузере
+                                Ограничения веб-версии
                             </Box>
                         </Box>
                         <Box
@@ -823,8 +754,7 @@ export default function AquariumAppProjectPage() {
                                 color: p.muted,
                             }}
                         >
-                            Приложение не заменяет веб-версию, а продолжает её —
-                            там, где телефон оказывается под рукой.
+                            Приложение является продолжением веб-версии со своими изменениями и улучшениями.
                         </Box>
                     </Box>
 
@@ -852,71 +782,6 @@ export default function AquariumAppProjectPage() {
                 </Box>
             </Box>
 
-            <Box
-                component="section"
-                aria-labelledby="aquarium-app-themes"
-                sx={sectionSx}
-            >
-                <Box sx={{ maxWidth: '1500px', mx: 'auto' }}>
-                    <Box
-                        sx={{
-                            display: 'grid',
-                            gridTemplateColumns: { xs: '1fr', lg: 'minmax(0, .82fr) minmax(0, 1.18fr)' },
-                            gap: { xs: 'clamp(26px, 6vw, 40px)', lg: 'clamp(40px, 6vw, 100px)' },
-                            alignItems: 'center',
-                        }}
-                    >
-                        <Box>
-                            <Box
-                                component="h2"
-                                id="aquarium-app-themes"
-                                sx={{ ...sectionTitleSx(p), maxWidth: '13ch' }}
-                            >
-                                Приложение можно перекрасить
-                            </Box>
-                            <Box component="p" sx={{ ...sectionTextSx(p), maxWidth: '38ch' }}>
-                                В настройках — {lightThemes.length} светлых
-                                и {darkThemes.length} тёмных тем: от спокойной
-                                «Стандартной» до «Золотой полуночи». Там же меняется
-                                иконка приложения — их девять.
-                            </Box>
-                        </Box>
-
-                        <Box sx={{ display: 'grid', gap: '22px' }}>
-                            {[
-                                { label: 'Светлые темы', themes: lightThemes },
-                                { label: 'Тёмные темы', themes: darkThemes },
-                            ].map((row) => (
-                                <Box key={row.label}>
-                                    <Box
-                                        sx={{
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            gap: '8px',
-                                            mb: '10px',
-                                            ...kickerSx,
-                                            fontSize: '9px',
-                                            color: p.faint,
-                                        }}
-                                    >
-                                        <Box component="span">{row.label}</Box>
-                                        <Box
-                                            aria-hidden="true"
-                                            sx={{ width: '3px', height: '3px', borderRadius: '50%', bgcolor: 'currentColor' }}
-                                        />
-                                        <Box component="span">{row.themes.length}</Box>
-                                    </Box>
-                                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                                        {row.themes.map((theme) => (
-                                            <ThemePreview key={`${row.label}-${theme.name}`} theme={theme} />
-                                        ))}
-                                    </Box>
-                                </Box>
-                            ))}
-                        </Box>
-                    </Box>
-                </Box>
-            </Box>
 
             <Box
                 component="section"
@@ -935,13 +800,12 @@ export default function AquariumAppProjectPage() {
                         }}
                     >
                         <Box>
-                            <Box sx={{ ...kickerSx, color: p.teal }}>Экраны</Box>
                             <Box
                                 component="h2"
                                 id="aquarium-app-screens"
                                 sx={{ ...sectionTitleSx(p), mt: '12px', maxWidth: '12ch' }}
                             >
-                                Как это выглядит
+                                Экраны приложения
                             </Box>
                         </Box>
                         <Box
@@ -989,16 +853,6 @@ export default function AquariumAppProjectPage() {
                                     }}
                                 />
                                 <Box sx={{ mt: '20px', maxWidth: '30ch', textAlign: 'center' }}>
-                                    <Box
-                                        sx={{
-                                            ...kickerSx,
-                                            fontSize: '9px',
-                                            color: p.teal,
-                                            textTransform: 'none',
-                                        }}
-                                    >
-                                        {screen.platform}
-                                    </Box>
                                     <Box
                                         component="h3"
                                         sx={{
@@ -1141,10 +995,10 @@ export default function AquariumAppProjectPage() {
                             position: 'relative',
                             overflow: 'hidden',
                             borderRadius: { xs: '24px', md: '32px' },
-                            bgcolor: '#04211f',
+                            bgcolor: '#041f22',
                             color: '#eafaf8',
                             backgroundImage:
-                                'radial-gradient(700px 420px at 92% 20%, rgba(15, 186, 181, .32), transparent 62%), linear-gradient(120deg, #04211f 0%, #062b28 100%)',
+                                'radial-gradient(700px 420px at 92% 20%, rgba(15, 186, 181, .32), transparent 62%), linear-gradient(120deg, #041f22 0%, #03292b 100%)',
                             px: { xs: '24px', md: 'clamp(34px, 5vw, 72px)' },
                             py: { xs: 'clamp(30px, 6vw, 48px)', md: 'clamp(48px, 7vw, 86px)' },
                         }}
