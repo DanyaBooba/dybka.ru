@@ -12,7 +12,6 @@ export function Post({ post, palette }) {
         <Box
             sx={{
                 width: '100%',
-                maxWidth: '548px',
                 p: '20px',
                 borderRadius: '24px',
                 bgcolor: palette.postBackground,

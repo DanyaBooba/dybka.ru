@@ -1,11 +1,12 @@
 import { useEffect, useLayoutEffect } from 'react'
 import Box from '@mui/joy/Box'
 import { useTheme } from '@mui/joy/styles'
-import { Navigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { Fancybox } from '@fancyapps/ui'
 import '@fancyapps/ui/dist/fancybox/fancybox.css'
 import Header from '../components/header'
 import Seo from '../components/seo'
+import PageNotFound from './page-not-found'
 import events from '../data/events'
 import eventGalleries from '../data/event-galleries'
 import { SITE_URL, WEBSITE_ID } from '../data/seo'
@@ -42,7 +43,7 @@ export default function PageEvent() {
     }, [event])
 
     if (!event) {
-        return <Navigate to="/" replace />
+        return <PageNotFound />
     }
 
     const folder = event.imageCap.split('/').slice(0, -1).join('/')

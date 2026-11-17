@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AppTheme from './providers/app-theme';
 import routes from "./routes/main";
-import PageIndex from './pages/page-index';
+import PageNotFound from './pages/page-not-found';
 
 export default function App() {
     return (
@@ -9,7 +9,7 @@ export default function App() {
             <BrowserRouter>
                 <Routes>
                     {routes}
-                    <Route path="*" element={<PageIndex />} />
+                    <Route path="*" element={<PageNotFound />} />
                 </Routes>
             </BrowserRouter>
         </AppTheme>

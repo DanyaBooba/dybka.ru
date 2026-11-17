@@ -2,6 +2,7 @@ import { useEffect, useId } from 'react'
 import Box from '@mui/joy/Box'
 import { useColorScheme, useTheme } from '@mui/joy/styles'
 import { useParams } from 'react-router-dom'
+import PageNotFound from './page-not-found'
 import Header from '../components/header'
 import Seo from '../components/seo'
 import useFancybox from '../components/use-fancybox'
@@ -82,6 +83,10 @@ export default function PageProject() {
     }, [])
 
     useFancybox(`[data-fancybox="${coverGalleryId}"]`)
+
+    if (!project) {
+        return <PageNotFound />
+    }
 
     return (
         <>

@@ -579,7 +579,6 @@ function PreviewBrowser({ palette }) {
                             url={`izobretarium.ru${activePage.path}`}
                             title={activePage.title}
                             dark={palette.browserDark}
-                            shadow={false}
                             viewportSx={{
                                 height: {
                                     xs: 'clamp(440px, 66svh, 560px)',

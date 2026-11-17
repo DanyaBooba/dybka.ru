@@ -11,6 +11,7 @@ import {
 } from '@phosphor-icons/react'
 import AquariumLogo from '../../components/aquarium-logo'
 import AquariumMark from '../../components/aquarium-mark'
+import usePageBackground from '../../components/use-page-background'
 
 const getPalette = (dark) => dark
     ? {
@@ -410,6 +411,7 @@ export default function AquariumAppProjectPage() {
     const { mode, systemMode } = useColorScheme()
     const dark = mode === 'dark' || (mode === 'system' && systemMode === 'dark')
     const p = getPalette(dark)
+    usePageBackground(p.page)
     const screenShadow = dark
         ? 'drop-shadow(0 40px 70px rgba(0, 0, 0, .5))'
         : 'drop-shadow(0 40px 70px rgba(4, 58, 55, .16))'

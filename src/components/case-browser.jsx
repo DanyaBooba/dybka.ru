@@ -33,6 +33,7 @@ export default function CaseBrowser({
     shadow = true,
     children,
     viewportSx,
+    viewportRef,
     sx,
     topBar = true,
 }) {
@@ -116,6 +117,7 @@ export default function CaseBrowser({
             ) : null}
 
             <Box
+                ref={viewportRef}
                 sx={[
                     {
                         position: 'relative',

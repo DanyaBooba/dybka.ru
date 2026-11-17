@@ -23,6 +23,12 @@
     color: #000;
 }
 
+html {
+    background-color: var(--joy-palette-background-body);
+    background-image: var(--noise-background);
+    background-size: 180px 180px;
+}
+
 body {
     padding-bottom: env(safe-area-inset-bottom, 0px);
     background-color: var(--joy-palette-background-body);

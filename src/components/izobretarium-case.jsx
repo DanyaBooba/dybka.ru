@@ -3,6 +3,7 @@ import Box from '@mui/joy/Box'
 import { useColorScheme, useTheme } from '@mui/joy/styles'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { ArrowUpRight } from '@phosphor-icons/react'
+import CaseBrowser from './case-browser'
 import IzobretariumLogo from './izobretarium-logo'
 
 const previews = {
@@ -43,7 +44,6 @@ export default function IzobretariumCase() {
     const sectionRef = useRef(null)
     const viewportRef = useRef(null)
     const imageRef = useRef(null)
-    const frameRef = useRef(null)
     const [maxY, setMaxY] = useState(0)
 
     useEffect(() => {
@@ -75,7 +75,6 @@ export default function IzobretariumCase() {
         if (!interactive) return
 
         let frame = 0
-        const frameElement = frameRef.current
 
         const update = () => {
             frame = 0
@@ -110,16 +109,11 @@ export default function IzobretariumCase() {
             window.cancelAnimationFrame(frame)
             window.removeEventListener('scroll', onScroll)
             window.removeEventListener('resize', onScroll)
-
-            if (frameElement) frameElement.style.transform = ''
         }
     }, [interactive, maxY, isMobile])
 
     const preview = dark ? previews.dark : previews.light
-    const topbarBackground = dark ? '#1b1b1d' : '#f4f4f5'
     const browserBackground = dark ? '#0f0f10' : '#ffffff'
-    const browserBorder = dark ? 'rgba(255, 255, 255, .16)' : 'rgba(0, 0, 0, .12)'
-    const urlBackground = dark ? '#2a2a2d' : '#ffffff'
 
     const textBlock = (
         <Box>
@@ -245,119 +239,60 @@ export default function IzobretariumCase() {
     )
 
     const browserWindow = (
-        <Box
-            ref={frameRef}
-            sx={{
-                width: '100%',
-                transformOrigin: 'center',
-                willChange: interactive ? 'transform' : 'auto',
+        <CaseBrowser
+            title="Детский технопарк Изобретариум"
+            dark={dark}
+            viewportRef={viewportRef}
+            viewportSx={{
+                height: interactive
+                    ? 'clamp(320px, 58svh, 620px)'
+                    : 'clamp(300px, 52svh, 480px)',
+                bgcolor: browserBackground,
             }}
         >
-            <Box
-                sx={{
-                    overflow: 'hidden',
-                    borderRadius: '12px',
-                    border: '1px solid',
-                    borderColor: browserBorder,
-                    bgcolor: browserBackground,
-                }}
-            >
+            {interactive ? (
                 <Box
+                    component="img"
+                    ref={imageRef}
+                    src={preview.src}
+                    srcSet={preview.srcSet}
+                    sizes="(min-width: 900px) 58vw, 92vw"
+                    alt="Главная страница сайта Изобретариум"
+                    loading="lazy"
+                    decoding="async"
                     sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        height: 'clamp(38px, 4vw, 46px)',
-                        px: '10px',
-                        bgcolor: topbarBackground,
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        display: 'block',
+                        width: '100%',
+                        height: 'auto',
+                        aspectRatio: '1440 / 5891',
+                        transform: 'translate3d(0, 0, 0)',
+                        willChange: 'transform',
                     }}
-                >
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            gap: '7px',
-                            width: '100%',
-                            height: 'clamp(24px, 2.6vw, 28px)',
-                            px: '8px',
-                            borderRadius: '6px',
-                            bgcolor: urlBackground,
-                            color: palette.text.tertiary,
-                            fontFamily: 'var(--joy-fontFamily-body)',
-                            fontSize: 'clamp(10px, 0.85vw, 12px)',
-                            lineHeight: 1,
-                        }}
-                    >
-                        <Box
-                            component="span"
-                            sx={{
-                                overflow: 'hidden',
-                                textOverflow: 'ellipsis',
-                                whiteSpace: 'nowrap',
-                                fontSize: '14px'
-                            }}
-                        >
-                            izobretarium.ru
-                        </Box>
-                    </Box>
-                </Box>
-
+                />
+            ) : (
                 <Box
-                    ref={viewportRef}
+                    component="img"
+                    src={preview.src}
+                    srcSet={preview.srcSet}
+                    sizes="(min-width: 900px) 58vw, 92vw"
+                    alt="Главная страница сайта Изобретариум"
+                    loading="lazy"
+                    decoding="async"
                     sx={{
-                        position: 'relative',
-                        height: interactive
-                            ? 'clamp(320px, 58svh, 620px)'
-                            : 'clamp(300px, 52svh, 480px)',
-                        overflow: 'hidden',
-                        bgcolor: browserBackground,
+                        position: 'absolute',
+                        inset: 0,
+                        display: 'block',
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        objectPosition: 'top',
                     }}
-                >
-                    {interactive ? (
-                        <Box
-                            component="img"
-                            ref={imageRef}
-                            src={preview.src}
-                            srcSet={preview.srcSet}
-                            sizes="(min-width: 900px) 58vw, 92vw"
-                            alt="Главная страница сайта Изобретариум"
-                            loading="lazy"
-                            decoding="async"
-                            sx={{
-                                position: 'absolute',
-                                top: 0,
-                                left: 0,
-                                display: 'block',
-                                width: '100%',
-                                height: 'auto',
-                                aspectRatio: '1440 / 5891',
-                                transform: 'translate3d(0, 0, 0)',
-                                willChange: 'transform',
-                            }}
-                        />
-                    ) : (
-                        <Box
-                            component="img"
-                            src={preview.src}
-                            srcSet={preview.srcSet}
-                            sizes="(min-width: 900px) 58vw, 92vw"
-                            alt="Главная страница сайта Изобретариум"
-                            loading="lazy"
-                            decoding="async"
-                            sx={{
-                                position: 'absolute',
-                                inset: 0,
-                                display: 'block',
-                                width: '100%',
-                                height: '100%',
-                                objectFit: 'cover',
-                                objectPosition: 'top',
-                            }}
-                        />
-                    )}
-                </Box>
-            </Box>
-        </Box>
+                />
+            )}
+        </CaseBrowser>
     )
 
     if (isMobile) {
