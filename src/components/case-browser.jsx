@@ -122,6 +122,10 @@ export default function CaseBrowser({
                     {
                         position: 'relative',
                         overflow: 'hidden',
+                        // Своя композиторская прослойка: окно с обрезанным
+                        // превью не перерисовывает страницу при скролле.
+                        contain: 'paint',
+                        transform: 'translateZ(0)',
                         bgcolor: scheme.shell,
                     },
                     ...(viewportSx ? (Array.isArray(viewportSx) ? viewportSx : [viewportSx]) : []),

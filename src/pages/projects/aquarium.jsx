@@ -1623,13 +1623,15 @@ export default function AquariumProjectPage() {
                                 gap: '7px',
                                 color: p.teal,
                                 fontFamily: inter,
-                                fontSize: '11px',
+                                fontSize: '10px',
                                 fontWeight: 600,
                                 textDecoration: 'none',
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.1em',
                             }}
                         >
                             О проекте
-                            <ArrowUpRight size={13} aria-hidden="true" />
+                            <ArrowUpRight size={16} aria-hidden="true" />
                         </Box>
                     </Box>
                 </Box>

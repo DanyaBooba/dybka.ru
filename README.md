@@ -1,16 +1,47 @@
-# React + Vite
+# Сайт-визитка Даниила Дыбка
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Здесь представлен исходный код сайта [dybka.ru](https://dybka.ru).
 
-Currently, two official plugins are available:
+## Технологии
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- React 18
+- TypeScript
+- Joy UI
+- Vite
+- React Router
 
-## React Compiler
+## Установка и запуск
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Запуск
 
-## Expanding the ESLint configuration
+```bash
+# Установка зависимостей
+npm install
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+# Запуск dev-сервера
+npm start
+# или
+npm run dev
+```
+
+Приложение будет доступно по адресу `http://localhost:5173`
+
+### Сборка приложения
+
+```bash
+# Установка зависимостей
+npm install
+
+# Сборка для продакшена
+npm run build
+```
+
+Готовые файлы будут в папке `dist/`
+
+## Лицензия
+
+Этот проект распространяется под лицензией [GNU General Public License v3.0](LICENSE).
+
+---
+
+Сделано с ❤️ · Даниил Дыбка

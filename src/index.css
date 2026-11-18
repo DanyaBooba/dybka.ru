@@ -69,6 +69,17 @@ body {
     }
 }
 
+/* Прокрутка превью внутри макета браузера (scroll-driven, без JS). */
+@keyframes izob-case-scroll {
+    from {
+        transform: translate3d(0, 0, 0);
+    }
+
+    to {
+        transform: translate3d(0, calc(-100% + var(--izob-case-window, clamp(320px, 58svh, 620px))), 0);
+    }
+}
+
 @keyframes heroImageOut {
     from {
         opacity: 1;

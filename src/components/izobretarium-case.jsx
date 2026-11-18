@@ -1,10 +1,14 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import Box from '@mui/joy/Box'
 import { useColorScheme, useTheme } from '@mui/joy/styles'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { ArrowUpRight } from '@phosphor-icons/react'
 import CaseBrowser from './case-browser'
 import IzobretariumLogo from './izobretarium-logo'
+import { supportsScrollTimeline } from './scroll-timeline'
+
+// Высота окна браузера. Значение продублировано в @keyframes izob-case-scroll.
+const PREVIEW_WINDOW = 'clamp(320px, 58svh, 620px)'
 
 const previews = {
     light: {
@@ -15,21 +19,6 @@ const previews = {
         src: '/img/projects/izobretarium-preview-dark.webp',
         srcSet: '/img/projects/izobretarium-preview-dark.webp 1440w, /img/projects/izobretarium-preview-dark@2x.webp 2880w',
     },
-}
-
-const linkSx = {
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: '10px',
-    color: 'inherit',
-    fontFamily: 'var(--joy-fontFamily-body)',
-    fontSize: '10px',
-    fontWeight: 500,
-    letterSpacing: '0.1em',
-    textTransform: 'uppercase',
-    textDecoration: 'none',
-    transition: 'opacity .25s ease',
-    '&:hover': { opacity: 0.55 },
 }
 
 export default function IzobretariumCase() {
@@ -44,73 +33,88 @@ export default function IzobretariumCase() {
     const sectionRef = useRef(null)
     const viewportRef = useRef(null)
     const imageRef = useRef(null)
-    const [maxY, setMaxY] = useState(0)
+    const animatedByCss = interactive && supportsScrollTimeline
 
+    // Фолбэк для браузеров без scroll-driven анимаций: геометрию меряем
+    // только при монтировании и ресайзе, в кадре — scrollY и transform.
     useEffect(() => {
-        const measure = () => {
-            if (!imageRef.current || !viewportRef.current) return
+        if (!interactive || animatedByCss) return undefined
 
-            const imageHeight = imageRef.current.offsetHeight
-            const viewportHeight = viewportRef.current.clientHeight
+        const section = sectionRef.current
+        const image = imageRef.current
+        const viewport = viewportRef.current
 
-            setMaxY(Math.max(0, imageHeight - viewportHeight))
-        }
-
-        measure()
-
-        const observer = new ResizeObserver(measure)
-
-        if (imageRef.current) observer.observe(imageRef.current)
-        if (viewportRef.current) observer.observe(viewportRef.current)
-
-        window.addEventListener('resize', measure)
-
-        return () => {
-            observer.disconnect()
-            window.removeEventListener('resize', measure)
-        }
-    }, [interactive, dark, isMobile])
-
-    useEffect(() => {
-        if (!interactive) return
+        if (!section || !image || !viewport) return undefined
 
         let frame = 0
+        let sectionTop = 0
+        let range = 0
+        let offset = 0
+        let active = false
+        let lastY = Number.NaN
+
+        const measure = () => {
+            sectionTop = section.getBoundingClientRect().top + window.scrollY
+            range = Math.max(0, section.offsetHeight - window.innerHeight)
+            offset = Math.max(0, image.offsetHeight - viewport.clientHeight)
+            lastY = Number.NaN
+        }
 
         const update = () => {
             frame = 0
 
-            const section = sectionRef.current
-            const image = imageRef.current
+            if (!active || range <= 0) return
 
-            if (!section || !image) return
+            const y = window.scrollY
 
-            const range = section.offsetHeight - window.innerHeight
+            if (y === lastY) return
 
-            if (range <= 0) return
+            lastY = y
 
-            const progress = Math.min(
-                1,
-                Math.max(0, -section.getBoundingClientRect().top / range),
-            )
+            const progress = Math.min(1, Math.max(0, (y - sectionTop) / range))
 
-            image.style.transform = `translate3d(0, ${-progress * maxY}px, 0)`
-
+            image.style.transform = `translate3d(0, ${(-progress * offset).toFixed(2)}px, 0)`
         }
 
         const onScroll = () => {
             if (!frame) frame = window.requestAnimationFrame(update)
         }
 
+        const onResize = () => {
+            measure()
+            onScroll()
+        }
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                active = entry.isIntersecting
+                if (active) onScroll()
+            },
+            { rootMargin: '25% 0px' },
+        )
+
+        const resizeObserver = new ResizeObserver(() => {
+            measure()
+            onScroll()
+        })
+
+        measure()
         update()
+        observer.observe(section)
+        resizeObserver.observe(image)
+        resizeObserver.observe(viewport)
         window.addEventListener('scroll', onScroll, { passive: true })
-        window.addEventListener('resize', onScroll)
+        window.addEventListener('resize', onResize)
 
         return () => {
             window.cancelAnimationFrame(frame)
+            observer.disconnect()
+            resizeObserver.disconnect()
             window.removeEventListener('scroll', onScroll)
-            window.removeEventListener('resize', onScroll)
+            window.removeEventListener('resize', onResize)
+            image.style.transform = ''
         }
-    }, [interactive, maxY, isMobile])
+    }, [interactive, animatedByCss, isMobile])
 
     const preview = dark ? previews.dark : previews.light
     const browserBackground = dark ? '#0f0f10' : '#ffffff'
@@ -244,9 +248,7 @@ export default function IzobretariumCase() {
             dark={dark}
             viewportRef={viewportRef}
             viewportSx={{
-                height: interactive
-                    ? 'clamp(320px, 58svh, 620px)'
-                    : 'clamp(300px, 52svh, 480px)',
+                height: interactive ? PREVIEW_WINDOW : 'clamp(300px, 52svh, 480px)',
                 bgcolor: browserBackground,
             }}
         >
@@ -270,6 +272,17 @@ export default function IzobretariumCase() {
                         aspectRatio: '1440 / 5891',
                         transform: 'translate3d(0, 0, 0)',
                         willChange: 'transform',
+                        '--izob-case-window': PREVIEW_WINDOW,
+                        ...(animatedByCss
+                            ? {
+                                animationName: 'izob-case-scroll',
+                                animationDuration: 'auto',
+                                animationTimingFunction: 'linear',
+                                animationFillMode: 'both',
+                                animationTimeline: '--izob-case',
+                                animationRange: 'contain 0% contain 100%',
+                            }
+                            : null),
                     }}
                 />
             ) : (
@@ -318,6 +331,9 @@ export default function IzobretariumCase() {
                                 position: 'relative',
                                 height: '180vh',
                                 mt: 'clamp(28px, 5vw, 40px)',
+                                ...(animatedByCss
+                                    ? { viewTimeline: '--izob-case block' }
+                                    : null),
                             }}
                         >
                             <Box
@@ -353,6 +369,7 @@ export default function IzobretariumCase() {
                 height: interactive ? '270vh' : 'auto',
                 px: { xs: '20px', md: 'clamp(24px, 3.2vw, 48px)' },
                 py: interactive ? 0 : 'clamp(72px, 10vw, 120px)',
+                ...(animatedByCss ? { viewTimeline: '--izob-case block' } : null),
             }}
         >
             <Box

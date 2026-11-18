@@ -1192,51 +1192,15 @@ export default function AquariumAppProjectPage() {
                                 gap: '7px',
                                 color: p.teal,
                                 fontFamily: inter,
-                                fontSize: '11px',
+                                fontSize: '10px',
                                 fontWeight: 600,
                                 textDecoration: 'none',
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.1em',
                             }}
                         >
                             О мессенджере
-                            <ArrowUpRight size={13} aria-hidden="true" />
-                        </Box>
-                        <Box
-                            component="a"
-                            href="https://aquarium.org.ru"
-                            target="_blank"
-                            rel="noreferrer"
-                            sx={{
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '7px',
-                                color: p.teal,
-                                fontFamily: inter,
-                                fontSize: '11px',
-                                fontWeight: 600,
-                                textDecoration: 'none',
-                            }}
-                        >
-                            Веб-версия
-                            <ArrowUpRight size={13} aria-hidden="true" />
-                        </Box>
-                        <Box
-                            component="a"
-                            href="https://aquarium.org.ru/apps"
-                            target="_blank"
-                            rel="noreferrer"
-                            sx={{
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '7px',
-                                color: p.teal,
-                                fontFamily: inter,
-                                fontSize: '11px',
-                                fontWeight: 600,
-                                textDecoration: 'none',
-                            }}
-                        >
-                            Приложения
-                            <ArrowUpRight size={13} aria-hidden="true" />
+                            <ArrowUpRight size={16} aria-hidden="true" />
                         </Box>
                     </Box>
                 </Box>

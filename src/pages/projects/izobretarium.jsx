@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import Box from '@mui/joy/Box'
 import { useColorScheme } from '@mui/joy/styles'
 import {
@@ -11,6 +11,7 @@ import {
     NewspaperClipping,
 } from '@phosphor-icons/react'
 import CaseBrowser from '../../components/case-browser'
+import { supportsScrollTimeline } from '../../components/scroll-timeline'
 import IzobretariumLogo from '../../components/izobretarium-logo'
 import useFancybox from '../../components/use-fancybox'
 
@@ -96,6 +97,14 @@ const browserPages = [
 const adminScreenshots = {
     light: '/img/pages/izobretarium/izoserver@light.jpg',
     dark: '/img/pages/izobretarium/izoserver@dark.jpg',
+}
+
+// Высота окна браузера с превью. Значение же подставляется в keyframes
+// через --izob-case-window, чтобы CSS-анимация знала дистанцию прокрутки.
+const PREVIEW_WINDOW = {
+    xs: 'clamp(440px, 66svh, 560px)',
+    sm: 'clamp(420px, 56svh, 640px)',
+    md: 'clamp(420px, 64svh, 920px)',
 }
 
 const metrics = [
@@ -342,10 +351,10 @@ function PreviewBrowser({ palette }) {
     const stickyRef = useRef(null)
     const viewRef = useRef(null)
     const imageRef = useRef(null)
-    const progressRef = useRef(0)
     const tabListRef = useRef(null)
     const tabRefs = useRef([])
     const [tabIndicator, setTabIndicator] = useState({ left: 0, width: 0 })
+    const animatedByCss = supportsScrollTimeline
 
     useLayoutEffect(() => {
         const list = tabListRef.current
@@ -378,71 +387,109 @@ function PreviewBrowser({ palette }) {
         }
     }, [activeIndex])
 
-    const update = useCallback(() => {
+    // Фолбэк для браузеров без scroll-driven анимаций: раскладку читаем
+    // при монтировании, ресайзе и смене страницы, а не на каждом кадре.
+    useEffect(() => {
+        if (animatedByCss) return undefined
+
         const section = sectionRef.current
+        const sticky = stickyRef.current
         const image = imageRef.current
         const view = viewRef.current
-        const sticky = stickyRef.current
 
-        if (!section || !image || !view) return
+        if (!section || !image || !view) return undefined
 
-        const pinnedHeight = sticky?.offsetHeight || window.innerHeight
-        const range = section.offsetHeight - pinnedHeight
-        if (range <= 0) return
-
-        // Завершаем прокрутку скриншота чуть раньше, чем секция отпустит
-        // браузер: так последние пиксели изображения гарантированно видны
-        // и не зависят от разницы между 100svh и window.innerHeight.
-        const travel = Math.max(1, range * 0.92)
-        const progress = Math.min(
-            1,
-            Math.max(0, -section.getBoundingClientRect().top / travel),
-        )
-        const maxShift = Math.max(0, image.offsetHeight - view.clientHeight)
-
-        progressRef.current = progress
-        image.style.transform = `translate3d(0, ${-progress * maxShift}px, 0)`
-    }, [])
-
-    useEffect(() => {
         let frame = 0
+        let sectionTop = 0
+        let range = 0
+        let travel = 1
+        let maxShift = 0
+        let active = false
+        let lastY = Number.NaN
 
-        const onScroll = () => {
-            if (!frame) {
-                frame = window.requestAnimationFrame(() => {
-                    frame = 0
-                    update()
-                })
-            }
+        const measure = () => {
+            sectionTop = section.getBoundingClientRect().top + window.scrollY
+            range = section.offsetHeight - (sticky?.offsetHeight || window.innerHeight)
+            // Заканчиваем прокрутку скриншота чуть раньше, чем секция отпустит
+            // браузер, чтобы последние пиксели точно были видны.
+            travel = Math.max(1, range * 0.92)
+            maxShift = Math.max(0, image.offsetHeight - view.clientHeight)
+            lastY = Number.NaN
         }
 
-        update()
-        window.addEventListener('scroll', onScroll, { passive: true })
-        window.addEventListener('resize', onScroll)
+        const apply = () => {
+            frame = 0
 
-        const observer = new ResizeObserver(onScroll)
-        if (viewRef.current) observer.observe(viewRef.current)
-        if (sectionRef.current) observer.observe(sectionRef.current)
-        if (imageRef.current) observer.observe(imageRef.current)
+            if (!active || range <= 0) return
+
+            const y = window.scrollY
+
+            if (y === lastY) return
+
+            lastY = y
+
+            const progress = Math.min(1, Math.max(0, (y - sectionTop) / travel))
+
+            image.style.transform = `translate3d(0, ${(-progress * maxShift).toFixed(2)}px, 0)`
+        }
+
+        const onScroll = () => {
+            if (!frame) frame = window.requestAnimationFrame(apply)
+        }
+
+        const onResize = () => {
+            measure()
+            onScroll()
+        }
+
+        const visibility = new IntersectionObserver(
+            ([entry]) => {
+                active = entry.isIntersecting
+                if (active) onScroll()
+            },
+            { rootMargin: '25% 0px' },
+        )
+
+        const resize = new ResizeObserver(() => {
+            measure()
+            onScroll()
+        })
+
+        measure()
+        apply()
+        visibility.observe(section)
+        resize.observe(image)
+        resize.observe(view)
+        window.addEventListener('scroll', onScroll, { passive: true })
+        window.addEventListener('resize', onResize)
 
         return () => {
             window.cancelAnimationFrame(frame)
+            visibility.disconnect()
+            resize.disconnect()
             window.removeEventListener('scroll', onScroll)
-            window.removeEventListener('resize', onScroll)
-            observer.disconnect()
+            window.removeEventListener('resize', onResize)
+            image.style.transform = ''
         }
-    }, [update])
-
-    useLayoutEffect(() => {
-        update()
-    }, [activeIndex, update])
+    }, [animatedByCss, activeIndex, dark])
 
     const selectPage = (index) => {
         setActiveIndex(index)
 
-        if (progressRef.current > 0.025 && sectionRef.current) {
-            const top = sectionRef.current.getBoundingClientRect().top + window.scrollY
-            window.scrollTo({ top, behavior: 'smooth' })
+        const section = sectionRef.current
+
+        if (!section) return
+
+        const sticky = stickyRef.current
+        const range = section.offsetHeight - (sticky?.offsetHeight || window.innerHeight)
+        const travel = Math.max(1, range * 0.92)
+        const progress = Math.max(0, -section.getBoundingClientRect().top / travel)
+
+        if (progress > 0.025) {
+            window.scrollTo({
+                top: section.getBoundingClientRect().top + window.scrollY,
+                behavior: 'smooth',
+            })
         }
     }
 
@@ -464,6 +511,7 @@ function PreviewBrowser({ palette }) {
             sx={{
                 position: 'relative',
                 height: { xs: '190vh', md: '280vh' },
+                ...(animatedByCss ? { viewTimeline: '--izob-case block' } : null),
             }}
         >
             <Box
@@ -579,13 +627,7 @@ function PreviewBrowser({ palette }) {
                             url={`izobretarium.ru${activePage.path}`}
                             title={activePage.title}
                             dark={palette.browserDark}
-                            viewportSx={{
-                                height: {
-                                    xs: 'clamp(440px, 66svh, 560px)',
-                                    sm: 'clamp(420px, 56svh, 640px)',
-                                    md: 'clamp(420px, 64svh, 920px)',
-                                },
-                            }}
+                            viewportSx={{ height: PREVIEW_WINDOW }}
                         >
                             <Box
                                 ref={viewRef}
@@ -601,7 +643,6 @@ function PreviewBrowser({ palette }) {
                                     alt={activePage.alt}
                                     loading={activeIndex === 0 ? 'eager' : 'lazy'}
                                     decoding="async"
-                                    onLoad={update}
                                     draggable={false}
                                     sx={{
                                         display: 'block',
@@ -609,6 +650,17 @@ function PreviewBrowser({ palette }) {
                                         height: 'auto',
                                         transform: 'translate3d(0, 0, 0)',
                                         willChange: 'transform',
+                                        '--izob-case-window': PREVIEW_WINDOW,
+                                        ...(animatedByCss
+                                            ? {
+                                                animationName: 'izob-case-scroll',
+                                                animationDuration: 'auto',
+                                                animationTimingFunction: 'linear',
+                                                animationFillMode: 'both',
+                                                animationTimeline: '--izob-case',
+                                                animationRange: 'contain 0% contain 92%',
+                                            }
+                                            : null),
                                     }}
                                 />
                             </Box>

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import Box from '@mui/joy/Box'
 import { useTheme } from '@mui/joy/styles'
 import { Link } from 'react-router-dom'
@@ -31,6 +31,12 @@ const kickerSx = {
     letterSpacing: '0.14em',
     textTransform: 'uppercase',
 }
+
+// Ось таймлайна: линия и точки должны иметь ровно одну и ту же середину по X.
+// Ось совпадает с границей колонки с датой, линия толщиной 1px центрируется на ней
+// (110.5 → занимает 110…111), а точки с нечётным диаметром попадают на целые пиксели.
+const TIMELINE_COLUMN = '110.5px'
+const TIMELINE_AXIS_X = { xs: '7.5px', md: TIMELINE_COLUMN }
 
 const formatEventDate = (date) => date
     .replace(/\s+\d{4}\s*г\.?$/, '')
@@ -70,7 +76,7 @@ function YearHeading({ year, first, palette }) {
         <Box
             sx={{
                 display: 'grid',
-                gridTemplateColumns: { xs: '1fr', md: '110px minmax(0, 1fr)' },
+                gridTemplateColumns: { xs: '1fr', md: `${TIMELINE_COLUMN} minmax(0, 1fr)` },
                 columnGap: { md: '48px' },
                 mt: first ? 0 : { xs: '44px', md: '68px' },
                 pt: { xs: '18px', md: '24px' },
@@ -125,7 +131,7 @@ function EventRow({ event, index, gap, active, onActivate, palette, showInlineIm
                 sx={{
                     position: 'relative',
                     display: 'grid',
-                    gridTemplateColumns: { xs: '1fr', md: '110px minmax(0, 1fr)' },
+                    gridTemplateColumns: { xs: '1fr', md: `${TIMELINE_COLUMN} minmax(0, 1fr)` },
                     columnGap: { md: '48px' },
                     pl: { xs: '28px', md: 0 },
                     pb: { xs: '26px', md: '38px' },
@@ -160,7 +166,7 @@ function EventRow({ event, index, gap, active, onActivate, palette, showInlineIm
                 <Box
                     sx={{
                         display: { xs: 'none', md: 'block' },
-                        pt: '4px',
+                        pt: '7px',
                         pr: '12px',
                         textAlign: 'right',
                     }}
@@ -277,17 +283,20 @@ function EventRow({ event, index, gap, active, onActivate, palette, showInlineIm
 
                 <Box
                     aria-hidden="true"
+                    data-event-dot=""
                     sx={{
                         position: 'absolute',
-                        top: '8px',
-                        left: { xs: '7px', md: '110px' },
+                        // Фиксируем центр точки, а не верх: диаметр растёт
+                        // симметрично в обе стороны, поэтому точка не «съезжает».
+                        top: { xs: '10.5px', md: '13.5px' },
+                        left: TIMELINE_AXIS_X,
                         width: isActive ? '11px' : '7px',
                         height: isActive ? '11px' : '7px',
                         borderRadius: '50%',
                         border: '1px solid',
                         borderColor: isActive ? palette.text.primary : palette.text.tertiary,
                         bgcolor: isActive ? palette.text.primary : palette.background.body,
-                        transform: 'translateX(-50%)',
+                        transform: 'translate(-50%, -50%)',
                         transition: 'width .2s ease, height .2s ease, background-color .2s ease, border-color .2s ease',
                         zIndex: 2,
                     }}
@@ -305,10 +314,44 @@ export default function PageEvents() {
         typeof window !== 'undefined' && window.matchMedia('(min-width: 1200px)').matches
     ))
     const timelineRef = useRef(null)
-    const progressRef = useRef(null)
+    const spineRef = useRef(null)
 
     useEffect(() => {
         window.scrollTo(0, 0)
+    }, [])
+
+    // Линия начинается на верхней линейке хроники и заканчивается ровно
+    // на точке последнего мероприятия, а не тянется через его нижний отступ.
+    useLayoutEffect(() => {
+        const timeline = timelineRef.current
+        const spine = spineRef.current
+        if (!timeline || !spine) return undefined
+
+        const update = () => {
+            const dots = timeline.querySelectorAll('[data-event-dot]')
+            const lastDot = dots[dots.length - 1]
+            if (!lastDot) return
+
+            const timelineTop = timeline.getBoundingClientRect().top
+            const dotRect = lastDot.getBoundingClientRect()
+            const length = dotRect.top + dotRect.height / 2 - timelineTop
+
+            spine.style.height = `${Math.max(0, Math.round(length * 100) / 100)}px`
+        }
+
+        update()
+
+        const observer = typeof ResizeObserver === 'undefined'
+            ? null
+            : new ResizeObserver(update)
+
+        observer?.observe(timeline)
+        window.addEventListener('resize', update)
+
+        return () => {
+            observer?.disconnect()
+            window.removeEventListener('resize', update)
+        }
     }, [])
 
     useEffect(() => {
@@ -349,7 +392,6 @@ export default function PageEvents() {
             const timeline = timelineRef.current
             if (!timeline) return
 
-            const timelineRect = timeline.getBoundingClientRect()
             const anchor = window.innerHeight * 0.65
             const atTop = window.scrollY <= 2
             const atBottom = window.scrollY >= document.documentElement.scrollHeight - window.innerHeight - 2
@@ -377,14 +419,6 @@ export default function PageEvents() {
                 if (next) {
                     setActive((current) => (current?.link === next.link ? current : next))
                 }
-            }
-
-            if (progressRef.current) {
-                const progress = Math.min(
-                    1,
-                    Math.max(0, (anchor - timelineRect.top) / timelineRect.height),
-                )
-                progressRef.current.style.transform = `scaleY(${progress})`
             }
         }
 
@@ -480,43 +514,16 @@ export default function PageEvents() {
                     >
                         <Box ref={timelineRef} sx={{ position: 'relative', minWidth: 0 }}>
                             <Box
+                                ref={spineRef}
                                 aria-hidden="true"
                                 sx={{
                                     position: 'absolute',
                                     top: 0,
-                                    bottom: 0,
-                                    left: { xs: '7px', md: '110px' },
+                                    left: TIMELINE_AXIS_X,
                                     width: '1px',
+                                    height: '100%',
                                     bgcolor: palette.divider,
-                                }}
-                            />
-                            <Box
-                                ref={progressRef}
-                                aria-hidden="true"
-                                sx={{
-                                    position: 'absolute',
-                                    top: 0,
-                                    bottom: 0,
-                                    left: { xs: '7px', md: '110px' },
-                                    width: '1px',
-                                    bgcolor: palette.text.primary,
-                                    opacity: 0.5,
-                                    transform: 'scaleY(0)',
-                                    transformOrigin: 'top',
-                                    pointerEvents: 'none',
-                                }}
-                            />
-                            <Box
-                                aria-hidden="true"
-                                sx={{
-                                    position: 'absolute',
-                                    top: 0,
-                                    left: { xs: '7px', md: '110px' },
-                                    width: '5px',
-                                    height: '5px',
-                                    borderRadius: '50%',
-                                    bgcolor: palette.text.tertiary,
-                                    transform: 'translate(-50%, -50%)',
+                                    transform: 'translateX(-50%)',
                                 }}
                             />
 
@@ -548,20 +555,6 @@ export default function PageEvents() {
                                     })}
                                 </Box>
                             ))}
-
-                            <Box
-                                aria-hidden="true"
-                                sx={{
-                                    position: 'absolute',
-                                    bottom: 0,
-                                    left: { xs: '7px', md: '110px' },
-                                    width: '5px',
-                                    height: '5px',
-                                    borderRadius: '50%',
-                                    bgcolor: palette.text.tertiary,
-                                    transform: 'translate(-50%, 50%)',
-                                }}
-                            />
                         </Box>
 
                         {showPreview ? (
