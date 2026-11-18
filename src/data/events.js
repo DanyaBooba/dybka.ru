@@ -1,6 +1,7 @@
 export default [
     {
         imageCap: '2026/russian-engineer/cap.jpg',
+        images: [],
         title: 'Теоретическая информатика и компьютерные технологии',
         desc: 'Конференция в МГТУ им. Н.Э. Баумана.',
         content: [
@@ -18,6 +19,7 @@ export default [
     },
     {
         imageCap: '2026/studvesna/cap.jpg',
+        images: [],
         title: 'Студенческая весна',
         desc: 'Конференция в МГТУ им. Н.Э. Баумана.',
         date: '20 апреля 2026 г.',
@@ -26,6 +28,7 @@ export default [
     },
     {
         imageCap: '2025/pstgu/cap.jpg',
+        images: [],
         title: 'Факультетский вечер',
         desc: 'Неформальное мероприятие ФИПМ ПСТГУ.',
         date: '2 ноября 2025 г.',
@@ -33,6 +36,7 @@ export default [
     },
     {
         imageCap: '2025/baumanka/main.jpg',
+        images: [],
         title: 'Русский Инженер',
         desc: 'Конференция в МГТУ им. Н.Э. Баумана, секция «Анализ, порождение и преобразование программного кода».',
         content: [
@@ -43,6 +47,7 @@ export default [
     },
     {
         imageCap: '2025/rucode/main.jpg',
+        images: ['img-1.jpg'],
         title: 'Олимпиада РуКод',
         desc: 'Финал олимпиады по программированию и математике.',
         content: [
@@ -53,6 +58,7 @@ export default [
     },
     {
         imageCap: '2025/saintp/cap.jpg',
+        images: [],
         title: 'Будущее сильной России – в высоких технологиях',
         desc: 'Юношеская научно-практическая конференция, г. Санкт-Петербург.',
         content: [
@@ -63,6 +69,7 @@ export default [
     },
     {
         imageCap: '2024/izob-kids/cap.jpg',
+        images: [],
         title: 'Изобит-2024',
         desc: 'Итоговая внутренняя конференция проектов технопарка Изобретариум.',
         content: [
@@ -73,6 +80,7 @@ export default [
     },
     {
         imageCap: '2024/icpc/cap.jpg',
+        images: [],
         title: 'Олимпиада ICPC',
         desc: 'Международная олимпиада по программированию и математике.',
         date: '17 ноября 2024 г.',
@@ -80,6 +88,7 @@ export default [
     },
     {
         imageCap: '2024/pstgu/cap.jpg',
+        images: ['img1.jpg', 'img2.jpg', 'img3.jpg'],
         title: 'Факультетский вечер',
         desc: 'Неформальное мероприятие ФИПМ ПСТГУ.',
         date: '10 ноября 2024 г.',
@@ -87,6 +96,7 @@ export default [
     },
     {
         imageCap: '2024/baumanka4/cap.jpg',
+        images: ['img1.jpg'],
         title: 'Теоретическая информатика и компьютерные технологии',
         desc: 'Конференция в рамках II конгресса «Русский Инженер», проводимая в МГТУ им. Н.Э. Баумана.',
         content: [
@@ -98,6 +108,7 @@ export default [
     },
     {
         imageCap: '2024/izob/cap.jpg',
+        images: [],
         title: 'Изобит-2024',
         desc: 'Итоговая внутренняя конференция проектов технопарка Изобретариум.',
         date: '21 апреля 2024 г.',
@@ -105,6 +116,7 @@ export default [
     },
     {
         imageCap: '2024/baumanka3/cap.jpg',
+        images: ['img1.jpg'],
         title: 'Студенческая весна',
         desc: 'Конференция в МГТУ им. Н.Э. Баумана.',
         content: [
@@ -115,6 +127,7 @@ export default [
     },
     {
         imageCap: '2023/baumanka2/cap.jpg',
+        images: ['img1.jpg', 'img2.jpg'],
         title: 'Русский Инженер',
         desc: 'Конференция в МГТУ им. Н.Э. Баумана.',
         date: '1 ноября 2023 г.',
@@ -123,6 +136,7 @@ export default [
     },
     {
         imageCap: '2023/gosduma/cap.jpg',
+        images: ['img2.jpg'],
         title: 'Юные техники и изобретатели',
         desc: 'Награждение победителей в Государственной думе.',
         date: '15 сентября 2023 г.',
@@ -130,6 +144,7 @@ export default [
     },
     {
         imageCap: '2023/radiopoisk/cap.jpg',
+        images: ['img1.jpeg', 'img2.jpeg'],
         title: 'Радио-Поиск',
         desc: 'Городской конкурс научно-технического творчества.',
         date: '22 апреля 2023 г.',
@@ -138,6 +153,7 @@ export default [
     },
     {
         imageCap: '2023/futurerussia/cap.jpg',
+        images: ['img1.jpg', 'img2.jpg'],
         title: 'Будущее сильной России – в высоких технологиях',
         desc: 'Юношеская научно-практическая конференция, г. Санкт-Петербург.',
         date: '8 апреля 2023 г.',
@@ -146,6 +162,7 @@ export default [
     },
     {
         imageCap: '2023/baumanka/cap.jpg',
+        images: ['box2.jpg', 'img1.jpg', 'img11.jpg', 'img21.jpg'],
         title: 'Шаг в будущее',
         desc: 'Олимпиада от МГТУ им. Н.Э. Баумана.',
         date: '23 марта 2023 г.',
@@ -154,6 +171,7 @@ export default [
     },
     {
         imageCap: '2023/mai3/cap.jpg',
+        images: [],
         title: 'Будущее начинается сегодня',
         desc: 'Конкурс от Московского Авиационного Института.',
         date: '15 марта 2023 г.',
@@ -161,6 +179,7 @@ export default [
     },
     {
         imageCap: '2023/radarmms/cap.jpg',
+        images: ['img2.jpg', 'img3.jpg', 'img31.jpg', 'img4.jpg', 'img5.jpg'],
         title: 'Будущее Петербурга – в творчестве юных',
         desc: 'Кейс-фестиваль на базе Radar MMS, г. Санкт-Петербург.',
         content: [
@@ -178,6 +197,7 @@ export default [
     },
     {
         imageCap: '2022/bionika/cap.jpg',
+        images: ['2.jpg', '3.jpg'],
         title: 'Бионика-2022',
         desc: 'Конференция от МГТУ им. Н.Э. Баумана.',
         date: '25 декабря 2022 г.',
@@ -186,6 +206,7 @@ export default [
     },
     {
         imageCap: '2022/mai2/cap.jpg',
+        images: [],
         title: 'Я – конструктор будущего',
         desc: 'Конкурс от Московского Авиационного Института.',
         content: [
@@ -197,6 +218,7 @@ export default [
     },
     {
         imageCap: '2022/mgy/cap.jpg',
+        images: [],
         title: 'Ученые будущего',
         desc: 'Конкурс от Московского Государственного Университета.',
         date: '8 октября 2022 г.',
@@ -205,6 +227,7 @@ export default [
     },
     {
         imageCap: '2022/skolkovo/cap.jpg',
+        images: ['1.jpg', '3.jpg', '4.jpg', '5.jpg'],
         title: 'Разведка боем',
         desc: 'Стартап-программа в Сколково.',
         date: '10 августа 2022 г.',
@@ -213,6 +236,7 @@ export default [
     },
     {
         imageCap: '2022/innopolis/cap.jpg',
+        images: ['1.jpg', '2.jpg', '4.jpg'],
         title: 'Startup House Universities',
         desc: 'Акселераторская программа от института «Иннополис», г. Казань.',
         content: [
@@ -225,6 +249,7 @@ export default [
     },
     {
         imageCap: '2022/1c/cap.jpg',
+        images: [],
         title: 'НТИ Олимпиада',
         desc: 'Награждение финалистов олимпиады в офисе 1C.',
         date: '19 апреля 2022 г.',
@@ -233,6 +258,7 @@ export default [
     },
     {
         imageCap: '2022/mai/cap.jpg',
+        images: [],
         title: 'Будущее начинается сегодня',
         desc: 'Конкурс от Московского Авиационного Института.',
         date: '13 апреля 2022 г.',
@@ -240,6 +266,7 @@ export default [
     },
     {
         imageCap: '2022/mfti/cap.jpg',
+        images: ['4.jpg'],
         title: 'Старт в инновации',
         desc: 'Организационная и предметная среда, проводимая в МФТИ, г. Долгопрудный.',
         date: '18-21 марта 2022 г.',

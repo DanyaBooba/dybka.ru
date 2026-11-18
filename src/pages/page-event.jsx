@@ -8,7 +8,6 @@ import Header from '../components/header'
 import Seo from '../components/seo'
 import PageNotFound from './page-not-found'
 import events from '../data/events'
-import eventGalleries from '../data/event-galleries'
 import { SITE_URL, WEBSITE_ID } from '../data/seo'
 import { imagePositionSx } from '../data/image-position'
 
@@ -48,10 +47,7 @@ export default function PageEvent() {
 
     const folder = event.imageCap.split('/').slice(0, -1).join('/')
     const cover = event.imageCap.split('/').pop()
-    const galleryFiles = event.images?.length
-        ? event.images
-        : (eventGalleries[folder] ?? [])
-    const gallery = [cover, ...galleryFiles.filter((image) => image !== cover)]
+    const gallery = [cover, ...(event.images ?? []).filter((image) => image !== cover)]
 
     return (
         <>

@@ -767,7 +767,7 @@ export default function AquariumProjectPage() {
                                 textWrap: 'balance',
                             }}
                         >
-                            Мессенджер и микроблог вместе
+                            Мессенджер и микроблог в одном
                         </Box>
 
                         <Box

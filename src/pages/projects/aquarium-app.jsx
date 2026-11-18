@@ -91,6 +91,20 @@ const sectionTextSx = (p) => ({
     color: p.muted,
 })
 
+// Гасим горизонтальный padding секции, чтобы лента экранов шла от края до края
+// экрана, а карточки внутри стояли по сетке контента (как заголовок секции).
+const screensBleed = { xs: '-20px', md: 'calc(-1 * clamp(24px, 3.2vw, 48px))' }
+const screensInset = {
+    xs: 'calc(20px + max((100% - 1500px) / 2, 0px))',
+    md: 'calc(clamp(24px, 3.2vw, 48px) + max((100% - 1500px) / 2, 0px))',
+}
+// Проценты в scroll-padding считаются от ширины самого скроллера, а в padding —
+// от родителя, поэтому у снапа своя формула с учётом гашения полей.
+const screensScrollInset = {
+    xs: 'calc(20px + max((100% - 1500px) / 2 - 20px, 0px))',
+    md: 'calc(clamp(24px, 3.2vw, 48px) + max((100% - 1500px) / 2 - clamp(24px, 3.2vw, 48px), 0px))',
+}
+
 const milestones = [
     {
         period: 'Месяц 1',
@@ -138,7 +152,7 @@ const appFeatures = [
     {
         icon: Bell,
         title: 'Уведомления',
-        text: 'Пуши о новых сообщениях и звонках в любой момент.',
+        text: 'Системные уведомления о новых сообщениях и звонках.',
     },
     {
         icon: ImageIcon,
@@ -160,34 +174,80 @@ const anatomy = [
     },
     {
         label: 'Уведомления',
-        title: 'Firebase и Notifee',
-        text: 'Пуши приходят, даже когда приложение закрыто, и открывают нужный чат.',
+        title: 'APNs и FCM',
+        text: 'Системные уведомления приходят, даже когда приложение закрыто.',
     },
     {
         label: 'Данные',
-        title: 'TanStack Query',
-        text: 'Кеш и фоновая синхронизация: лента и чаты открываются сразу, без ожидания сети.',
+        title: 'TanStack Query и Nitro MMKV',
+        text: 'Кеш и фоновая синхронизация: лента и чаты открываются сразу и без ожидания сети.',
     },
 ]
 
 const screens = [
     {
-        src: '/img/pages/aquarium/iphone.png',
-        width: 960,
-        height: 1981,
+        src: '/img/pages/aquarium-app/iphone-1.png',
+        width: 580,
+        height: 1197,
         alt: 'Чат в приложении «Аквариум» на iPhone: сообщения, вложение и отметки о прочтении',
-        platform: 'iOS',
         title: 'Чат и вложения',
-        text: 'Переписка с фото, файлами и стикерами — как в веб-версии.',
+        text: 'Переписка с фото, файлами и стикерами.',
     },
     {
-        src: '/img/pages/aquarium/android.png',
-        width: 841,
-        height: 1748,
-        alt: 'Видеозвонок в приложении «Аквариум» на Android: собеседник на весь экран и кнопки управления',
-        platform: 'Android',
+        src: '/img/pages/aquarium-app/iphone-2.png',
+        width: 1920,
+        height: 3962,
+        alt: 'Список сообщений в приложении «Аквариум» на iPhone: поиск, избранное и диалоги',
+        title: 'Сообщения',
+        text: 'Список диалогов с поиском и закреплённым избранным.',
+    },
+    {
+        src: '/img/pages/aquarium-app/iphone-3.png',
+        width: 1920,
+        height: 3962,
+        alt: 'Видеозвонок в приложении «Аквариум» на iPhone: собеседник на весь экран и кнопки управления',
         title: 'Видеозвонок',
         text: 'Аудио и видео прямо из чата: микрофон, камера и завершение вызова.',
+    },
+    {
+        src: '/img/pages/aquarium-app/iphone-4.png',
+        width: 1920,
+        height: 3962,
+        alt: 'Лента в приложении «Аквариум» на iPhone: записи с фото, лайки и комментарии',
+        title: 'Лента',
+        text: 'Записи друзей и подписок: фото, лайки, комментарии и репосты.',
+    },
+    {
+        src: '/img/pages/aquarium-app/iphone-5.png',
+        width: 1920,
+        height: 3962,
+        alt: 'Создание записи в приложении «Аквариум» на iPhone: редактор с форматированием и вложениями',
+        title: 'Создать запись',
+        text: 'Редактор записи с форматированием, вложениями и черновиком.',
+    },
+    {
+        src: '/img/pages/aquarium-app/iphone-6.png',
+        width: 1920,
+        height: 3962,
+        alt: 'Профиль в приложении «Аквариум» на iPhone: подписчики, записи и достижения',
+        title: 'Профиль',
+        text: 'Ваш профиль: аватарка, имя, подписчики, записи и достижения.',
+    },
+    {
+        src: '/img/pages/aquarium-app/iphone-7.png',
+        width: 1920,
+        height: 3962,
+        alt: 'Тёмная тема в приложении «Аквариум» на iPhone: лента и уведомления',
+        title: 'Тёмная тема',
+        text: 'Лента и уведомления в тёмном оформлении.',
+    },
+    {
+        src: '/img/pages/aquarium-app/iphone-8.png',
+        width: 1920,
+        height: 3962,
+        alt: 'Экран установки пароля в приложении «Аквариум» на iPhone',
+        title: 'Пароль аккаунта',
+        text: 'Защита аккаунта: пароль и подтверждение входа.',
     },
 ]
 
@@ -508,7 +568,7 @@ export default function AquariumAppProjectPage() {
                                 textWrap: 'balance',
                             }}
                         >
-                            Общайтесь <nobr>с друзьями</nobr> <nobr>в удобном</nobr> формате
+                            Общайтесь <nobr>с друзьями</nobr> <nobr>в привычном</nobr> формате
                         </Box>
 
                         <Box
@@ -754,7 +814,7 @@ export default function AquariumAppProjectPage() {
                                 color: p.muted,
                             }}
                         >
-                            Приложение является продолжением веб-версии со своими изменениями и улучшениями.
+                            В мобильном формате привычнее использовать мобильное приложение. Данный формат имеет несколько преимуществ.
                         </Box>
                     </Box>
 
@@ -819,72 +879,97 @@ export default function AquariumAppProjectPage() {
                                 color: p.muted,
                             }}
                         >
-                            Чат с файлами и видеозвонок — два экрана, ради которых
-                            приложение открывают каждый день.
+                            Было важно перенести всю функциональность веб-версии в мобильный формат с сохранением удобства и узнаваемости.
                         </Box>
                     </Box>
+                </Box>
 
-                    <Box
-                        sx={{
-                            display: 'grid',
-                            gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(0, 1fr))' },
-                            gap: { xs: '36px', md: 'clamp(40px, 6vw, 80px)' },
-                            alignItems: 'end',
-                        }}
-                    >
-                        {screens.map((screen) => (
+                <Box
+                    role="region"
+                    aria-label="Экраны приложения"
+                    tabIndex={0}
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'flex-start',
+                        gap: { xs: '36px', md: 'clamp(40px, 6vw, 80px)' },
+                        overflowX: 'auto',
+                        scrollSnapType: 'x mandatory',
+                        overscrollBehaviorX: 'contain',
+                        scrollbarWidth: 'none',
+                        msOverflowStyle: 'none',
+                        '&::-webkit-scrollbar': { display: 'none' },
+                        mx: screensBleed,
+                        px: screensInset,
+                        scrollPaddingInlineStart: screensScrollInset,
+                        pt: '52px',
+                        mt: '-52px',
+                        pb: '120px',
+                        mb: '-120px',
+                        '&:focus-visible': {
+                            outline: '2px solid',
+                            outlineColor: p.teal,
+                            outlineOffset: '-2px',
+                        },
+                    }}
+                >
+                    {screens.map((screen) => (
+                        <Box
+                            key={screen.src}
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                flex: '0 0 auto',
+                                width: { xs: 'min(260px, 72vw)', md: 'clamp(250px, 22vw, 310px)' },
+                                scrollSnapAlign: 'start',
+                            }}
+                        >
                             <Box
-                                key={screen.title}
-                                sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
-                            >
+                                component="img"
+                                src={screen.src}
+                                alt={screen.alt}
+                                loading="lazy"
+                                decoding="async"
+                                sx={{
+                                    display: 'block',
+                                    width: '100%',
+                                    height: 'auto',
+                                    aspectRatio: `${screen.width} / ${screen.height}`,
+                                    filter: screenShadow,
+                                }}
+                            />
+                            <Box sx={{ mt: '20px', maxWidth: '30ch', textAlign: 'center' }}>
                                 <Box
-                                    component="img"
-                                    src={screen.src}
-                                    width={screen.width}
-                                    height={screen.height}
-                                    alt={screen.alt}
-                                    loading="lazy"
-                                    decoding="async"
+                                    component="h3"
                                     sx={{
-                                        display: 'block',
-                                        width: { xs: 'min(260px, 72vw)', md: 'clamp(250px, 22vw, 310px)' },
-                                        height: 'auto',
-                                        filter: screenShadow,
+                                        m: 0,
+                                        mt: '8px',
+                                        fontFamily: inter,
+                                        fontSize: 'clamp(16px, 1.4vw, 18px)',
+                                        fontWeight: 600,
+                                        lineHeight: 1.25,
+                                        letterSpacing: '-0.02em',
+                                        color: p.heading,
                                     }}
-                                />
-                                <Box sx={{ mt: '20px', maxWidth: '30ch', textAlign: 'center' }}>
-                                    <Box
-                                        component="h3"
-                                        sx={{
-                                            m: 0,
-                                            mt: '8px',
-                                            fontFamily: inter,
-                                            fontSize: 'clamp(16px, 1.4vw, 18px)',
-                                            fontWeight: 600,
-                                            lineHeight: 1.25,
-                                            letterSpacing: '-0.02em',
-                                            color: p.heading,
-                                        }}
-                                    >
-                                        {screen.title}
-                                    </Box>
-                                    <Box
-                                        component="p"
-                                        sx={{
-                                            m: 0,
-                                            mt: '6px',
-                                            fontFamily: inter,
-                                            fontSize: '13px',
-                                            lineHeight: 1.5,
-                                            color: p.muted,
-                                        }}
-                                    >
-                                        {screen.text}
-                                    </Box>
+                                >
+                                    {screen.title}
+                                </Box>
+                                <Box
+                                    component="p"
+                                    sx={{
+                                        m: 0,
+                                        mt: '6px',
+                                        fontFamily: inter,
+                                        fontSize: '13px',
+                                        lineHeight: 1.5,
+                                        color: p.muted,
+                                    }}
+                                >
+                                    {screen.text}
                                 </Box>
                             </Box>
-                        ))}
-                    </Box>
+                        </Box>
+                    ))}
                 </Box>
             </Box>
 
@@ -905,7 +990,6 @@ export default function AquariumAppProjectPage() {
                         }}
                     >
                         <Box>
-                            <Box sx={{ ...kickerSx, color: p.teal }}>Под капотом</Box>
                             <Box
                                 component="h2"
                                 id="aquarium-app-anatomy"
@@ -925,8 +1009,7 @@ export default function AquariumAppProjectPage() {
                                 color: p.muted,
                             }}
                         >
-                            Коротко о стеке: одна кодовая база, нативные звонки
-                            и уведомления, которые работают в фоне.
+                            Одна кодовая база, нативные звонки и системные уведомления.
                         </Box>
                     </Box>
 
@@ -1018,9 +1101,6 @@ export default function AquariumAppProjectPage() {
                         </Box>
 
                         <Box sx={{ position: 'relative', maxWidth: '760px' }}>
-                            <Box sx={{ ...kickerSx, color: 'rgba(234, 250, 248, .5)' }}>
-                                В маркетах
-                            </Box>
                             <Box
                                 component="h2"
                                 id="aquarium-app-download"
@@ -1040,9 +1120,7 @@ export default function AquariumAppProjectPage() {
                                     color: 'rgba(234, 250, 248, .68)',
                                 }}
                             >
-                                Скачайте приложение и продолжите разговор там,
-                                где остановились. Веб-версия и телефон
-                                синхронизируются.
+                                Сообщения, лента и звонки в удобном формате.
                             </Box>
 
                             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '10px', mt: '26px' }}>
