@@ -18,6 +18,30 @@ export default [
         previewPosition: '18% 30%',
     },
     {
+        imageCap: '2026/summer-school/cap.jpg',
+        images: [
+            'img-1.jpg',
+            'img-2.jpg',
+            'img-3.jpg',
+            'img-4.jpg',
+            'img-5.jpg',
+            'img-8.jpg',
+        ],
+        title: 'Летняя школа по искусственному интеллекту',
+        desc: 'Летний школьный интенсив в ПСТГУ.',
+        content: [
+            'Трехдневная школа знакомила учеников 9-11 классов с алгоритмами автоматического распознавания предметов и современными нейросетевыми алгоритмами сегментации фрагментов на изображениях.',
+        ],
+        date: '2-4 июля 2026 г.',
+        link: 'pstgu-summer-school',
+        position: {
+            mobile: '50% 30%',
+            tablet: '50% 30%',
+            desktop: '50% 30%',
+        },
+        previewPosition: '50% 30%',
+    },
+    {
         imageCap: '2026/studvesna/cap.jpg',
         images: [],
         title: 'Студенческая весна',

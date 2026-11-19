@@ -392,30 +392,34 @@ export default function PageEvents() {
             const timeline = timelineRef.current
             if (!timeline) return
 
-            const anchor = window.innerHeight * 0.65
+            // Активно мероприятие, чья строка последней пересекла вертикальный
+            // центр экрана: её верх уже выше центра, а у следующей строки — ниже.
+            // Раньше выбиралась строка с ближайшим к якорю (65% высоты) верхом.
+            // Верхние строки при загрузке уже выше этого якоря, поэтому вторая
+            // строка — например, только что добавленное мероприятие — проскакивала,
+            // а фокус загорался, едва строка появлялась у нижней кромки.
+            const anchor = window.innerHeight * 0.5
             const atTop = window.scrollY <= 2
             const atBottom = window.scrollY >= document.documentElement.scrollHeight - window.innerHeight - 2
-            let nearestLink = atTop
+            const rows = [...timeline.querySelectorAll('[data-event-link]')]
+            let activeLink = atTop
                 ? events[0].link
                 : atBottom
                     ? events[events.length - 1].link
                     : null
-            let nearestDistance = Infinity
 
             if (!atTop && !atBottom) {
-                timeline.querySelectorAll('[data-event-link]').forEach((node) => {
-                    const rect = node.getBoundingClientRect()
-                    const distance = Math.abs(rect.top - anchor)
+                for (const node of rows) {
+                    if (node.getBoundingClientRect().top > anchor) break
+                    activeLink = node.dataset.eventLink
+                }
 
-                    if (distance < nearestDistance) {
-                        nearestDistance = distance
-                        nearestLink = node.dataset.eventLink
-                    }
-                })
+                // Центр экрана выше первой строки — фокус остаётся на ней.
+                if (!activeLink) activeLink = rows[0]?.dataset.eventLink ?? null
             }
 
-            if (nearestLink) {
-                const next = events.find((event) => event.link === nearestLink)
+            if (activeLink) {
+                const next = events.find((event) => event.link === activeLink)
                 if (next) {
                     setActive((current) => (current?.link === next.link ? current : next))
                 }
